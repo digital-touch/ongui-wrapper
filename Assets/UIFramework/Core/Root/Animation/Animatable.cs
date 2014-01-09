@@ -1,55 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public abstract class Animatable : IAnimatable {
+public abstract class Animatable : MonoBehaviour
+{
 
-	public event AnimationCompletedHandler AnimationCompleted;    
-    public event AnimationAddedHandler AnimationAdded;
-	public event AnimationRemovedHandler AnimationRemoved;
+		public Action<Animatable> AnimationCompletedEvent;    
+		public Action<Animatable> AnimationAddedEvent;
+		public Action<Animatable> AnimationRemovedEvent;
 	
-	private bool _autoRemove = false;
+		private bool _autoRemove = false;
 		
-	public bool AutoRemove {
-		set {
-			_autoRemove = value;
+		public bool AutoRemove {
+				set {
+						_autoRemove = value;
+				}
+				get {
+						return _autoRemove;
+				}
 		}
-		get {
-			return _autoRemove;
+	
+		public Animatable (bool autoRemove)
+		{
+				this.AutoRemove = autoRemove;
 		}
-	}
 	
-	public Animatable(bool autoRemove) {
-		this.AutoRemove = autoRemove;
-	}
-	
-	public Animatable() {
-		this.AutoRemove = true;
-	}
-	
-	public abstract void Update ();
-	
-	public void FireAnimationCompleted() {
-		if (AnimationCompleted!=null) {
-			AnimationCompleted(this);
+		public Animatable ()
+		{
+				this.AutoRemove = true;
 		}
-	}
 	
-	public void FireAnimationAdded() {
-		if (AnimationAdded!=null) {
-			AnimationAdded(this);
-		}
-	}
+		protected abstract void Update ();
 	
-	public void FireAnimationRemoved() {
-		if (AnimationRemoved!=null) {
-			AnimationRemoved(this);
-		}
-	}
-	
-	public void Complete() {
-		FireAnimationCompleted();
-	}
-	
-	public abstract void Initialize();
-	public abstract void Dispose();
+		public void FireAnimationCompleted ()
+		{
+				if (AnimationCompletedEvent != null) {
+						AnimationCompletedEvent (this);
+				}
+		}	
 }

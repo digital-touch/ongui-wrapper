@@ -5,7 +5,6 @@ using System.Collections;
 [ExecuteInEditMode]
 public class UIRootEventHandler : MonoBehaviour
 {
-
 		UIWidgetTransform widgetTransform;
 		UIWidgetValidator widgetValidator;	
 		UIWidgetRenderer widgetRenderer;	
@@ -33,7 +32,8 @@ public class UIRootEventHandler : MonoBehaviour
 		protected virtual void Update ()
 		{
 				if (started) {
-						UIInvalidator.validate ();									
+						UIJuggler.Advance ();
+						UIInvalidator.validate ();
 				}
 		}
 		
