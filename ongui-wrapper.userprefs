@@ -1,12 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UIFramework\Core\UIInvalidator.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UIFramework\Core\Root\UIRoot.cs">
     <Files>
+      <File FileName="Assets\Editor\Core\UIRootEventHandlerEditor.cs" Line="1" Column="1" />
       <File FileName="Assets\UIFramework\Core\Root\UIRoot.cs" Line="25" Column="35" />
       <File FileName="Assets\UIFramework\Components\Fill\UIFillValidator.cs" Line="1" Column="1" />
       <File FileName="Assets\UIFramework\Core\Widget\UIWidgetValidator.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework\Core\Widget\UIWidget.cs" Line="138" Column="102" />
+      <File FileName="Assets\UIFramework\Core\Widget\UIWidget.cs" Line="1" Column="1" />
       <File FileName="Assets\UIFramework\Core\UIInvalidator.cs" Line="5" Column="34" />
+      <File FileName="Assets\UIFramework\Core\Root\UIRootEventHandler.cs" Line="35" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -15,6 +17,7 @@
       <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Fill\UIFill.cs" line="21" />
       <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Invalidator.cs" line="26" />
       <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Invalidator.cs" line="12" />
+      <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Root\UIRootEventHandler.cs" line="36" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

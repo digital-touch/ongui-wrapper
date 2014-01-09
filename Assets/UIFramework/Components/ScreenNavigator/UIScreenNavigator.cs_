@@ -1,0 +1,132 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class UIScreenNavigator : UIWidget
+{
+		public string defaultScreenID;
+		public UIScreen activeScreen;
+		public float transitionDuration = 0.2f;
+		public float showTransitionDelay = 0.0f;
+		public float hideTransitionDelay = 0.0f;
+		public EaseDelegate showEasingFunction = Quad.EaseOut;
+		public EaseDelegate hideEasingFunction = Quad.EaseOut;
+		
+		protected override void Awake ()
+		{
+				base.Awake ();
+		
+				for (int i = 0; i < transform.childCount; i++) {
+						Transform child = transform.GetChild (i);
+						UIScreen screen = child.GetComponent<UIScreen> ();
+						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();
+						UIWidgetInteraction childInteraction = child.GetComponent<UIWidgetInteraction> ();
+						childTransform.x = widgetTransform.width;
+						childTransform.isVisible = false;			
+						childInteraction.isTouchable = false;			
+				}		
+		}	
+	
+		private Vector2Tween showTween;
+	
+		public UIScreen showNextScreen (string screenID, UIScreenTransitionType transitionType)
+		{		
+				if (activeScreen != null) {	
+						hideScreen (activeScreen.id, transitionType);			
+				}
+		
+				return showScreen (screenID, transitionType);
+		}
+	
+		public UIScreen showScreen (string screenID, UIScreenTransitionType transitionType)
+		{		
+				UIScreen screen = activeScreen = getScreenByID (screenID);		
+				UIWidgetTransform screenTransform = screen.GetComponent<UIWidgetTransform> ();
+				
+				if (transitionType == UIScreenTransitionType.RIGHT_TO_LEFT) {
+						screenTransform.x = widgetTransform.width;		 
+				} else {
+						screenTransform.x = -widgetTransform.width; 
+				}
+		
+				screenTransform.isVisible = true;		
+		
+				if (showTween != null && showTween.isTweening) {			
+						showTween.Stop ();
+						juggler.Remove (showTween);
+				}
+				screen.FireShowTransitionStart (screen);		
+		
+				showTween = new MoveTween (screenTransform, new Vector2 (screenTransform.x, screenTransform.y), new Vector2 (0, screenTransform.y), transitionDuration, showTransitionDelay, showEasingFunction);
+				showTween.AnimationCompleted += OnShowAnimationCompleted;
+				juggler.Add (showTween);
+				showTween.Play ();
+				return screen;
+		}
+	
+		void OnShowAnimationCompleted (IAnimatable animatable)
+		{
+				MoveTween tween = (MoveTween)animatable;
+				tween.AnimationCompleted -= OnShowAnimationCompleted;
+				UIScreen screen = (UIScreen)tween.target;
+				screen.IsTouchable = true;
+				DelayedCall callLayter = new DelayedCall (0.3f);
+				callLayter.AnimationCompleted += (a) => {
+						screen.FireShowTransitionComplete (screen);						
+				};
+				juggler.Add (callLayter);
+				callLayter.Run ();
+		}
+	
+		private Vector2Tween hideTween;
+	
+		public UIScreen hideScreen (string screenID, UIScreenTransitionType transitionType)
+		{
+				UIScreen screen = getScreenByID (screenID);
+				float xTo = 0;
+				if (transitionType == UIScreenTransitionType.RIGHT_TO_LEFT) {
+						xTo = -Screen.width;
+				} else {
+						xTo = Screen.width;
+				}
+		
+				if (hideTween != null && hideTween.isTweening) {			
+						hideTween.Stop ();
+						juggler.Remove (hideTween);
+				}
+				screen.FireHideTransitionStart (screen);
+				hideTween = new MoveTween (screen, new Vector2 (screen.X, screen.Y), new Vector2 (xTo, screen.Y), transitionDuration, hideTransitionDelay, hideEasingFunction);
+				hideTween.AnimationCompleted += OnHideAnimationCompleted;
+				juggler.Add (hideTween);
+				hideTween.Play ();
+
+				return screen;
+		}
+	
+		void OnHideAnimationCompleted (IAnimatable animatable)
+		{		
+				MoveTween tween = (MoveTween)animatable;
+				tween.AnimationCompleted -= OnHideAnimationCompleted;
+				UIScreen screen = (UIScreen)tween.target;
+				screen.IsVisible = false; 
+				screen.IsTouchable = false; 
+		
+				DelayedCall callLayter = new DelayedCall (0.3f);
+				callLayter.AnimationCompleted += (a) => {			
+						screen.FireHideTransitionComplete (screen);
+				};
+				juggler.Add (callLayter);
+				callLayter.Run ();		
+		}
+	
+	
+		public UIScreen getScreenByID (string screenID)
+		{
+				return (UIScreen)widgetTransform.getChildById (screenID);
+		}	
+}
+
+public enum UIScreenTransitionType
+{
+		LEFT_TO_RIGHT,
+		RIGHT_TO_LEFT
+}
