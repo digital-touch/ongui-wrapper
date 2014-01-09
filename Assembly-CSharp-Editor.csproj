@@ -46,27 +46,27 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Components\Editor\UIButtonEditor.cs" />
-     <Compile Include="Assets\Components\Editor\UIFillEditor.cs" />
-     <Compile Include="Assets\Components\Editor\UIImageEditor.cs" />
-     <Compile Include="Assets\Components\Editor\UILabelEditor.cs" />
-     <Compile Include="Assets\Components\Editor\UILabelLayoutEditor.cs" />
-     <Compile Include="Assets\Components\Editor\UISliceImageEditor.cs" />
-     <Compile Include="Assets\Core\Layout\Editor\UIAnchorLayoutDataEditor.cs" />
-     <Compile Include="Assets\Core\Layout\Editor\UIHorizontalLayoutEditor.cs" />
-     <Compile Include="Assets\Core\Layout\Editor\UILayoutEditor.cs" />
-     <Compile Include="Assets\Core\Layout\Editor\UILinearLayoutEditor.cs" />
-     <Compile Include="Assets\Core\Layout\Editor\UIStackLayoutEditor.cs" />
-     <Compile Include="Assets\Core\Layout\Editor\UIVerticalLayoutEditor.cs" />
-     <Compile Include="Assets\Core\Root\Editor\UIRootEditor.cs" />
-     <Compile Include="Assets\Core\Root\Editor\UIRootEventHandlerEditor.cs" />
-     <Compile Include="Assets\Core\Root\Editor\UIRootTransformEditor.cs" />
-     <Compile Include="Assets\Core\Widget\Editor\UIWidgetEditor.cs" />
-     <Compile Include="Assets\Core\Widget\Editor\UIWidgetInteractionEditor.cs" />
-     <Compile Include="Assets\Core\Widget\Editor\UIWidgetInvalidatorEditor.cs" />
-     <Compile Include="Assets\Core\Widget\Editor\UIWidgetRendererEditor.cs" />
-     <Compile Include="Assets\Core\Widget\Editor\UIWidgetTransformEditor.cs" />
-     <Compile Include="Assets\Core\Widget\Editor\UIWidgetValidatorEditor.cs" />
+     <Compile Include="Assets\Editor\Components\UIButtonEditor.cs" />
+     <Compile Include="Assets\Editor\Components\UIFillEditor.cs" />
+     <Compile Include="Assets\Editor\Components\UIImageEditor.cs" />
+     <Compile Include="Assets\Editor\Components\UILabelEditor.cs" />
+     <Compile Include="Assets\Editor\Components\UILabelLayoutEditor.cs" />
+     <Compile Include="Assets\Editor\Components\UIScrollerEditor.cs" />
+     <Compile Include="Assets\Editor\Components\UISliceImageEditor.cs" />
+     <Compile Include="Assets\Editor\Core\UIRootEditor.cs" />
+     <Compile Include="Assets\Editor\Core\UIRootEventHandlerEditor.cs" />
+     <Compile Include="Assets\Editor\Core\UIRootTransformEditor.cs" />
+     <Compile Include="Assets\Editor\Core\UIWidgetEditor.cs" />
+     <Compile Include="Assets\Editor\Core\UIWidgetInteractionEditor.cs" />
+     <Compile Include="Assets\Editor\Core\UIWidgetRendererEditor.cs" />
+     <Compile Include="Assets\Editor\Core\UIWidgetTransformEditor.cs" />
+     <Compile Include="Assets\Editor\Core\UIWidgetValidatorEditor.cs" />
+     <Compile Include="Assets\UIFramework\Core\Layout\Editor\UIAnchorLayoutDataEditor.cs" />
+     <Compile Include="Assets\UIFramework\Core\Layout\Editor\UIHorizontalLayoutEditor.cs" />
+     <Compile Include="Assets\UIFramework\Core\Layout\Editor\UILayoutEditor.cs" />
+     <Compile Include="Assets\UIFramework\Core\Layout\Editor\UILinearLayoutEditor.cs" />
+     <Compile Include="Assets\UIFramework\Core\Layout\Editor\UIStackLayoutEditor.cs" />
+     <Compile Include="Assets\UIFramework\Core\Layout\Editor\UIVerticalLayoutEditor.cs" />
      <None Include="Assets\MetalWorksMobileTheme\assets\images\metalworks.txt" />
  <Reference Include="AssetStoreTools">
  <HintPath>Assets\AssetStoreTools\Editor\AssetStoreTools.dll</HintPath>
