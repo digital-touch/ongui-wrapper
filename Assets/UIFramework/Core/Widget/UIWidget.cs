@@ -13,7 +13,7 @@ public class UIWidget : MonoBehaviour
 	
 		public static readonly string POSITION_FLAG = "uiwidget-position";
 		public static readonly string SIZE_FLAG = "uiwidget-size";
-		public static readonly string DATA_FLAG = "uiwidget-size";
+		public static readonly string DATA_FLAG = "uiwidget-data";
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -80,6 +80,7 @@ public class UIWidget : MonoBehaviour
 		protected virtual void Awake ()
 		{				
 				widgetTransform = GetComponent<UIWidgetTransform> ();
+				UIInvalidator.invalidate (this, UIInvalidator.ALL_INVALIDATION_FLAG);
 		}
 	
 		protected virtual void OnDestroy ()
@@ -95,14 +96,6 @@ public class UIWidget : MonoBehaviour
 				}
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		public UIJuggler juggler {
-				get {
-						return root.GetComponent<UIJuggler> ();
-				}
-		}
-	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		public UIRoot root {

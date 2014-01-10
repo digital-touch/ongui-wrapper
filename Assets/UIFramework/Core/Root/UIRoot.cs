@@ -5,8 +5,6 @@ using TouchScript;
 using TouchScript.InputSources;
 
 [ExecuteInEditMode]
-[System.Serializable]
-[RequireComponent(typeof(UIJuggler))]
 public class UIRoot : UIWidget
 {
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,8 +19,7 @@ public class UIRoot : UIWidget
 		
 		protected override void Awake ()
 		{
-				base.Awake ();
-				UIInvalidator.invalidate (this);
+				base.Awake ();				
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +42,7 @@ public class UIRoot : UIWidget
 				root.AddComponent<TouchManager> ();
 				root.AddComponent<MouseInput> ();
 				root.AddComponent<UIRootEventHandler> (); 
-				root.AddComponent<UIJuggler> (); 
+				
 				
 				return root;
 		}

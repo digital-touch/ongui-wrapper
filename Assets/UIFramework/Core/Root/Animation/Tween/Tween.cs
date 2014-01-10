@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public abstract class Tween : Animatable
-{
-	
-		public delegate void TweenUpdatedHandler (Tween tween,object value);
-	
-		public event TweenUpdatedHandler TweenUpdated;
+public abstract class Tween : MonoBehaviour
+{	
+		public Action<Tween> UpdatedEvent;
+		public Action<Tween> StartedEvent;
+		public Action<Tween> CompletedEvent;
 	
 		public float elapsedTime;
 		public float delay;
@@ -20,57 +20,31 @@ public abstract class Tween : Animatable
 	
 		public bool isPaused = false;	
 		
-		public Tween ():base(true)
+		protected virtual void Awake ()
 		{
 				this.duration = 1;
 				this.delay = 0;
-				this.easingFunction = Linear.EaseNone;
+				this.easingFunction = Linear.EaseNone;				
 		}
 	
-		public Tween (float duration):base(true)
-		{
-				this.duration = duration;
-				this.delay = 0;
-				this.easingFunction = Linear.EaseNone;
-		}
-	
-		public Tween (float duration, float delay):base(true)
-		{
-				this.duration = duration;
-				this.delay = delay;
-				this.easingFunction = Linear.EaseNone;
-		}
-	
-		public Tween (float duration, float delay, EaseDelegate easingFunction):base(true)
-		{
-				this.duration = duration;
-				this.delay = delay;
-				this.easingFunction = easingFunction;
-		}
-	
-		public virtual void Play ()
+		public void Play ()
 		{		
 				isTweening = true;
+				UITweener.Add (this);
 		}
 	
-		public virtual void Stop ()
+		public void Stop ()
 		{
 				isTweening = false;
+				UITweener.Remove (this);				
 		}
 	
-		public virtual void Pause ()
-		{		
-				isPaused = true;
-		}
-	
-		public virtual void Resume ()
-		{
-				isPaused = false;
-		}
-	
-		public virtual void Finish ()
+		public void Finish ()
 		{		
 				elapsedTime = duration;
+				if (CompletedEvent != null) {
+						CompletedEvent (this);
+				}
 		}
 	
 		public virtual void Reset ()
@@ -78,37 +52,40 @@ public abstract class Tween : Animatable
 				elapsedTime = delay * -1;		
 		}
 		
-		override public void Update ()
+		public void Update ()
 		{
 				if (isTweening && !isPaused) {			
 						
 						if (elapsedTime >= 0) {
 								float time = (elapsedTime >= 0) ? elapsedTime : 0;
 								UpdateValue (time);					
-								FireTweenUpdated ();			
+								if (UpdatedEvent != null) {
+										UpdatedEvent (this);
+								}	
 						} else {
 								UpdateValue (0);					
-								FireTweenUpdated ();
+								if (UpdatedEvent != null) {
+										UpdatedEvent (this);
+								}
 						}
 			
 						elapsedTime += Time.deltaTime;
 			
 						if (elapsedTime >= duration) {
 								UpdateValue (duration);					
+								Stop ();								
 								Finish ();
-								Stop ();
-								Complete ();
 								return;
 						}
 				}		
 		}
 	
-		public void FireTweenUpdated ()
+		
+		public virtual T UpdateValue<T> (float time, T value) where T : class
 		{
-				if (TweenUpdated != null) {
-						TweenUpdated (this, value);
-				}
+				return null;
 		}
+	
 		protected abstract void UpdateValue (float time);
 		
 		

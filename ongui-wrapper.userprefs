@@ -1,20 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UIFramework\Core\Root\Animation\DelayedCall.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\AnimationExamples\MoveTweenExample.cs">
     <Files>
-      <File FileName="Assets\UIFramework\Core\UIInvalidator.cs" Line="12" Column="37" />
-      <File FileName="Assets\Editor\Core\UIRootEventHandlerEditor.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework\Core\Root\UIRoot.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework\Components\Fill\UIFillValidator.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework\Core\Widget\UIWidgetValidator.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework\Core\Widget\UIWidget.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework\Core\UIInvalidator.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework\Core\Root\UIRootEventHandler.cs" Line="7" Column="2" />
-      <File FileName="Assets\UIFramework\Core\Root\Animation\UIJuggler.cs" Line="27" Column="4" />
-      <File FileName="Assets\UIFramework\Core\Root\Animation\IAnimatable.cs" Line="14" Column="17" />
-      <File FileName="Assets\UIFramework\Core\Root\Animation\DelayedCall.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework\Core\Root\Animation\Animatable.cs" Line="10" Column="37" />
-      <File FileName="Assets\UIFramework\Core\Root\Animation\Tween\Tween.cs" Line="96" Column="37" />
+      <File FileName="Assets\AnimationExamples\MoveTweenExample.cs" Line="33" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -23,7 +11,6 @@
       <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Fill\UIFill.cs" line="21" />
       <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Invalidator.cs" line="26" />
       <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Invalidator.cs" line="12" />
-      <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Root\UIRootEventHandler.cs" line="36" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

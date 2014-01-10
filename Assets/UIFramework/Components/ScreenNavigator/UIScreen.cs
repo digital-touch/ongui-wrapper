@@ -1,10 +1,32 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System;
 
 public class UIScreen : UIWidget
 {
 		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	#if UNITY_EDITOR
+	
+		[MenuItem("UI/UIScreen")]
+		public static GameObject createUIScreen ()
+		{
+				GameObject widget = new GameObject ("UIScreen");
+		
+				widget.AddComponent<UIWidgetTransform> ();				
+				widget.AddComponent<UIScreen> ();
+				widget.AddComponent<UIWidgetValidator> ();
+				widget.AddComponent<UIWidgetRenderer> ();
+				widget.AddComponent<UIWidgetInteraction> ();
+				widget.AddComponent<FitToScreenUILayout> ();								
+				widget.transform.parent = Selection.activeTransform;
+				return widget;
+		}
+	
+	#endif
+	
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		public float scale = 1.0f;	

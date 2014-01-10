@@ -11,11 +11,13 @@ public static class UIInvalidator
 		{
 				while (invalidables.Count > 0) {
 						Invalidable invalidable = invalidables [0];
-						UIWidgetValidator validator = invalidable.widget.GetComponent<UIWidgetValidator> ();
-						if (validator == null) {
-								return;
+						if (invalidable.widget != null) {
+								UIWidgetValidator validator = invalidable.widget.GetComponent<UIWidgetValidator> ();
+								if (validator == null) {
+										return;
+								}
+								validator.Validate ();
 						}
-						validator.Validate ();
 						invalidables.RemoveAt (0);						
 				}
 		}
@@ -75,8 +77,7 @@ class Invalidable
 		public List<string> flags;
 		
 		public Invalidable (UIWidget widget)
-		{
-			
+		{			
 				this.widget = widget;
 				flags = new List<string> ();
 				allFlag = false;

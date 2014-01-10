@@ -32,7 +32,7 @@ public class UIRootEventHandler : MonoBehaviour
 		protected virtual void Update ()
 		{
 				if (started) {
-						UIJuggler.Advance ();
+						UITweener.validate ();
 						UIInvalidator.validate ();
 				}
 		}

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\AnimationExamples\MoveTweenExample.cs" />
+     <Compile Include="Assets\ComponentExamples\ScreenNavigatorExample.cs" />
      <Compile Include="Assets\DataExamples\DataDriveWidgetExample.cs" />
      <Compile Include="Assets\UIFramework\Components\Button\UIButton.cs" />
      <Compile Include="Assets\UIFramework\Components\Button\UIButtonInteraction.cs" />
@@ -65,6 +66,8 @@
      <Compile Include="Assets\UIFramework\Components\Label\UILabelRenderer.cs" />
      <Compile Include="Assets\UIFramework\Components\Label\UILabelValidator.cs" />
      <Compile Include="Assets\UIFramework\Components\Label\UITextStyle.cs" />
+     <Compile Include="Assets\UIFramework\Components\ScreenNavigator\UIScreen.cs" />
+     <Compile Include="Assets\UIFramework\Components\ScreenNavigator\UIScreenNavigator.cs" />
      <Compile Include="Assets\UIFramework\Components\Scroller\UIScroller.cs" />
      <Compile Include="Assets\UIFramework\Components\Scroller\UIScrollerInteraction.cs" />
      <Compile Include="Assets\UIFramework\Components\Scroller\UIScrollerRenderer.cs" />
@@ -73,6 +76,7 @@
      <Compile Include="Assets\UIFramework\Core\Layout\AnchorUILayoutData.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\ContentSize.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\FitToContent.cs" />
+     <Compile Include="Assets\UIFramework\Core\Layout\FitToParent.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\FitToScreenUILayout.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\UIHorizontalLayout.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\UILayout.cs" />
@@ -80,8 +84,6 @@
      <Compile Include="Assets\UIFramework\Core\Layout\UILinearLayoutData.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\UIStackLayout.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\UIVerticalLayout.cs" />
-     <Compile Include="Assets\UIFramework\Core\Root\Animation\Animatable.cs" />
-     <Compile Include="Assets\UIFramework\Core\Root\Animation\DelayedCall.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Easing\Back.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Easing\Bounce.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Easing\Circ.cs" />
@@ -95,7 +97,6 @@
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Easing\Quint.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Easing\Sine.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Easing\Strong.cs" />
-     <Compile Include="Assets\UIFramework\Core\Root\Animation\IAnimatable.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Tween\AlphaTween.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Tween\FadeInTween.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Tween\FadeOutTween.cs" />
@@ -104,7 +105,7 @@
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Tween\SizeTween.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Tween\Tween.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\Animation\Tween\Vector2Tween.cs" />
-     <Compile Include="Assets\UIFramework\Core\Root\Animation\UIJuggler.cs" />
+     <Compile Include="Assets\UIFramework\Core\Root\Animation\UITweener.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\UIRoot.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\UIRootEventHandler.cs" />
      <Compile Include="Assets\UIFramework\Core\Root\UIRootInteraction.cs" />
@@ -124,6 +125,7 @@
      <Compile Include="Assets\UIFramework\Core\Widget\UIWidgetValidator.cs" />
      <Compile Include="Assets\UIFramework\Data\ItemRendererFactory.cs" />
      <Compile Include="Assets\UIFramework\Data\UIDataProvider.cs" />
+     <Compile Include="Assets\test_transform.cs" />
      <None Include="Assets\MetalWorksMobileTheme\assets\images\metalworks.txt" />
  <Reference Include="OSCsharp">
  <HintPath>Assets\TouchScript\Plugins\OSCsharp.dll</HintPath>
