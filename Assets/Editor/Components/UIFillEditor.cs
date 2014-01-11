@@ -1,15 +1,40 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
-public class UIFillEditor : MonoBehaviour {
+[CustomEditor(typeof(UIFill))]
 
-	// Use this for initialization
-	void Start () {
+public class UIFillEditor : UIWidgetEditor
+{
 	
-	}
+		public override void OnInspectorGUI ()
+		{				
+				drawUIFillInspector ();
+		
+				base.OnInspectorGUI ();
+		
+				if (GUI.changed) {
+						EditorUtility.SetDirty (target);
+				}
+		}
 	
-	// Update is called once per frame
-	void Update () {
+		[SerializeField]
+		bool
+				fillFoldout = true;
 	
-	}
+	
+		void drawUIFillInspector ()
+		{		
+				UIFill fill = (UIFill)target;
+		
+				// button
+				fillFoldout = EditorGUILayout.Foldout (fillFoldout, "Texture Fill");
+		
+				if (fillFoldout) {
+			
+						fill.textureSize = EditorGUILayout.IntField ("Size:", fill.textureSize);
+						fill.textureColor = EditorGUILayout.ColorField ("Color:", fill.textureColor);
+			
+				}
+		}
 }

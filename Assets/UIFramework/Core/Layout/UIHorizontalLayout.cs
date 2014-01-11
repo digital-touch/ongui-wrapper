@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class UIHorizontalLayout : UILinearLayout
@@ -17,11 +17,11 @@ public class UIHorizontalLayout : UILinearLayout
 								continue;
 						}
 			
-						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();						
+						UIWidget childTransform = child.GetComponent<UIWidget> ();						
 			
 						if (i > 0) {
 								Transform prevChild = transform.GetChild (i - 1);
-								UIWidgetTransform prevChildTransform = prevChild.GetComponent<UIWidgetTransform> ();						
+								UIWidget prevChildTransform = prevChild.GetComponent<UIWidget> ();						
 								childTransform.x = prevChildTransform.x + prevChildTransform.width + gap;
 								childTransform.y = 0;
 						} else {
@@ -36,7 +36,7 @@ public class UIHorizontalLayout : UILinearLayout
 		
 				for (int i = 0; i < transform.childCount; i++) {
 						Transform child = transform.GetChild (i);
-						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();							
+						UIWidget childTransform = child.GetComponent<UIWidget> ();							
 						childTransform.x += (int)scrollPosition.x;
 				}
 		}

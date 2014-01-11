@@ -1,16 +1,32 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\AnimationExamples\MoveTweenExample.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Scroller\UIScroller.cs">
     <Files>
-      <File FileName="Assets\AnimationExamples\MoveTweenExample.cs" Line="33" Column="20" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Layout\UIStackLayout.cs" Line="24" Column="1" />
+      <File FileName="Assets\UIFramework\Components\Button\UIButtonInteraction.cs" Line="33" Column="32" />
+      <File FileName="Assets\UIFramework\Core\Widget\UIWidget.cs" Line="504" Column="38" />
+      <File FileName="Assets\UIFramework\Core\Root\UIRoot.cs" Line="23" Column="10" />
+      <File FileName="Assets\UIFramework\Components\Button\UIButton.cs" Line="37" Column="24" />
+      <File FileName="Assets\Editor\Core\UIWidgetEditor.cs" Line="105" Column="9" />
+      <File FileName="Assets\UIFramework\Core\Layout\FitToScreenUILayout.cs" Line="6" Column="3" />
+      <File FileName="Assets\UIFramework\Core\Root\UIRootEventHandler.cs" Line="32" Column="31" />
+      <File FileName="Assets\ComponentExamples\ScreenNavigatorExample.cs" Line="11" Column="26" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\ScreenNavigator\UIScreenNavigator.cs" Line="177" Column="22" />
+      <File FileName="Assets\UIFramework\Core\Widget\UIWidgetInteraction.cs" Line="51" Column="1" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Fill\UIFill.cs" Line="164" Column="7" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Image\UIImage.cs" Line="173" Column="18" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Image\UISliceImage.cs" Line="157" Column="22" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Label\UILabel.cs" Line="133" Column="33" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Scroller\UIScroller.cs" Line="11" Column="85" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Fill\UIFillValidator.cs" line="16" />
-      <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Fill\UIFill.cs" line="21" />
       <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Invalidator.cs" line="26" />
       <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Invalidator.cs" line="12" />
+      <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Widget\UIWidget.cs" line="204" />
+      <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Components\Fill\UIFill.cs" line="128" />
+      <Breakpoint file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework\Core\Widget\UIWidget.cs" line="135" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

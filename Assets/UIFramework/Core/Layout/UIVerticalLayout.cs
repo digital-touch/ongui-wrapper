@@ -17,11 +17,11 @@ public class UIVerticalLayout : UILinearLayout
 								continue;
 						}
 			
-						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();						
+						UIWidget childTransform = child.GetComponent<UIWidget> ();						
 				
 						if (i > 0) {
 								Transform prevChild = transform.GetChild (i - 1);
-								UIWidgetTransform prevChildTransform = prevChild.GetComponent<UIWidgetTransform> ();						
+								UIWidget prevChildTransform = prevChild.GetComponent<UIWidget> ();						
 								childTransform.x = 0;
 								childTransform.y = prevChildTransform.y + prevChildTransform.height + gap;
 						} else {
@@ -36,7 +36,7 @@ public class UIVerticalLayout : UILinearLayout
 		
 				for (int i = 0; i < transform.childCount; i++) {
 						Transform child = transform.GetChild (i);
-						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();							
+						UIWidget childTransform = child.GetComponent<UIWidget> ();							
 						childTransform.y += (int)scrollPosition.y;
 				}
 								

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class FitToParent : UILayout
@@ -8,11 +8,11 @@ public class FitToParent : UILayout
 		{
 				contentSize.Set (0, 0);
 		
-				UIWidgetTransform parentTransform = widget.parent.GetComponent<UIWidgetTransform> ();
+				UIWidget parentTransform = widget.parent.GetComponent<UIWidget> ();
 				contentSize.width = parentTransform.width;
 				contentSize.height = parentTransform.height;
-				widgetTransform.width = contentSize.width;
-				widgetTransform.height = contentSize.height;
+				widget.width = contentSize.width;
+				widget.height = contentSize.height;
 		}
 	
 }

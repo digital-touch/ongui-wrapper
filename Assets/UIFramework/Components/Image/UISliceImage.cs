@@ -20,11 +20,11 @@ public class UISliceImage : UIWidget
 				GameObject slice = new GameObject ("GameObject");
 				slice.name = "UISliceImage";
 				
-				UIWidgetTransform widgetTransform = slice.AddComponent<UIWidgetTransform> ();
-				widgetTransform.width = 100;
-				widgetTransform.height = 100;	
-				slice.AddComponent<UISliceImage> ();		
-				slice.AddComponent<UISliceImageValidator> ();			
+				UISliceImage uiImage = slice.AddComponent<UISliceImage> ();
+				uiImage.width = 100;
+				uiImage.height = 100;
+		
+			
 				slice.AddComponent<UISliceImageRenderer> ();
 				slice.AddComponent<UIWidgetInteraction> ();				
 				slice.transform.parent = Selection.activeTransform;						
@@ -52,7 +52,7 @@ public class UISliceImage : UIWidget
 								return;
 						}
 						_border = value;
-						UIInvalidator.invalidate (this, UISliceImage.BORDER_FLAG);
+						UIInvalidator.invalidate (gameObject, UISliceImage.BORDER_FLAG);
 				}
 		}
 		
@@ -65,7 +65,7 @@ public class UISliceImage : UIWidget
 								return;
 						}
 						_border.left = value;
-						UIInvalidator.invalidate (this, UISliceImage.BORDER_FLAG);
+						UIInvalidator.invalidate (gameObject, UISliceImage.BORDER_FLAG);
 				}
 		}
 	
@@ -78,7 +78,7 @@ public class UISliceImage : UIWidget
 								return;
 						}
 						_border.right = value;
-						UIInvalidator.invalidate (this, UISliceImage.BORDER_FLAG);
+						UIInvalidator.invalidate (gameObject, UISliceImage.BORDER_FLAG);
 				}
 		}
 	
@@ -91,7 +91,7 @@ public class UISliceImage : UIWidget
 								return;
 						}
 						_border.top = value;
-						UIInvalidator.invalidate (this, UISliceImage.BORDER_FLAG);
+						UIInvalidator.invalidate (gameObject, UISliceImage.BORDER_FLAG);
 				}
 		}
 	
@@ -104,7 +104,7 @@ public class UISliceImage : UIWidget
 								return;
 						}
 						_border.bottom = value;
-						UIInvalidator.invalidate (this, UISliceImage.BORDER_FLAG);
+						UIInvalidator.invalidate (gameObject, UISliceImage.BORDER_FLAG);
 				}
 		}
 	
@@ -124,7 +124,7 @@ public class UISliceImage : UIWidget
 								return;
 						}
 						_image = value;						
-						UIInvalidator.invalidate (this, UISliceImage.IMAGE_FLAG);
+						UIInvalidator.invalidate (gameObject, UISliceImage.IMAGE_FLAG);
 				}
 		}
 		
@@ -139,6 +139,34 @@ public class UISliceImage : UIWidget
 		override protected void OnDestroy ()
 		{
 				base.OnDestroy ();
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public override void Validate ()
+		{   				
+				if (!gameObject.activeSelf) {					
+						return;
+				}
+		
+				base.Validate ();
+		
+				bool borderDirty = UIInvalidator.isInvalid (gameObject, UISliceImage.BORDER_FLAG);
+				if (borderDirty) {
+			
+						style.border = border;
+			
+			
+				}
+		
+				bool imageDirty = UIInvalidator.isInvalid (gameObject, UISliceImage.IMAGE_FLAG);						
+		
+				if (imageDirty) {
+						style.normal.background = image;
+			
+				}
+		
+		
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////

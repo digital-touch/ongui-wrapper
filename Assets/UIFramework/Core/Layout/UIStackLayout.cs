@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class UIStackLayout : UILayout
 {
 
-		int _selectedIndex = -1;
+		int _selectedIndex = 0;
 
 		public int selectedIndex {
 				get {
@@ -21,7 +21,7 @@ public class UIStackLayout : UILayout
 		public override void Layout ()
 		{				
 				
-				contentSize.Set (widgetTransform.width, widgetTransform.height);
+				contentSize.Set (widget.width, widget.height);
 				
 				for (int i = 0; i < transform.childCount; i++) {
 						Transform child = transform.GetChild (i);
@@ -33,23 +33,15 @@ public class UIStackLayout : UILayout
 								continue;
 						}
 						
-						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();						
+						childWidget.width = widget.width;
+						childWidget.height = widget.height;
 			
 						if (i != selectedIndex) {
-								childTransform.isVisible = false;
-								//childTransform.width = (int)widgetTransform.width;
-								//childTransform.height = (int)widgetTransform.height;
-								continue;
-						}
-						childTransform.isVisible = true;
+								childWidget.isVisible = false;
 						
-						//childTransform.width = (int)widgetTransform.width;
-						//childTransform.height = (int)widgetTransform.height;
-						
-						//contentSize.x = Mathf.Max (contentSize.x, childTransform.width);
-						//contentSize.y = Mathf.Max (contentSize.y, childTransform.height);
-												
-						
+						} else {						
+								childWidget.isVisible = true;
+						}																		
 				}
 			
 		}

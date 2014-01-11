@@ -15,9 +15,7 @@ public class UIScreen : UIWidget
 		{
 				GameObject widget = new GameObject ("UIScreen");
 		
-				widget.AddComponent<UIWidgetTransform> ();				
-				widget.AddComponent<UIScreen> ();
-				widget.AddComponent<UIWidgetValidator> ();
+				widget.AddComponent<UIScreen> ();				
 				widget.AddComponent<UIWidgetRenderer> ();
 				widget.AddComponent<UIWidgetInteraction> ();
 				widget.AddComponent<FitToScreenUILayout> ();								
@@ -26,10 +24,6 @@ public class UIScreen : UIWidget
 		}
 	
 	#endif
-	
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		public float scale = 1.0f;	
 	
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	

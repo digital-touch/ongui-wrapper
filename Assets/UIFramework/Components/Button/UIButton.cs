@@ -19,46 +19,90 @@ public class UIButton : UIWidget
 		{
 				GameObject button = new GameObject ("GameObject");
 				button.name = "UIButton";
-		
-				UIWidgetTransform widgetTransform = button.AddComponent<UIWidgetTransform> ();
-				widgetTransform.width = 100;
-				widgetTransform.height = 100;
+				
+				UIButton uiButton = button.AddComponent<UIButton> ();
+				uiButton.width = 100;
+				uiButton.height = 100;
 		
 				button.AddComponent<UIButtonInteraction> ();				
-				button.AddComponent<UIButton> ();
-				button.AddComponent<UIButtonValidator> ();
 				button.AddComponent<UIStackLayout> ();
 				button.AddComponent<UIWidgetRenderer> ();
 				button.transform.parent = Selection.activeTransform;
 				
 				GameObject normalSkin = UIImage.CreateUIImage ();
-				normalSkin.name = "normal-skin";
+				normalSkin.name = "0.normal-skin";
 				normalSkin.transform.parent = button.transform;
 				
 				GameObject downSkin = UIImage.CreateUIImage ();
-				downSkin.name = "down-skin";
+				downSkin.name = "1.down-skin";
 				downSkin.transform.parent = button.transform;
         		
 				return button;
-				;
+				
 		}
     #endif		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		protected override void Awake ()
 		{
-				base.Awake ();
-				UIInvalidator.invalidate (this, SKIN_FLAG);
 				
+				buttonInteraction = GetComponent<UIButtonInteraction> ();
+				layout = GetComponent<UIStackLayout> ();
+				
+				base.Awake ();
+		
+				UIInvalidator.invalidate (gameObject, SKIN_FLAG);
 		
 		}
 	
 		protected override void OnDestroy ()
 		{
 				base.OnDestroy ();
-				
-				widgetTransform = null;
+				layout = null;
+				buttonInteraction = null;				
 		}	
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+		protected UIStackLayout layout;
+		protected UIButtonInteraction buttonInteraction;
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+		public override void Validate ()
+		{
+				if (!gameObject.activeSelf) {					
+						return;
+				}
+		
+				base.Validate ();
+		
+				bool isSkinDirty = UIInvalidator.isInvalid (gameObject, UIButton.SKIN_FLAG);
+		
+				if (isSkinDirty) {
+						validateSkinIndex ();
+			
+				}
+		}
+	
+		void validateSkinIndex ()
+		{
+				if (layout == null) {
+						return;
+				}
+				if (buttonInteraction == null) {
+						layout.selectedIndex = 0;
+				}
+				if (buttonInteraction.isDown) {
+						//Debug.Log ("Skin 0");
+						layout.selectedIndex = 1;	
+				} else {
+						//Debug.Log ("Skin 1");
+						layout.selectedIndex = 0;
+				}			
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	

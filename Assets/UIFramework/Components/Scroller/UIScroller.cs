@@ -8,7 +8,7 @@ public class UIScroller : UIWidget
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public static readonly string SCROLL_POSITION_FLAG = "uiscroller-scroll-position";	
+		public static readonly string SCROLL_POSITION_FLAG = "uiscroller-scroll-position";
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -19,12 +19,13 @@ public class UIScroller : UIWidget
 		public static GameObject createUIScroller ()
 		{
 				GameObject widget = new GameObject ("UIScroller");
+				widget.name = "UIScroller";
+		
+				UIScroller uiScroller = widget.AddComponent<UIScroller> ();
+				uiScroller.width = 100;
+				uiScroller.height = 100;
 				
-				UIWidgetTransform widgetTransform = widget.AddComponent<UIWidgetTransform> ();
-				widgetTransform.width = 100;
-				widgetTransform.height = 100;
-				widget.AddComponent<UIScroller> ();
-				widget.AddComponent<UIScrollerValidator> ();
+
 				widget.AddComponent<UIScrollerRenderer> ();
 				widget.AddComponent<UIScrollerInteraction> ();								
 				widget.transform.parent = Selection.activeTransform;
@@ -48,7 +49,7 @@ public class UIScroller : UIWidget
 								return;
 						}
 						_scrollPositionY = value;
-						UIInvalidator.invalidate (this, SCROLL_POSITION_FLAG);
+						UIInvalidator.invalidate (gameObject, SCROLL_POSITION_FLAG);
 				}
 		}
 	
@@ -63,7 +64,7 @@ public class UIScroller : UIWidget
 								return;
 						}
 						_scrollPositionX = value;
-						UIInvalidator.invalidate (this, SCROLL_POSITION_FLAG);
+						UIInvalidator.invalidate (gameObject, SCROLL_POSITION_FLAG);
 				}
 		}
 	
@@ -80,7 +81,31 @@ public class UIScroller : UIWidget
 								return;
 						}
 						_throwDrag = value;
-						UIInvalidator.invalidate (this, SCROLL_POSITION_FLAG);
+						UIInvalidator.invalidate (gameObject, SCROLL_POSITION_FLAG);
 				}
 		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public override void Validate ()
+		{   				
+				if (!gameObject.activeSelf) {					
+						return;
+				}
+		
+				
+				UILayout layout = GetComponent<UILayout> ();
+		
+				bool isScrollPositionDirty = UIInvalidator.isInvalid (gameObject, UIScroller.SCROLL_POSITION_FLAG);
+		
+				if (isScrollPositionDirty) {
+						layout.scrollPosition.x = scrollPositionX;
+						layout.scrollPosition.y = scrollPositionY;
+			
+				}										
+				base.Validate ();
+		
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 }

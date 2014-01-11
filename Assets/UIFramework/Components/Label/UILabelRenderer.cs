@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 [System.Serializable]
 [ExecuteInEditMode]
 public class UILabelRenderer : UIWidgetRenderer
 {
-		public override void Draw (UIWidgetTransform parentWidgetTransform)
+		public override void Draw (UIWidget parentWidgetTransform)
 		{		
 				UILabel label = (UILabel)widget;
 				if (label.text == null) {

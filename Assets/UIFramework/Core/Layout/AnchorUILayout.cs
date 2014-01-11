@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class AnchorUILayout : UILayout
@@ -8,11 +8,11 @@ public class AnchorUILayout : UILayout
 		{			
 				contentSize.Set (0, 0);
 		
-				UIWidgetTransform targetTransform;
+				UIWidget targetTransform;
 
 				for (int i = 0; i < transform.childCount; i++) {
 						Transform child = transform.GetChild (i);
-						UIWidget widget = child.GetComponent<UIWidget> ();
+						UIWidget childTransform = child.GetComponent<UIWidget> ();
 						if (widget == null) {
 								continue;
 						}
@@ -25,11 +25,11 @@ public class AnchorUILayout : UILayout
 								continue;
 						}
 												
-						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();
+						
 
 						if (data.leftAnchor) {
 								if (data.leftTarget) {
-										targetTransform = data.leftTarget.GetComponent<UIWidgetTransform> ();
+										targetTransform = data.leftTarget.GetComponent<UIWidget> ();
 										childTransform.x = (int)data.left + targetTransform.x + targetTransform.width;
 								} else {
 										childTransform.x = (int)data.left;
@@ -37,7 +37,7 @@ public class AnchorUILayout : UILayout
 						}
 						if (data.topAnchor) {
 								if (data.topTarget) {
-										targetTransform = data.topTarget.GetComponent<UIWidgetTransform> ();
+										targetTransform = data.topTarget.GetComponent<UIWidget> ();
 										childTransform.y = (int)data.top + targetTransform.y + targetTransform.height;
 								} else {
 										childTransform.y = (int)data.top;
@@ -48,7 +48,11 @@ public class AnchorUILayout : UILayout
 								if (data.rightTarget) {
 										throw new UnityException ("not implemented");
 								} else {
-										childTransform.width = (int)((widgetTransform.width - childTransform.x) - data.right);
+										if (data.leftAnchor) {
+												childTransform.width = (int)((widget.width - childTransform.x) - data.right);
+										} else {
+												childTransform.x = (int)((widget.width - childTransform.width) - data.right);
+										}
 								}
 						}
 
@@ -56,25 +60,31 @@ public class AnchorUILayout : UILayout
 								if (data.bottomTarget) {
 										throw new UnityException ("not implemented");
 								} else {
-										childTransform.height = (int)((widgetTransform.height - childTransform.y) - data.bottom);
+										if (data.topAnchor) {
+												childTransform.height = (int)((widget.height - childTransform.y) - data.bottom);
+										} else {
+												
+												childTransform.y = (int)((widget.height - childTransform.height) - data.bottom);
+										}
+					
 								}
 						}
 
 						if (data.horizontalAnchor) {
 								if (data.horizontalTarget) {
-										targetTransform = data.verticalTarget.GetComponent<UIWidgetTransform> ();
+										targetTransform = data.verticalTarget.GetComponent<UIWidget> ();
 										childTransform.x = (int)(data.horizontal + targetTransform.x + (targetTransform.width / 2) - (childTransform.width / 2));
 								} else {
-										childTransform.x = (int)(data.horizontal + (widgetTransform.width / 2) - (childTransform.width / 2));
+										childTransform.x = (int)(data.horizontal + (widget.width / 2) - (childTransform.width / 2));
 								}
 						}	
 
 						if (data.verticalAnchor) {
 								if (data.verticalTarget) {
-										targetTransform = data.verticalTarget.GetComponent<UIWidgetTransform> ();
+										targetTransform = data.verticalTarget.GetComponent<UIWidget> ();
 										childTransform.y = (int)(data.vertical + targetTransform.y + (targetTransform.height / 2) - (childTransform.height / 2));
 								} else {
-										childTransform.y = (int)(data.vertical + (widgetTransform.height / 2) - (childTransform.height / 2));
+										childTransform.y = (int)(data.vertical + (widget.height / 2) - (childTransform.height / 2));
 								}				                          
 						}				                          
 

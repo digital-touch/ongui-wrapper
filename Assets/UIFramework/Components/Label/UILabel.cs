@@ -6,9 +6,9 @@ using System.Collections;
 [ExecuteInEditMode]
 public class UILabel : UIWidget
 {
-		public static readonly string TEXT_STYLE_FLAG = "uilabel-text-style";
-		public static readonly string BACKGROUND_SKIN_FLAG = "uilabel-background-skin";		
-		public static readonly string TEXT_FLAG = "uilabel-text";
+		public static readonly string TEXT_STYLE_INVALIDATION_FLAG = "uilabel-text-style";
+		public static readonly string BACKGROUND_SKIN_INVALIDATION_FLAG = "uilabel-background-skin";		
+		public static readonly string TEXT_INVALIDATION_FLAG = "uilabel-text";
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -19,25 +19,33 @@ public class UILabel : UIWidget
 		{
 				GameObject label = new GameObject ("GameObject");
 				label.name = "UILabel";
-			
-				UIWidgetTransform widgetTransform = label.AddComponent<UIWidgetTransform> ();
-				widgetTransform.width = 100;
-				widgetTransform.height = 100;	
-				UILabel labelComponent = label.AddComponent<UILabel> ();
-				label.AddComponent<UILabelValidator> ();					
+				
+				UILabel uiLabel = label.AddComponent<UILabel> ();
+				uiLabel.width = 100;
+				uiLabel.height = 100;
+								
+					
 				label.AddComponent<UILabelLayout> ();
 				label.AddComponent<UILabelRenderer> ();
 				label.AddComponent<UIWidgetInteraction> ();
 				
 				UITextStyle style = label.AddComponent<UITextStyle> ();
 				style.id = "default";
-				labelComponent.textStyle = style;
+				uiLabel.textStyle = style;
 				
 				label.transform.parent = Selection.activeTransform;					
 				return label;
 		}
 	#endif		
 	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		protected override void Awake ()
+		{
+				base.Awake ();
+				invalidateLabel ();						
+		}
+		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		[SerializeField]
@@ -56,34 +64,28 @@ public class UILabel : UIWidget
 								_textStyle.ChangeEvent -= OnTextStyleChange;
 						}
 						_textStyle = value;
-						if (_textStyle) {
-								_textStyle.ChangeEvent -= OnTextStyleChange;
+						if (value) {
+								value.ChangeEvent += OnTextStyleChange;
 						}
-						UIInvalidator.invalidate (this, UILabel.TEXT_STYLE_FLAG);
+						invalidateLabel ();						
 						
 				}
 		}
 		
 		void OnTextStyleChange (UITextStyle style)
 		{
-				UIInvalidator.isInvalid (this, UILabel.TEXT_STYLE_FLAG);
+				invalidateLabel ();
 		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		[SerializeField]
-		UIWidget
-				_backgroundSkin;
 		
-		public UIWidget backgroundSkin {
-				get {
-						return _backgroundSkin;
-				}
-				set {
-						if (_backgroundSkin != value) {
-								_backgroundSkin = value;
-								UIInvalidator.invalidate (this, UILabel.BACKGROUND_SKIN_FLAG);
-						}
+		void invalidateLabel ()
+		{
+				UIInvalidator.invalidate (gameObject, UILabel.TEXT_STYLE_INVALIDATION_FLAG);
+				UIInvalidator.invalidate (gameObject, UIWidget.POSITION_INVALIDATION_FLAG);
+				UIInvalidator.invalidate (gameObject, UIWidget.SIZE_INVALIDATION_FLAG);
+				UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+				
+				if (parent != null) {
+						UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
 				}
 		}
 
@@ -109,11 +111,29 @@ public class UILabel : UIWidget
 						if (_text != value) {
 								_text = value;
 								content.text = value;
-								UIInvalidator.invalidate (this, UILabel.TEXT_FLAG);
+								invalidateLabel ();
 						}
 				}
 		}
-				
+			
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public override void Validate ()
+		{   				
+				if (!gameObject.activeSelf) {					
+						return;
+				}
+		
+				base.Validate ();
+		
+				bool isTextStyleDirty = UIInvalidator.isInvalid (gameObject, UILabel.TEXT_STYLE_INVALIDATION_FLAG);
+				bool isTextDirty = UIInvalidator.isInvalid (gameObject, UILabel.TEXT_INVALIDATION_FLAG);
+		
+				if (isTextDirty || isTextStyleDirty) {
+						textStyle.updateGUIStyle (style);
+				}
+		
+		}	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	

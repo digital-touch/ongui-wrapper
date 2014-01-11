@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,25 +12,22 @@ public static class UIInvalidator
 		{
 				while (invalidables.Count > 0) {
 						Invalidable invalidable = invalidables [0];
-						if (invalidable.widget != null) {
-								UIWidgetValidator validator = invalidable.widget.GetComponent<UIWidgetValidator> ();
-								if (validator == null) {
-										return;
-								}
-								validator.Validate ();
+						if (invalidable.gameObject != null) {
+								UIWidget widget = invalidable.gameObject.GetComponent<UIWidget> ();
+								widget.Validate ();
 						}
 						invalidables.RemoveAt (0);						
 				}
 		}
 	
-		public static void invalidate (UIWidget widget)
+		public static void invalidate (GameObject gameObject)
 		{
-				invalidate (widget, ALL_INVALIDATION_FLAG);
+				invalidate (gameObject, ALL_INVALIDATION_FLAG);
 		}
 	
-		public static bool isInvalid (UIWidget widget, string flag)
+		public static bool isInvalid (GameObject gameObject, string flag)
 		{
-				Invalidable invalidable = getInvalidable (widget);
+				Invalidable invalidable = getInvalidable (gameObject);
 				if (invalidable == null) {
 						return false;
 				} else {
@@ -41,27 +39,34 @@ public static class UIInvalidator
 				}
 		}
 		
-		public static void invalidate (UIWidget widget, string flag)
-		{
-				Invalidable invalidable = getInvalidable (widget);
+		public static void invalidate (GameObject gameObject, string flag)
+		{				
+				Invalidable invalidable = getInvalidable (gameObject);
+				
 				if (invalidable == null) {
-						invalidable = new Invalidable (widget);
-						if (flag == ALL_INVALIDATION_FLAG) {
-								invalidable.allFlag = true;
-						} else {
-								invalidable.flags.Add (flag);
-						}
+						invalidable = new Invalidable (gameObject);
+						invalidables.Add (invalidable);
 				}
-				invalidables.Add (invalidable);
+					
+				if (flag == ALL_INVALIDATION_FLAG) {
+						invalidable.allFlag = true;
+				} else {
+						invalidable.flags.Add (flag);
+				}
+				
+#if UNITY_EDITOR
+				EditorUtility.SetDirty (gameObject.gameObject);
+#endif					
+				
 		}
 
-		static List<Invalidable> invalidables = new List<Invalidable> ();
+		public static List<Invalidable> invalidables = new List<Invalidable> ();
 		
-		static Invalidable getInvalidable (UIWidget widget)
+		static Invalidable getInvalidable (GameObject gameObject)
 		{
 				for (int i = 0; i < invalidables.Count; i++) {
 						Invalidable invalidable = invalidables [i];
-						if (invalidable.widget == widget) {
+						if (invalidable.gameObject == gameObject) {
 								return invalidable;
 						}
 				}
@@ -70,15 +75,15 @@ public static class UIInvalidator
 	
 		
 }
-class Invalidable
+public class Invalidable
 {
 		public bool allFlag;
-		public UIWidget widget;
+		public GameObject gameObject;
 		public List<string> flags;
 		
-		public Invalidable (UIWidget widget)
+		public Invalidable (GameObject gameObject)
 		{			
-				this.widget = widget;
+				this.gameObject = gameObject;
 				flags = new List<string> ();
 				allFlag = false;
 		}

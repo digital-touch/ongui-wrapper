@@ -7,9 +7,9 @@ using UnityEditor;
 public class UIFill : UIWidget
 {
 
-		public static readonly string TEXTURE_COLOR_FLAG = "uifill-texture-color";
-		public static readonly string TEXTURE_SIZE_FLAG = "uifill-texture-size";
-		public static readonly string TEXTURE_FLAG = "uifill-texture";
+		public static readonly string TEXTURE_COLOR_INVALIDATION_FLAG = "uifill-texture-color";
+		public static readonly string TEXTURE_SIZE_INVALIDATION_FLAG = "uifill-texture-size";
+		public static readonly string TEXTURE_INVALIDATION_FLAG = "uifill-texture";
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -21,12 +21,10 @@ public class UIFill : UIWidget
 				GameObject fill = new GameObject ("GameObject");
 				fill.name = "UIFill";
 				
-				UIWidgetTransform widgetTransform = fill.AddComponent<UIWidgetTransform> ();
-				widgetTransform.width = 100;
-				widgetTransform.height = 100;
-		
-				fill.AddComponent<UIFill> ();
-				fill.AddComponent<UIFillValidator> ();				
+				UIFill uiFill = fill.AddComponent<UIFill> ();
+				uiFill.width = 100;
+				uiFill.height = 100;
+									
 				fill.AddComponent<UIFillRenderer> ();
 				fill.AddComponent<UIWidgetInteraction> ();				
 				fill.transform.parent = Selection.activeTransform;
@@ -51,7 +49,7 @@ public class UIFill : UIWidget
 								return;
 						}
 						_textureColor = value;
-						UIInvalidator.invalidate (this, UIFill.TEXTURE_COLOR_FLAG);			
+						UIInvalidator.invalidate (gameObject, UIFill.TEXTURE_COLOR_INVALIDATION_FLAG);			
 			
 						//Debug.Log ("{" + this + "}->color:" + value);
 				}
@@ -75,8 +73,8 @@ public class UIFill : UIWidget
 						
 						_textureSize = value;
 						
-						UIInvalidator.invalidate (this, UIFill.TEXTURE_SIZE_FLAG);
-						UIInvalidator.invalidate (this, UIFill.TEXTURE_FLAG);
+						UIInvalidator.invalidate (gameObject, UIFill.TEXTURE_SIZE_INVALIDATION_FLAG);
+						UIInvalidator.invalidate (gameObject, UIFill.TEXTURE_INVALIDATION_FLAG);						
 						
 						//Debug.Log ("{" + this + "}->textureSize:" + value);
 				}
@@ -94,44 +92,78 @@ public class UIFill : UIWidget
 				}
 				set {
 						if (_texture) {
-								disposeTexture (value);
-								UIInvalidator.invalidate (this, UIFill.TEXTURE_FLAG);
+								
+								UIInvalidator.invalidate (gameObject, UIFill.TEXTURE_INVALIDATION_FLAG);
 						}
 						_texture = value;
 						if (value) {
-								initializeTexture (value);
-								
-								UIInvalidator.invalidate (this, UIFill.TEXTURE_FLAG);
+							
+								UIInvalidator.invalidate (gameObject, UIFill.TEXTURE_INVALIDATION_FLAG);
 						}
 			
 				}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		protected virtual void initializeTexture (Texture2D texture)
-		{
-		}
-		
-		protected virtual void disposeTexture (Texture2D texture)
-		{
-		}
-		
-		
-	
-		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 		override protected void Awake ()
 		{	
 				base.Awake ();
-				UIInvalidator.invalidate (this, UIFill.TEXTURE_SIZE_FLAG);
+				UIInvalidator.invalidate (gameObject, UIFill.TEXTURE_SIZE_INVALIDATION_FLAG);
+				UIInvalidator.invalidate (gameObject, UIFill.TEXTURE_INVALIDATION_FLAG);
 				
 		}	
 	
 		override protected void OnDestroy ()
 		{
 				base.OnDestroy ();
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public override void Validate ()
+		{   						
+		
+				if (!gameObject.activeSelf) {					
+						return;
+				}
+		
+				base.Validate ();
+		
+				
+				bool isTextureInvalid = UIInvalidator.isInvalid (gameObject, UIFill.TEXTURE_INVALIDATION_FLAG);
+		
+				bool isTextureSizeInvalid = UIInvalidator.isInvalid (gameObject, UIFill.TEXTURE_SIZE_INVALIDATION_FLAG);		
+		
+				if (isTextureInvalid || isTextureSizeInvalid) {
+						if (textureSize > 0) {
+								if (texture != null) {			
+										texture.Resize (textureSize, textureSize);										
+								} else {
+										texture = new Texture2D (textureSize, textureSize);					
+								}				
+						}
+				}				
+		
+				bool isColorInvalid = UIInvalidator.isInvalid (gameObject, UIFill.TEXTURE_COLOR_INVALIDATION_FLAG);
+		
+				if (isTextureInvalid || isTextureSizeInvalid || isColorInvalid) {			
+						Color[] pixels = texture.GetPixels ();
+			
+						for (var i = 0; i < pixels.Length; ++i) {
+								pixels [i] = textureColor;
+						}
+			
+						texture.SetPixels (pixels);			
+			
+				}
+		
+				if (isTextureInvalid || isTextureSizeInvalid || isColorInvalid) { 
+			
+						texture.Apply ();
+			
+				}
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////

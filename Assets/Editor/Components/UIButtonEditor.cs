@@ -9,9 +9,9 @@ public class UIButtonEditor : UIWidgetEditor
 	
 		public override void OnInspectorGUI ()
 		{				
-				base.OnInspectorGUI ();
-		
 				drawUIButtonInspector ();
+		
+				base.OnInspectorGUI ();		
 		
 				if (GUI.changed) {
 						EditorUtility.SetDirty (target);

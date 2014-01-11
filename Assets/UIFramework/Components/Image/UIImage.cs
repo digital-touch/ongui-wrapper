@@ -19,13 +19,13 @@ public class UIImage : UIWidget
 		public static GameObject CreateUIImage ()
 		{
 				GameObject image = new GameObject ("GameObject");
-				image.name = "UIImage";
+				image.name = "UIImage";				
 				
-				UIWidgetTransform widgetTransform = image.AddComponent<UIWidgetTransform> ();
-				widgetTransform.width = 100;
-				widgetTransform.height = 100;		
-				image.AddComponent<UIImage> ();		
-				image.AddComponent<UIImageValidator> ();			
+				UIImage uiImage = image.AddComponent<UIImage> ();
+				uiImage.width = 100;
+				uiImage.height = 100;				
+								
+					
 				image.AddComponent<UIImageRenderer> ();
 				image.AddComponent<UIWidgetInteraction> ();
 			
@@ -51,7 +51,7 @@ public class UIImage : UIWidget
 								return;
 						}
 						_image = value;
-						UIInvalidator.invalidate (this, UIImage.IMAGE_FLAG);
+						UIInvalidator.invalidate (gameObject, UIImage.IMAGE_FLAG);
 				}
 		}
 		
@@ -73,7 +73,7 @@ public class UIImage : UIWidget
 								return;
 						}
 						_scaleMode = value;
-						UIInvalidator.invalidate (this, UIImage.STYLE_FLAG);
+						UIInvalidator.invalidate (gameObject, UIImage.STYLE_FLAG);
 				}
 		}
 		
@@ -95,7 +95,7 @@ public class UIImage : UIWidget
 								return;
 						}
 						_alphaBlend = value;
-						UIInvalidator.invalidate (this, UIImage.STYLE_FLAG);
+						UIInvalidator.invalidate (gameObject, UIImage.STYLE_FLAG);
 				}
 		}
 		
@@ -116,7 +116,7 @@ public class UIImage : UIWidget
 								return;
 						}
 						_imageAspect = value;
-						UIInvalidator.invalidate (this, UIImage.STYLE_FLAG);
+						UIInvalidator.invalidate (gameObject, UIImage.STYLE_FLAG);
 				}
 		}
 
@@ -124,7 +124,7 @@ public class UIImage : UIWidget
 	
 		[SerializeField]
 		bool
-				_autoSize = true;
+				_autoSize = false;
 		
 		public bool autoSize {
 				get {
@@ -135,7 +135,7 @@ public class UIImage : UIWidget
 								return;
 						}
 						_autoSize = value;
-						UIInvalidator.invalidate (this, UIImage.AUTO_SIZE_FLAG);
+						UIInvalidator.invalidate (gameObject, UIImage.AUTO_SIZE_FLAG);
 				}
 		}
 		
@@ -144,13 +144,40 @@ public class UIImage : UIWidget
 		override protected void Awake ()
 		{	
 				base.Awake ();
-				UIInvalidator.invalidate (this, UIImage.IMAGE_FLAG);
+				UIInvalidator.invalidate (gameObject, UIImage.IMAGE_FLAG);
 		
 		}	
 	
 		override protected void OnDestroy ()
 		{
 				base.OnDestroy ();
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public override void Validate ()
+		{   						
+				if (!gameObject.activeSelf) {					
+						return;
+				}
+				base.Validate ();
+		
+				
+				bool isImageDirty = UIInvalidator.isInvalid (gameObject, UIImage.IMAGE_FLAG);
+		
+				bool isAutoSizeDirty = UIInvalidator.isInvalid (gameObject, UIImage.AUTO_SIZE_FLAG);
+		
+				if (isImageDirty || isAutoSizeDirty) {
+						if (image != null && autoSize) {
+								width = image.width;
+								height = image.height;
+						} else {
+				
+						}
+			
+				}
+		
+		
 		}
     
 		///////////////////////////////////////////////////////////////////////////////////////////////////

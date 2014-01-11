@@ -6,7 +6,7 @@ using System.Collections;
 public class UIImageRenderer : UIWidgetRenderer
 {		
 	
-		public override void Draw (UIWidgetTransform parentWidgetTransform)
+		public override void Draw (UIWidget parentWidgetTransform)
 		{		
 		
 				UIImage image = (UIImage)widget;

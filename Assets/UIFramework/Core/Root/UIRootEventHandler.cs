@@ -3,37 +3,50 @@ using UnityEditor;
 using System.Collections;
 
 [ExecuteInEditMode]
-public class UIRootEventHandler : MonoBehaviour
+public class UIRootEventHandler : UIWidgetBehaviour
 {
-		UIWidgetTransform widgetTransform;
-		UIWidgetValidator widgetValidator;	
 		UIWidgetRenderer widgetRenderer;	
 	
-		protected virtual void Awake ()
+		override protected void Awake ()
 		{				
-				widgetTransform = GetComponent<UIWidgetTransform> ();		
-				widgetValidator = GetComponent<UIWidgetValidator> ();		
+				base.Awake ();
 				widgetRenderer = GetComponent<UIWidgetRenderer> ();
+				
+				validateSize ();
 		}
 		
 		bool started = false;
-	
+	 
 		protected void Start ()
 		{
 				started = true;			
 		}
-		protected virtual void OnDestroy ()
-		{
-				widgetTransform = null;
-				widgetValidator = null;
+		
+		override protected void OnDestroy ()
+		{				
+				base.OnDestroy ();
+		
 				widgetRenderer = null;
 		}
 	
-		protected virtual void Update ()
+		protected virtual void FixedUpdate ()
 		{
 				if (started) {
+						validateSize ();
+					
+            
 						UITweener.validate ();
 						UIInvalidator.validate ();
+				}
+		}
+
+		void validateSize ()
+		{
+				if (widget.width != Screen.width) {								
+						widget.width = Screen.width;
+				}
+				if (widget.height != Screen.height) {								
+						widget.height = Screen.height;
 				}
 		}
 		
@@ -57,7 +70,7 @@ public class UIRootEventHandler : MonoBehaviour
 //				#endif
 		
 				
-				widgetRenderer.Draw (widgetTransform);
+				widgetRenderer.Draw (widget);
 				
 		}
 	

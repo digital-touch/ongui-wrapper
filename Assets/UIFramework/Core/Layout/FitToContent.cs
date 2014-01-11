@@ -9,9 +9,9 @@ public class FitToContent : UILayout
 		
 				contentSize.Set (0, 0);
 				
-				for (int i = 0; i < widgetTransform.transform.childCount; i++) {
-						Transform child = widgetTransform.transform.GetChild (i);						
-						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();
+				for (int i = 0; i < widget.transform.childCount; i++) {
+						Transform child = widget.transform.GetChild (i);						
+						UIWidget childTransform = child.GetComponent<UIWidget> ();
 						if (childTransform == null) {
 								continue;
 						}
@@ -22,8 +22,8 @@ public class FitToContent : UILayout
 						
 				}
 				
-				widgetTransform.width = contentSize.width;
-				widgetTransform.height = contentSize.height;
+				widget.width = contentSize.width;
+				widget.height = contentSize.height;
 				
 		}
 }

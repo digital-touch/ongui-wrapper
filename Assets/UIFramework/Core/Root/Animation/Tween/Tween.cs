@@ -8,11 +8,11 @@ public abstract class Tween : MonoBehaviour
 		public Action<Tween> StartedEvent;
 		public Action<Tween> CompletedEvent;
 	
-		public float elapsedTime;
-		public float delay;
-		public float duration;
+		public float elapsedTime = 0;
+		public float delay = 0;
+		public float duration = 1;
 
-		public EaseDelegate easingFunction;
+		public EaseDelegate easingFunction = Linear.EaseNone;
 	
 		public object value;
 	
@@ -22,9 +22,7 @@ public abstract class Tween : MonoBehaviour
 		
 		protected virtual void Awake ()
 		{
-				this.duration = 1;
-				this.delay = 0;
-				this.easingFunction = Linear.EaseNone;				
+					
 		}
 	
 		public void Play ()

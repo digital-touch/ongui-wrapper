@@ -1,16 +1,16 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 [ExecuteInEditMode]
 public class UIWidgetRenderer : MonoBehaviour
 {
 		protected UIWidget widget;
-		protected UIWidgetTransform widgetTransform;
+		protected UIWidget widgetTransform;
 		
 		protected virtual void Awake ()
 		{
 				widget = GetComponent<UIWidget> ();
-				widgetTransform = GetComponent<UIWidgetTransform> ();
+				widgetTransform = GetComponent<UIWidget> ();
 		}
 		
 		
@@ -21,24 +21,24 @@ public class UIWidgetRenderer : MonoBehaviour
 				widgetTransform = null;
 		}
 							
-		public virtual void Draw (UIWidgetTransform parentWidgetTransform)
+		public virtual void Draw (UIWidget parentWidget)
 		{
 				
 				GUI.BeginGroup (widgetTransform.screenBounds);
 				
-				DrawChildren (parentWidgetTransform);
+				DrawChildren (parentWidget);
 				
 				GUI.EndGroup ();
 		}
 
-		protected  void DrawChildren (UIWidgetTransform parentWidgetTransform)
+		protected  void DrawChildren (UIWidget parentWidget)
 		{
 				for (int i = 0; i < transform.childCount; i++) {
-						DrawChild (i, parentWidgetTransform);
+						DrawChild (i, parentWidget);
 				}
 		}
 		
-		protected  void DrawChild (int i, UIWidgetTransform parentWidgetTransform)
+		protected  void DrawChild (int i, UIWidget parentWidgetTransform)
 		{
 				Transform child = transform.GetChild (i);
 		
@@ -48,7 +48,7 @@ public class UIWidgetRenderer : MonoBehaviour
 						return;
 				}						
 		
-				UIWidgetTransform childWidgetTransform = widgetRenderer.GetComponent<UIWidgetTransform> ();
+				UIWidget childWidgetTransform = widgetRenderer.GetComponent<UIWidget> ();
 		
 				if (!childWidgetTransform.isVisible) {
 						return;

@@ -15,22 +15,37 @@ public class UIButtonInteraction : UIWidgetInteraction
 						}
 						_isDown = value;
 			
-						UIInvalidator.invalidate (widget, UIButton.SKIN_FLAG);			
+						UIInvalidator.invalidate (gameObject, UIButton.SKIN_FLAG);			
 				}
 		}
 	
 		protected override void Awake ()
 		{
 				base.Awake ();
-				TouchBeganEvent += OnTouchBegan;			
-		}		
+				widget.AddedToRootEvent += OnAddedToRoot;
+				widget.RemovedFromRootEvent += OnRemovedFromRoot;
+		}
 		
 		protected override void OnDestroy ()
 		{
-				widget.root.GetComponent<UIWidgetInteraction> ().TouchEndedEvent -= OnTouchEnded;
 				base.OnDestroy ();
-									
+				widget.AddedToRootEvent -= OnAddedToRoot;
+				widget.RemovedFromRootEvent -= OnRemovedFromRoot;
 		}
+			
+		void OnAddedToRoot (UIWidget widget)
+		{
+				TouchBeganEvent += OnTouchBegan;	
+				this.widget.root.GetComponent<UIWidgetInteraction> ().TouchEndedEvent += OnTouchEnded;		
+		}		
+		
+		void OnRemovedFromRoot (UIWidget widget)
+		{
+				TouchBeganEvent -= OnTouchBegan;	
+				this.widget.root.GetComponent<UIWidgetInteraction> ().TouchEndedEvent -= OnTouchEnded;		
+		}		
+		
+		
 
 		void OnTouchBegan (UIWidget widget, UITouch touch)
 		{						
@@ -39,17 +54,15 @@ public class UIButtonInteraction : UIWidgetInteraction
 				}
 				isDown = true;
 				
-				widget.root.GetComponent<UIWidgetInteraction> ().TouchEndedEvent += OnTouchEnded;
+				
 		} 
 	
 		void OnTouchEnded (UIWidget widget, UITouch touch)
-		{
-		
+		{		
 				if (!isDown) {
 						return;
 				}
-				isDown = false;
-				widget.root.GetComponent<UIWidgetInteraction> ().TouchEndedEvent -= OnTouchEnded;
+				isDown = false;				
 		
 		}
 }

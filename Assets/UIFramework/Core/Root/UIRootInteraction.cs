@@ -18,7 +18,9 @@ public class UIRootInteraction : UIWidgetInteraction
 				base.Start ();
 				
 				touchManager = TouchManager.Instance;
-								
+				if (touchManager == null) {
+						return;
+				}	
 				touchManager.TouchesBegan += OnTouchesBegan;
 				touchManager.TouchesMoved += OnTouchesMoved;
 				touchManager.TouchesEnded += OnTouchesEnded;

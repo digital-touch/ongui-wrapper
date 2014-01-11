@@ -1,14 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MoveTween : Vector2Tween
 {	
-		public UIWidgetTransform widgetTransform;
+		public UIWidget widgetTransform;
 	
 		override protected void Awake ()
 		{ 
 				base.Awake ();
-				widgetTransform = GetComponent<UIWidgetTransform> ();
+				widgetTransform = GetComponent<UIWidget> ();
 		}
 	
 		protected override void UpdateValue (float time)

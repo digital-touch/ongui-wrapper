@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MoveTweenExample : MonoBehaviour
@@ -19,7 +19,7 @@ public class MoveTweenExample : MonoBehaviour
 		void OnTouchBegan (UIWidget root, UITouch touch)
 		{
 		
-				UIWidgetTransform widgetTransform = widget.GetComponent<UIWidgetTransform> ();
+				UIWidget widgetTransform = widget.GetComponent<UIWidget> ();
 		
 				if (tween != null) {
 						tween.Stop ();

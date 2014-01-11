@@ -16,6 +16,21 @@ public class UIRootEditor : Editor
 				}
 		}
 	
+		protected bool boundsFoldout = true;
+	
+		void drawUIRootTransformInspector ()
+		{				
+				UIWidget widgetTransform = (UIWidget)target;
+		
+				// bounds
+				boundsFoldout = EditorGUILayout.Foldout (boundsFoldout, "Position");
+		
+				if (boundsFoldout) {
+						EditorGUILayout.LabelField ("width", widgetTransform.width.ToString ());
+						EditorGUILayout.LabelField ("height", widgetTransform.height.ToString ());
+				}		
+		}
+	
 		[SerializeField]
 		bool
 				childrenFoldout = false;

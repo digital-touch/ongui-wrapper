@@ -2,11 +2,12 @@
 using System.Collections;
 using System;
 
+[ExecuteInEditMode]
 [System.Serializable]
 public class UIWidgetInteraction : MonoBehaviour
 {
 
-		protected UIWidgetTransform widgetTransform;
+		protected UIWidget widgetTransform;
 		protected UIWidget widget;
 		
 		[SerializeField]
@@ -16,7 +17,7 @@ public class UIWidgetInteraction : MonoBehaviour
 		protected virtual void Awake ()
 		{
 				widget = GetComponent<UIWidget> ();
-				widgetTransform = GetComponent<UIWidgetTransform> ();
+				widgetTransform = GetComponent<UIWidget> ();
 		}
 		
 		protected virtual void Start ()

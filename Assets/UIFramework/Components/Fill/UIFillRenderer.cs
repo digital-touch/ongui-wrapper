@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 
@@ -6,7 +6,7 @@ using System.Collections;
 public class UIFillRenderer : UIWidgetRenderer
 {
 
-		public override void Draw (UIWidgetTransform parentWidgetTransform)
+		public override void Draw (UIWidget parentWidgetTransform)
 		{		
 		
 				UIFill fill = GetComponent<UIFill> ();

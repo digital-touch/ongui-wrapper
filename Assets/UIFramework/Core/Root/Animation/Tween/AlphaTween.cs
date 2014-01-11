@@ -1,15 +1,15 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class AlphaTween : FloatTween
 {
 
-		public UIWidgetTransform widgetTransform;
+		public UIWidget widgetTransform;
 	
 		override protected void Awake ()
 		{ 
 				base.Awake ();
-				widgetTransform = GetComponent<UIWidgetTransform> ();
+				widgetTransform = GetComponent<UIWidget> ();
 		}
 	
 		protected override void UpdateValue (float time)

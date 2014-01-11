@@ -6,7 +6,7 @@ using System.Collections;
 public class UISliceImageRenderer : UIWidgetRenderer
 {		
 		
-		public override void Draw (UIWidgetTransform parentWidgetTransform)
+		public override void Draw (UIWidget parentWidgetTransform)
 		{		
 				base.Draw (parentWidgetTransform);
 				

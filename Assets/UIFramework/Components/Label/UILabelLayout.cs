@@ -19,12 +19,12 @@ public class UILabelLayout : UILayout
 						contentSize.width = (int)s.x;
 						contentSize.height = (int)s.y;
 				} else {
-						contentSize.width = widgetTransform.width;
-						contentSize.height = (int)label.style.CalcHeight (label.content, widgetTransform.width);
+						contentSize.width = widget.width;
+						contentSize.height = (int)label.style.CalcHeight (label.content, widget.width);
 				}
 		
-				widgetTransform.width = contentSize.width;
-				widgetTransform.height = contentSize.height;
+				widget.width = contentSize.width;
+				widget.height = contentSize.height;
 		}
 	
 		

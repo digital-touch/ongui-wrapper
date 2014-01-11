@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
@@ -13,9 +13,8 @@ public class UIScreenNavigator : UIWidget
 		{
 				GameObject widget = new GameObject ("UIScreenNavigator");
 		
-				widget.AddComponent<UIWidgetTransform> ();				
-				widget.AddComponent<UIScreenNavigator> ();
-				widget.AddComponent<UIWidgetValidator> ();
+			
+				widget.AddComponent<UIScreenNavigator> ();				
 				widget.AddComponent<UIWidgetRenderer> ();
 				widget.AddComponent<UIWidgetInteraction> ();
 				widget.AddComponent<FitToScreenUILayout> ();								
@@ -29,9 +28,9 @@ public class UIScreenNavigator : UIWidget
 	
 		public string defaultScreenID;
 		public UIScreen activeScreen;
-		public float transitionDuration = 0.2f;
-		public float showTransitionDelay = 0.0f;
-		public float hideTransitionDelay = 0.0f;
+		public float transitionDuration = 2f;
+		public float showTransitionDelay = 1.0f;
+		public float hideTransitionDelay = 1.0f;
 		public EaseDelegate showEasingFunction = Quad.EaseOut;
 		public EaseDelegate hideEasingFunction = Quad.EaseOut;
 		
@@ -42,9 +41,9 @@ public class UIScreenNavigator : UIWidget
 				for (int i = 0; i < transform.childCount; i++) {
 						Transform child = transform.GetChild (i);
 						UIScreen screen = child.GetComponent<UIScreen> ();
-						UIWidgetTransform childTransform = child.GetComponent<UIWidgetTransform> ();
+						UIWidget childTransform = child.GetComponent<UIWidget> ();
 						UIWidgetInteraction childInteraction = child.GetComponent<UIWidgetInteraction> ();
-						childTransform.x = widgetTransform.width;
+						childTransform.x = width;
 						childTransform.isVisible = false;			
 						childInteraction.isTouchable = false;			
 				}		
@@ -64,12 +63,12 @@ public class UIScreenNavigator : UIWidget
 		public UIScreen showScreen (string screenID, UIScreenTransitionType transitionType)
 		{		
 				UIScreen screen = activeScreen = getScreenByID (screenID);		
-				UIWidgetTransform screenTransform = screen.GetComponent<UIWidgetTransform> ();
+				UIWidget screenTransform = screen.GetComponent<UIWidget> ();
 				
 				if (transitionType == UIScreenTransitionType.RIGHT_TO_LEFT) {
-						screenTransform.x = widgetTransform.width;		 
+						screenTransform.x = width;		 
 				} else {
-						screenTransform.x = -widgetTransform.width; 
+						screenTransform.x = -width; 
 				}
 		
 				screenTransform.isVisible = true;		
@@ -117,7 +116,7 @@ public class UIScreenNavigator : UIWidget
 		public UIScreen hideScreen (string screenID, UIScreenTransitionType transitionType)
 		{
 				UIScreen screen = getScreenByID (screenID);
-				UIWidgetTransform screenTransform = screen.GetComponent<UIWidgetTransform> ();
+				UIWidget screenTransform = screen.GetComponent<UIWidget> ();
 		
 				float xTo = 0;
 				if (transitionType == UIScreenTransitionType.RIGHT_TO_LEFT) {
@@ -162,7 +161,7 @@ public class UIScreenNavigator : UIWidget
 				
 				UIScreen screen = tween.GetComponent<UIScreen> ();
 				UIWidgetInteraction screenInteraction = tween.GetComponent<UIWidgetInteraction> ();
-				UIWidgetTransform screenTransform = tween.GetComponent<UIWidgetTransform> ();
+				UIWidget screenTransform = tween.GetComponent<UIWidget> ();
 		
 				screenTransform.isVisible = false; 
 				screenInteraction.isTouchable = false; 
@@ -175,7 +174,7 @@ public class UIScreenNavigator : UIWidget
 	
 		public UIScreen getScreenByID (string screenID)
 		{
-				return (UIScreen)widgetTransform.getChildById (screenID);
+				return (UIScreen)getChildById (screenID);
 		}	
 }
 

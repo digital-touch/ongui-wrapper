@@ -14,9 +14,16 @@ public class UIRoot : UIWidget
 		public UIRoot ():base()
 		{
 				id = ROOT_ID;
-							
 		}
 		
+		public override UIRoot root {		
+				get {
+						return this;
+				}	
+				set {						
+				}
+		}
+	
 		protected override void Awake ()
 		{
 				base.Awake ();				
@@ -33,9 +40,9 @@ public class UIRoot : UIWidget
 		{
 				GameObject root = new GameObject ("UIRoot");
 				
-				root.AddComponent<UIRootTransform> ();
+	
 				root.AddComponent<UIRoot> ();
-				root.AddComponent<UIWidgetValidator> ();
+	
 				root.AddComponent<FitToScreenUILayout> ();
 				root.AddComponent<UIWidgetRenderer> ();
 				root.AddComponent<UIRootInteraction> ();

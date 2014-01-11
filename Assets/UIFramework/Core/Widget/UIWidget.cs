@@ -1,19 +1,18 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using System.Collections.Generic;
 using System;
 
 [ExecuteInEditMode]
-[System.Serializable]
 public class UIWidget : MonoBehaviour
 {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public static readonly string POSITION_FLAG = "uiwidget-position";
-		public static readonly string SIZE_FLAG = "uiwidget-size";
-		public static readonly string DATA_FLAG = "uiwidget-data";
+		public static readonly string LAYOUT_INVALIDATION_FLAG = "uiwidget-layout";
+		public static readonly string POSITION_INVALIDATION_FLAG = "uiwidget-position";
+		public static readonly string SIZE_INVALIDATION_FLAG = "uiwidget-size";
+		public static readonly string DATA_INVALIDATION_FLAG = "uiwidget-data";
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -24,11 +23,10 @@ public class UIWidget : MonoBehaviour
 		public static GameObject createUIWidget ()
 		{
 				GameObject widget = new GameObject ("UIWidget");				
-				UIWidgetTransform widgetTransform = widget.AddComponent<UIWidgetTransform> ();
-				widgetTransform.width = 100;
-				widgetTransform.height = 100;
-				widget.AddComponent<UIWidget> ();
-				widget.AddComponent<UIWidgetValidator> ();
+				UIWidget uiWidget = widget.AddComponent<UIWidget> ();
+				uiWidget.width = 100;
+				uiWidget.height = 100;
+				
 				widget.AddComponent<UIWidgetRenderer> ();
 				widget.AddComponent<UIWidgetInteraction> ();								
 				widget.transform.parent = Selection.activeTransform;
@@ -49,72 +47,116 @@ public class UIWidget : MonoBehaviour
 				LastTool = Tools.current;
 		
 				Tools.current = Tool.None;
-				
+		
 		}
 	
 		void OnDisable ()
 		{
 		
 				Tools.current = LastTool;
-        
+		
 		}
-    
-    #endif
-    
+	
+	#endif
+	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		[SerializeField]
 		public string
 				id;
-				
+	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		[SerializeField]
 		public bool
 				includeInLayout = true;
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-			
-		protected UIWidgetTransform widgetTransform;
 	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
 		protected virtual void Awake ()
 		{				
-				widgetTransform = GetComponent<UIWidgetTransform> ();
-				UIInvalidator.invalidate (this, UIInvalidator.ALL_INVALIDATION_FLAG);
+			
+				transform.hideFlags = HideFlags.NotEditable | HideFlags.HideInInspector;	
+				UIInvalidator.invalidate (gameObject, UIInvalidator.ALL_INVALIDATION_FLAG);
 		}
 	
 		protected virtual void OnDestroy ()
 		{				
-				widgetTransform = null;
+				
+							
+				transform.hideFlags = HideFlags.None;	
 		}			
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		public UIWidget parent {
-				get {
-						return transform.parent.GetComponent<UIWidget> ();
-				}
-		}
-		
+	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public UIRoot root {
+		public Action<UIWidget> AddedEvent;
+		public Action<UIWidget> RemovedEvent;
+	
+		UIWidget _parent;
+	
+		public virtual UIWidget parent {		
 				get {
-						Transform parent = transform.parent;
-						while (parent != null) {
-								if (parent.parent == null) {
-										return parent.GetComponent<UIRoot> ();
-								}
-								parent = parent.parent;
-						}
-						return GetComponent<UIRoot> ();
+						return _parent;
 				}	
+				set {
+						if (_parent == value) {
+								return;
+						}
+						if (_parent != null) {
+								if (RemovedEvent != null) {
+										RemovedEvent (this);
+								}						
+								root = null;
+						}
+			
+						_parent = value;
+			
+						if (_parent != null) {
+								if (AddedEvent != null) {
+										AddedEvent (this);
+								}			
+								root = _parent.root;			
+						}
+				}
 		}
-		
+	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		object _data;
-
+	
+		public Action<UIWidget> AddedToRootEvent;
+		public Action<UIWidget> RemovedFromRootEvent;
+	
+		UIRoot _root;
+	
+		public virtual UIRoot root {		
+				get {
+						return _root;
+				}	
+				set {
+						if (_root == value) {
+								return;
+						}
+						if (_root != null) {
+								if (RemovedFromRootEvent != null) {
+										RemovedFromRootEvent (this);
+								}						
+						}
+						
+						_root = value;
+						
+						if (_root != null) {
+								if (AddedToRootEvent != null) {
+										AddedToRootEvent (this);
+								}						
+						}
+				}
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		object
+				_data;
+	
 		public object data {
 				get {
 						return _data;
@@ -124,9 +166,369 @@ public class UIWidget : MonoBehaviour
 								return;
 						}
 						_data = value;
-						UIInvalidator.invalidate (this, DATA_FLAG);                                   
+						UIInvalidator.invalidate (gameObject, DATA_INVALIDATION_FLAG);                                   
+				}
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public void toFront ()
+		{
+//				Transform parent = transform.parent;
+//				// store references
+//				List<Transform> list = new List<Transform> ();
+//				int count = parent.childCount;
+//				for (int i = 0; i < count; i++) {				
+//						Transform child = parent.GetChild (i);
+//						list.Add (child);
+//				}
+//		
+//				// detach				
+//				for (int i = 0; i < list.Count; i++) {
+//						Transform child = list [i];
+//						child.parent = null;
+//				}
+//		
+//				//sort
+//				int index = list.IndexOf (transform);				
+//				if (index < list.Count - 1) {
+//						list.Remove (transform);
+//						list.Insert (index + 1, transform);
+//				}
+//		
+//				//attach		
+//				for (int i = 0; i < list.Count; i++) {
+//						Transform child = list [i];
+//						child.parent = parent;
+//				}
+		}
+	
+		public void toBack ()
+		{
+//				Transform parent = transform.parent;
+//				// store references
+//				List<Transform> list = new List<Transform> ();
+//				int count = parent.childCount;
+//				for (int i = 0; i < count; i++) {				
+//						Transform child = parent.GetChild (i);
+//						list.Add (child);
+//				}
+//		
+//				// detach				
+//				for (int i = 0; i < list.Count; i++) {
+//						Transform child = list [i];
+//						child.parent = null;
+//				}
+//		
+//				//sort
+//				int index = list.IndexOf (transform);				
+//				if (index > 0) {
+//						list.Remove (transform);
+//						list.Insert (index - 1, transform);
+//				}
+//		
+//				//attach		
+//				for (int i = 0; i < list.Count; i++) {
+//						Transform child = list [i];
+//						child.parent = parent;
+//				}
+		}
+	
+		public UIWidget getChildById (string id)
+		{
+				for (int i = 0; i < transform.childCount; i++) {
+						Transform child = transform.GetChild (i);
+						UIWidget childWidget = child.GetComponent<UIWidget> ();
+						if (childWidget.id == id) {
+								return childWidget;
+						}
+				}
+				return null;
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		
+		public Rect screenBounds = new Rect ();	
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		bool
+				_isVisible = true;
+				
+		public bool isVisible {
+				get {
+						return _isVisible;
+				}
+				set {
+						if (_isVisible == value) {
+								return;
+						}
+						_isVisible = value;
+				}
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		public float
+				alpha = 1;
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		public Color
+				tint = Color.white;
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		int
+				_x;
+
+		public int x {
+				get {
+						return _x;
+				}
+				set {
+						if (_x == value) {
+								return;
+						}
+						_x = value;
+						if (parent != null) {
+								UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+						}
+						UIInvalidator.invalidate (gameObject, UIWidget.POSITION_INVALIDATION_FLAG);
+						UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+				}
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		int
+				_y;
+
+		public int y {
+				get {
+						return _y;
+				}
+				set {
+						if (_y == value) {
+								return;
+						}
+						_y = value;
+						if (parent != null) {
+								UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+						}
+						UIInvalidator.invalidate (gameObject, UIWidget.POSITION_INVALIDATION_FLAG);
+						UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+				}
+		}	
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////	
+
+		[SerializeField]
+		int
+				_width;
+
+		public int width {
+				get {
+						return _width;
+				}
+				set {
+						if (_width == value) {
+								return;
+						}
+						_width = value;
+						if (parent != null) {
+								UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+						}
+						UIInvalidator.invalidate (gameObject, UIWidget.SIZE_INVALIDATION_FLAG);
+						UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+				}
+		}	
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		int
+				_height;
+
+		public int height {
+				get {
+						return _height;
+				}
+				set {
+						if (_height == value) {
+								return;
+						}
+						_height = value;
+						if (parent != null) {
+								UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+						}
+						UIInvalidator.invalidate (gameObject, UIWidget.SIZE_INVALIDATION_FLAG);
+						UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+				}
+		}
+	
+		public bool isInvisible {
+				get {
+						return width == 0 || height == 0 || alpha == 0;
+				}
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		public float
+				rotation = 0f;
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		[SerializeField]
+		public Vector2
+				rotationPivotPoint = Vector2.zero;
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		[SerializeField]
+		public 	Vector2
+				scale = Vector2.one;
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		[SerializeField]
+		public Vector2
+				scalePivotPoint = Vector2.zero;
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		public Vector2 globalToLocal (Vector2 position)
+		{
+				Vector2 global = Vector2.zero;
+				
+				Transform parent = transform.parent;				
+				while (parent != null) {
+				
+						UIWidget parentTransform = parent.GetComponent<UIWidget> ();
+			
+						global.x -= parentTransform.x;
+						global.y -= parentTransform.y;
+									
+						parent = parent.parent;						
+				}
+				global.x += position.x;
+				global.y += position.y;
+		
+				return global;
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		public Vector2 localToGlobal (Vector2 position)
+		{
+				Vector2 local = Vector2.zero;
+		
+				Transform parent = transform.parent;				
+				while (parent != null) {
+			
+						UIWidget parentTransform = parent.GetComponent<UIWidget> ();
+			
+						local.x += parentTransform.x;
+						local.y += parentTransform.y;
+			
+						parent = parent.parent;						
+				}
+				local.x += position.x;
+				local.y += position.y;
+		
+				return local;
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public virtual void Validate ()
+		{		
+				if (!gameObject.activeSelf) {					
+						return;
+				}	
+		
+				validateTransformParent ();
+				ValidateScreenBounds ();													
+				validateLayout ();
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public virtual void validateLayout ()
+		{
+				bool isLayoutDirty = UIInvalidator.isInvalid (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+		
+				if (!isLayoutDirty) {
+						return;
+				}
+				
+				UILayout[] widgetLayouts = GetComponents<UILayout> ();	
+		
+				for (int i = 0; i < widgetLayouts.Length; i++) {
+						UILayout widgetLayout = widgetLayouts [i];
+						widgetLayout.Layout ();
+				}
+				
+				ValidateChildrenLayout ();
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		void ValidateChildrenLayout ()
+		{
+				for (int i = 0; i < transform.childCount; i++) {
+						Transform child = transform.GetChild (i);		
+						UILayout[] childLayouts = child.GetComponents<UILayout> ();
+						foreach (UILayout childLayout in childLayouts) {
+								childLayout.Layout ();
+						}						
 				}
 		}
 		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		void ValidateScreenBounds ()
+		{
+				bool isPositionDirty = UIInvalidator.isInvalid (gameObject, UIWidget.POSITION_INVALIDATION_FLAG);
+				bool isSizeDirty = UIInvalidator.isInvalid (gameObject, UIWidget.SIZE_INVALIDATION_FLAG);
+				
+				if (isPositionDirty || isSizeDirty) {
+						screenBounds.Set (x, y, width, height);			
+				}
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	
+		Transform lastTransformParent;
+	
+		void validateTransformParent ()
+		{
+				if (lastTransformParent == transform.parent) {
+						return;
+				}
+				
+				if (lastTransformParent != null) {
+						parent = null;
+				}
+				
+				lastTransformParent = transform.parent;
+				
+				if (lastTransformParent != null) {
+						parent = lastTransformParent.GetComponent<UIWidget> ();
+				}
+		}
+	
+		
+	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 }
