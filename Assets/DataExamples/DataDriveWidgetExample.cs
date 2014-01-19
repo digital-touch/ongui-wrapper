@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class DataDriveWidgetExample : UIWidgetBehaviour
+public class DataDriveWidgetExample : MonoBehaviour
 {
 	
 		void Start ()

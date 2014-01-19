@@ -27,8 +27,6 @@ public class UIWidget : MonoBehaviour
 				uiWidget.width = 100;
 				uiWidget.height = 100;
 				
-				widget.AddComponent<UIWidgetRenderer> ();
-				widget.AddComponent<UIWidgetInteraction> ();								
 				widget.transform.parent = Selection.activeTransform;
 				return widget;
 		}
@@ -82,10 +80,11 @@ public class UIWidget : MonoBehaviour
 	
 		protected virtual void OnDestroy ()
 		{				
-				
-							
+											
 				transform.hideFlags = HideFlags.None;	
 		}			
+	
+	
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -246,8 +245,7 @@ public class UIWidget : MonoBehaviour
 				return null;
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
+		///////////////////////////////////////////////////////////////////////////////////////////////////	
 		
 		public Rect screenBounds = new Rect ();	
 
@@ -282,7 +280,11 @@ public class UIWidget : MonoBehaviour
 				tint = Color.white;
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
+		
+		protected bool canInvalidate = true;
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+    
 		[SerializeField]
 		int
 				_x;
@@ -296,11 +298,9 @@ public class UIWidget : MonoBehaviour
 								return;
 						}
 						_x = value;
-						if (parent != null) {
-								UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+						if (canInvalidate) {
+								UIInvalidator.invalidate (gameObject, UIWidget.POSITION_INVALIDATION_FLAG);
 						}
-						UIInvalidator.invalidate (gameObject, UIWidget.POSITION_INVALIDATION_FLAG);
-						UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
 				}
 		}
 	
@@ -319,11 +319,9 @@ public class UIWidget : MonoBehaviour
 								return;
 						}
 						_y = value;
-						if (parent != null) {
-								UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+						if (canInvalidate) {
+								UIInvalidator.invalidate (gameObject, UIWidget.POSITION_INVALIDATION_FLAG);
 						}
-						UIInvalidator.invalidate (gameObject, UIWidget.POSITION_INVALIDATION_FLAG);
-						UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
 				}
 		}	
 		
@@ -342,11 +340,9 @@ public class UIWidget : MonoBehaviour
 								return;
 						}
 						_width = value;
-						if (parent != null) {
-								UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
-						}
-						UIInvalidator.invalidate (gameObject, UIWidget.SIZE_INVALIDATION_FLAG);
-						UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+						if (canInvalidate) {
+								UIInvalidator.invalidate (gameObject, UIWidget.SIZE_INVALIDATION_FLAG);						
+						}						
 				}
 		}	
 	
@@ -365,11 +361,9 @@ public class UIWidget : MonoBehaviour
 								return;
 						}
 						_height = value;
-						if (parent != null) {
-								UIInvalidator.invalidate (parent.gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
+						if (canInvalidate) {
+								UIInvalidator.invalidate (gameObject, UIWidget.SIZE_INVALIDATION_FLAG);						
 						}
-						UIInvalidator.invalidate (gameObject, UIWidget.SIZE_INVALIDATION_FLAG);
-						UIInvalidator.invalidate (gameObject, UIWidget.LAYOUT_INVALIDATION_FLAG);
 				}
 		}
 	
@@ -531,4 +525,187 @@ public class UIWidget : MonoBehaviour
 		
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		[SerializeField]
+		public bool
+				isTouchable = true;
+	
+	
+		Rect tempRect = new Rect ();
+	
+		public virtual bool HitTest (UITouch touch)
+		{				
+				Vector2 global = globalToLocal (touch.position);
+				tempRect.Set (x, y, width, height);
+				bool contains = tempRect.Contains (global);
+				return contains;
+		}
+	
+		public Action<UIWidget, UITouch> TouchBeganEvent;
+		public Action<UIWidget, UITouch> TouchMovedEvent;
+		public Action<UIWidget, UITouch> TouchEndedEvent;
+		public Action<UIWidget, UITouch> TouchCancelledEvent;
+	
+		public virtual void TouchBegan (UITouch touch)
+		{						
+				for (int i = 0; i < transform.childCount; i++) {
+						Transform child = transform.GetChild (i);
+						UIWidget childWidget = child.GetComponent<UIWidget> ();
+						if (childWidget == null) {
+								continue;
+						}			
+						if (!childWidget.isTouchable) {
+								continue;
+						}
+						if (!childWidget.HitTest (touch)) {
+								continue;
+						}
+			
+						childWidget.TouchBegan (touch);
+				}
+		
+				if (TouchBeganEvent != null) {
+						TouchBeganEvent (this, touch);
+				}
+		
+		} 
+	
+		public virtual void TouchMoved (UITouch touch)
+		{
+				for (int i = 0; i < transform.childCount; i++) {
+						Transform child = transform.GetChild (i);
+						UIWidget childWidget = child.GetComponent<UIWidget> ();
+						if (childWidget == null) {
+								continue;
+						}	
+						if (!childWidget.isTouchable) {
+								continue;
+						}
+						if (!childWidget.HitTest (touch)) {
+								continue;
+						}
+						childWidget.TouchMoved (touch);
+				}
+				if (TouchMovedEvent != null) {
+						TouchMovedEvent (this, touch);
+				}
+		} 
+	
+		public virtual void TouchEnded (UITouch touch)
+		{
+				for (int i = 0; i < transform.childCount; i++) {
+						Transform child = transform.GetChild (i);
+						UIWidget childWidget = child.GetComponent<UIWidget> ();
+						if (childWidget == null) {
+								continue;
+						}	
+						if (!childWidget.isTouchable) {
+								continue;
+						}
+						if (!childWidget.HitTest (touch)) {
+								continue;
+						}
+						childWidget.TouchEnded (touch);
+				}
+				if (TouchEndedEvent != null) {
+						TouchEndedEvent (this, touch);
+				}
+		} 
+	
+		public virtual void TouchCancelled (UITouch touch)
+		{
+				for (int i = 0; i < transform.childCount; i++) {
+						Transform child = transform.GetChild (i);
+						UIWidget childWidget = child.GetComponent<UIWidget> ();
+						if (childWidget == null) {
+								continue;
+						}	
+						if (!childWidget.isTouchable) {
+								continue;
+						}
+						if (!childWidget.HitTest (touch)) {
+								continue;
+						}
+						childWidget.TouchCancelled (touch);
+				}
+				if (TouchCancelledEvent != null) {
+						TouchCancelledEvent (this, touch);
+				}
+		} 
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	
+	
+		public virtual void Draw (UIWidget parentWidget)
+		{
+		
+				GUI.BeginGroup (screenBounds);
+		
+				DrawChildren (parentWidget);
+		
+				GUI.EndGroup ();
+		}
+	
+		protected  void DrawChildren (UIWidget parentWidget)
+		{
+				for (int i = 0; i < transform.childCount; i++) {
+						DrawChild (i, parentWidget);
+				}
+		}
+	
+		protected  void DrawChild (int i, UIWidget parentWidget)
+		{
+				Transform child = transform.GetChild (i);
+		
+				UIWidget childWidget = child.GetComponent<UIWidget> ();
+		
+				if (childWidget == null) {
+						return;
+				}						
+		
+				
+		
+				if (!childWidget.isVisible) {
+						return;
+				}												
+		
+				if (childWidget.isInvisible) {
+						return;
+				}
+		
+				if (!child.gameObject.activeSelf) {					
+						return;
+				}
+		
+				Color old = GUI.color;
+		
+				Color newColor;
+				
+				if (parentWidget != null) {
+						newColor = childWidget.tint * parentWidget.tint;
+						newColor.a = GUI.color.a * childWidget.alpha * parentWidget.alpha;
+				} else {
+						newColor = childWidget.tint;
+						newColor.a = GUI.color.a * childWidget.alpha;
+				}
+				
+				GUI.color = newColor;
+		
+				if (childWidget.rotation != 0f || (childWidget.scale.x != 1 && childWidget.scale.y != 1)) {
+						Matrix4x4 matrix = GUI.matrix;						
+			
+						GUIUtility.RotateAroundPivot (childWidget.rotation, childWidget.rotationPivotPoint);
+						GUIUtility.ScaleAroundPivot (childWidget.scale, childWidget.scalePivotPoint);
+			
+						childWidget.Draw (this);
+			
+						GUI.matrix = matrix;
+				} else {
+						childWidget.Draw (this);
+				}
+		
+				GUI.color = old;
+		}
 }

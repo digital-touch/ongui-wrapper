@@ -2,7 +2,7 @@
 using System.Collections;
 
 [ExecuteInEditMode]
-public abstract class UILayout : UIWidgetBehaviour
+public abstract class UILayout : MonoBehaviour
 {
 		
 		public ContentSize contentSize = new ContentSize ();
@@ -11,4 +11,15 @@ public abstract class UILayout : UIWidgetBehaviour
 	
 		public abstract void Layout ();
 	
+		protected UIWidget widget;
+		
+		protected virtual void Awake ()
+		{
+				widget = GetComponent<UIWidget> ();
+		}
+	
+		protected virtual void OnDestroy ()
+		{
+				widget = null;
+		}
 }

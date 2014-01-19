@@ -10,8 +10,8 @@ public class MoveTweenExample : MonoBehaviour
 		void Start ()
 		{
 		
-				UIRootInteraction interaction = root.GetComponent<UIRootInteraction> ();
-				interaction.TouchBeganEvent += OnTouchBegan;
+				
+				root.TouchBeganEvent += OnTouchBegan;
 		}
 		
 		MoveTween tween;

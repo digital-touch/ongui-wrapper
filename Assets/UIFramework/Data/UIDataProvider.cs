@@ -2,18 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UIDataProvider : UIWidgetBehaviour
+public class UIDataProvider : MonoBehaviour
 {
 		
-		protected override void Awake ()
-		{
-				base.Awake ();
-		}
-
-		protected override void OnDestroy ()
-		{
-				base.OnDestroy ();
-		}		
 		
 		List<object> _source;
 		public List<object> source {

@@ -58,8 +58,6 @@
      <Compile Include="Assets\Editor\Core\UIRootEditor.cs" />
      <Compile Include="Assets\Editor\Core\UIRootEventHandlerEditor.cs" />
      <Compile Include="Assets\Editor\Core\UIWidgetEditor.cs" />
-     <Compile Include="Assets\Editor\Core\UIWidgetInteractionEditor.cs" />
-     <Compile Include="Assets\Editor\Core\UIWidgetRendererEditor.cs" />
      <Compile Include="Assets\Editor\UIRootWidgetListWindow.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\Editor\UIAnchorLayoutDataEditor.cs" />
      <Compile Include="Assets\UIFramework\Core\Layout\Editor\UIHorizontalLayoutEditor.cs" />
