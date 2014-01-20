@@ -32,6 +32,10 @@ public class UIGameObjectEditor : Editor
 		bool
 				renderFoldout = true;
 		
+		[SerializeField]
+		bool
+				styleNamesFoldout = true;
+		
 		protected void drawUIGameObjectInspector ()
 		{
 				UIGameObject uiGameObject = (UIGameObject)target;
@@ -70,6 +74,7 @@ public class UIGameObjectEditor : Editor
 						//depth
 			
 						EditorGUILayout.LabelField ("Depth", uiGameObject.depth.ToString ());
+						
 						EditorGUILayout.BeginHorizontal ();
 						if (GUILayout.Button ("-")) {
 								uiGameObject.depth--;
@@ -94,6 +99,32 @@ public class UIGameObjectEditor : Editor
 						uiGameObject.alpha = EditorGUILayout.Slider ("Alpha", uiGameObject.alpha, 0, 1);
 						uiGameObject.color = EditorGUILayout.ColorField ("Color", uiGameObject.color);
 						
+						
+						EditorGUI.BeginChangeCheck ();
+															
+						// styleNames
+						SerializedProperty styleNames = serializedObject.FindProperty ("styleNames");
+						EditorGUILayout.PropertyField (styleNames, true);
+						
+						
+						if (EditorGUI.EndChangeCheck ()) {
+								serializedObject.ApplyModifiedProperties ();
+						}
+						EditorGUI.indentLevel--;
+				}
+		}
+		
+		public void ListIterator (string propertyPath, ref bool visible)
+		{
+				SerializedProperty listProperty = serializedObject.FindProperty (propertyPath);
+				visible = EditorGUILayout.Foldout (visible, listProperty.name);
+				if (visible) {
+						EditorGUI.indentLevel++;
+						for (int i = 0; i < listProperty.arraySize; i++) {
+								SerializedProperty elementProperty = listProperty.GetArrayElementAtIndex (i);
+								Rect drawZone = GUILayoutUtility.GetRect (0f, 16f);
+								bool showChildren = EditorGUI.PropertyField (drawZone, elementProperty); 
+						}
 						EditorGUI.indentLevel--;
 				}
 		}

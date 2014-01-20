@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class test_transform : MonoBehaviour
@@ -18,7 +18,7 @@ public class test_transform : MonoBehaviour
 								
 		}
 		
-		void OnComplete (Tween tween)
+		void OnComplete (UITween tween)
 		{
 				tween.UpdatedEvent -= OnUpdate;
 				tween.CompletedEvent -= OnComplete;
@@ -26,7 +26,7 @@ public class test_transform : MonoBehaviour
 				Destroy (tween);
 		}
 		
-		void OnUpdate (Tween tween)
+		void OnUpdate (UITween tween)
 		{
 				Debug.Log ("OnUpdate:" + tween.value);
 		}

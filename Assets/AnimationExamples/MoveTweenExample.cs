@@ -4,7 +4,7 @@ using System.Collections;
 public class MoveTweenExample : MonoBehaviour
 {
 		public UIRoot root;
-		public UIWidget widget;
+		public UIGameObject widget;
 		
 		// Use this for initialization
 		void Start ()
@@ -16,10 +16,10 @@ public class MoveTweenExample : MonoBehaviour
 		
 		MoveTween tween;
 	
-		void OnTouchBegan (UIWidget root, UITouch touch)
+		void OnTouchBegan (UIGameObject root, UITouch touch)
 		{
 		
-				UIWidget widgetTransform = widget.GetComponent<UIWidget> ();
+				
 		
 				if (tween != null) {
 						tween.Stop ();
@@ -29,8 +29,8 @@ public class MoveTweenExample : MonoBehaviour
 				
 				tween = widget.gameObject.AddComponent<MoveTween> ();
 				
-				tween.valueFrom = new Vector2 (widgetTransform.x, widgetTransform.y);
-				tween.valueTo = new Vector2 (touch.position.x - widgetTransform.width / 2, touch.position.y - widgetTransform.height / 2);
+				tween.valueFrom = new Vector2 (widget.x, widget.y);
+				tween.valueTo = new Vector2 (touch.position.x - widget.width / 2, touch.position.y - widget.height / 2);
 				
 				tween.duration = 2;
 				tween.easingFunction = Elastic.EaseOut;

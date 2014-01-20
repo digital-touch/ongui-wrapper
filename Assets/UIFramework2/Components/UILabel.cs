@@ -89,6 +89,91 @@ public class UILabel : UIGameObject
 				style = new GUIStyle ();				
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		UIGameObject _backgroundSkin;
+
+		public UIGameObject backgroundSkin {
+				get {
+						return _backgroundSkin;
+				}
+				set {
+						_backgroundSkin = value;
+						updateLabel ();
+				}
+		}
+		
+		void updateBackgroundSkin ()
+		{
+				if (backgroundSkin == null) {
+						return;
+				}
+				backgroundSkin.width = width;
+				backgroundSkin.height = height;
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		int _paddingLeft = 0;
+
+		public int paddingLeft {
+				get {
+						return _paddingLeft;
+				}
+				set {
+						if (_paddingLeft == value) {
+								return;
+						}
+						_paddingLeft = value;
+						updateLabel ();
+				}
+		}
+
+		int _paddingRight = 0;
+
+		public int paddingRight {
+				get {
+						return _paddingRight;
+				}
+				set {
+						if (_paddingRight == value) {
+								return;
+						}
+						_paddingRight = value;
+						updateLabel ();
+				}
+		}
+
+		int _paddingTop = 0;
+
+		public int paddingTop {
+				get {
+						return _paddingTop;
+				}
+				set {
+						if (_paddingTop == value) {
+								return;
+						}
+						_paddingTop = value;
+						updateLabel ();
+				}
+		}
+
+		int _paddingBottom = 0;
+
+		public int paddingBottom {
+				get {
+						return _paddingBottom;
+				}
+				set {
+						if (_paddingBottom == value) {
+								return;
+						}
+						_paddingBottom = value;
+						updateLabel ();
+				}
+		}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		[SerializeField]	
 		string
@@ -111,15 +196,19 @@ public class UILabel : UIGameObject
 	
 		void updateLabel ()
 		{   				
+		
 				if (textStyle == null) {
 						return;
 				}
 				updateGUIStyle ();
 				measure ();
+				updateBackgroundSkin ();
 				FireLayoutDataChangedEvent ();
 		}	
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		Rect labelRectHelper = new Rect ();
 	
 		public override void draw (UIGameObject parentChild)
 		{		
@@ -132,7 +221,11 @@ public class UILabel : UIGameObject
 						return;
 				}
 		
-				GUI.Label (screenRect, content, style);
+				if (backgroundSkin != null) {
+						backgroundSkin.draw (this);
+				}
+		
+				GUI.Label (labelRectHelper, content, style);
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,12 +248,22 @@ public class UILabel : UIGameObject
 		{		
 				if (!explicitWidth) {
 						Vector2 s = style.CalcSize (content);
-						setSize ((int)s.x, (int)s.y);
 						
-				} else {
+						s.x += paddingLeft;
+						s.x += paddingRight;
+						
+						s.y += paddingTop;
+						s.y += paddingBottom;
 			
-						height = (int)style.CalcHeight (content, width);
+						setSize ((int)s.x, (int)s.y);			
+				} else {			
+						height = (int)style.CalcHeight (content, width) + paddingTop + paddingBottom;
 				}
+				
+				labelRectHelper.x = screenRect.x + paddingLeft;
+				labelRectHelper.y = screenRect.y + paddingTop;
+				labelRectHelper.width = screenRect.width + paddingRight;
+				labelRectHelper.height = screenRect.height + paddingBottom;
 		}
 	
 }

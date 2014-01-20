@@ -4,26 +4,26 @@ using System.Collections;
 public class FadeTweenExample : MonoBehaviour
 {
 
-		public UIWidget widgetTransform;
+		public UIGameObject target;
 		
 		FadeInTween tween;
 		
-		void Awake ()
+		void Start ()
 		{
-				widgetTransform.alpha = 0;
-				tween = widgetTransform.gameObject.AddComponent<FadeInTween> ();
+				target.alpha = 0;
+				tween = target.gameObject.AddComponent<FadeInTween> ();
 				tween.duration = 2;
 				tween.UpdatedEvent += OnUpdate;
 				tween.CompletedEvent += OnComplete;
 				tween.Play ();
 		}
 		
-		void OnUpdate (Tween tween)
+		void OnUpdate (UITween tween)
 		{
 				Debug.Log ("OnUpdate" + tween);
 		}
 		
-		void OnComplete (Tween tween)
+		void OnComplete (UITween tween)
 		{
 				Debug.Log ("OnComplete" + tween);
 		}

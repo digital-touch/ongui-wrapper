@@ -64,7 +64,11 @@ public class UIButton : UIGameObject
 		
 		public UILabel label;
 		
+		public PivotType labelPosition;
+		
 		public UIGameObject normalSkin;
+		
+		public UIGameObject downSkin;
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////	
 	

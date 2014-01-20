@@ -1,14 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\Documents\ongui_wrapper5\Assets\UIGameObject.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UIFramework2\Editor\UIGameObjectEditor.cs">
     <Files>
-      <File FileName="..\..\Documents\ongui_wrapper5\Assets\UIGameObject.cs" Line="85" Column="19" />
-      <File FileName="..\..\Documents\ongui_wrapper5\Assets\Components\UIFill.cs" Line="132" Column="22" />
+      <File FileName="Assets\UIFramework2\Components\UILabel.cs" Line="258" Column="27" />
+      <File FileName="Assets\UIFramework2\Core\UIGameObject.cs" Line="477" Column="10" />
+      <File FileName="Assets\UIFramework2\Editor\UIGameObjectEditor.cs" Line="104" Column="13" />
+      <File FileName="Assets\AnimationExamples\FadeTweenExample.cs" Line="19" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\Peter\Documents\ongui_wrapper5\Assets\Components\UIFill.cs" line="132" />
+      <Breakpoint enabled="false" file="C:\Users\Peter\Documents\ongui_wrapper5\Assets\Layout\AnchorUILayout.cs" line="82" />
+      <Breakpoint enabled="false" file="C:\Users\Peter\Documents\ongui_wrapper5\Assets\UIGameObject.cs" line="478" />
+      <Breakpoint enabled="false" file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework2\Animation\Tween\FloatTween.cs" line="33" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
