@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System.Collections;
 using System;
 
@@ -10,14 +9,14 @@ public class UIScreen : UIGameObject
 	
 	#if UNITY_EDITOR
 	
-		[MenuItem("UI/UIScreen")]
+		[UnityEditor.MenuItem("UI/UIScreen")]
 		public static GameObject createUIScreen ()
 		{
 				GameObject widget = new GameObject ("UIScreen");
 		
 				widget.AddComponent<UIScreen> ();				
 				widget.AddComponent<FitToScreenUILayout> ();								
-				widget.transform.parent = Selection.activeTransform;
+				widget.transform.parent = UnityEditor.Selection.activeTransform;
 				return widget;
 		}
 	

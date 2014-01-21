@@ -31,11 +31,7 @@ public class UIGameObjectEditor : Editor
 		[SerializeField]
 		bool
 				renderFoldout = true;
-		
-		[SerializeField]
-		bool
-				styleNamesFoldout = true;
-		
+				
 		protected void drawUIGameObjectInspector ()
 		{
 				UIGameObject uiGameObject = (UIGameObject)target;

@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEditor;
+
 using System.Collections;
 using System;
 
-[ExecuteInEditMode]
 public class UIImage : UIGameObject
 {
 
@@ -11,7 +10,7 @@ public class UIImage : UIGameObject
 	
 	#if UNITY_EDITOR
 	
-		[MenuItem ("UI/UIImage")]
+		[UnityEditor.MenuItem ("UI/UIImage")]
 		public static GameObject CreateUIImage ()
 		{
 				GameObject image = new GameObject ("GameObject");
@@ -21,7 +20,7 @@ public class UIImage : UIGameObject
 				uiImage.width = 100;
 				uiImage.height = 100;				
 			
-				image.transform.parent = Selection.activeTransform;						
+				image.transform.parent = UnityEditor.Selection.activeTransform;						
 				
 				return image;
 		}

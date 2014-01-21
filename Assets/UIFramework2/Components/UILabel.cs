@@ -1,16 +1,14 @@
 using UnityEngine;
-using UnityEditor;
+
 using System.Collections;
 
-[System.Serializable]
-[ExecuteInEditMode]
 public class UILabel : UIGameObject
 {
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		
 	#if UNITY_EDITOR
 	
-		[MenuItem ("UI/UILabel")]
+		[UnityEditor.MenuItem ("UI/UILabel")]
 		public static GameObject CreateUILabel ()
 		{
 				GameObject label = new GameObject ("GameObject");
@@ -24,7 +22,7 @@ public class UILabel : UIGameObject
 				UITextStyle style = label.AddComponent<UITextStyle> ();
 				style.id = "default";				
 				
-				label.transform.parent = Selection.activeTransform;					
+				label.transform.parent = UnityEditor.Selection.activeTransform;					
 				return label;
 		}
 	#endif		

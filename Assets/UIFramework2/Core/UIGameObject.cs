@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-using UnityEditor;
+
+//using UnityEditor;
+
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -12,7 +14,7 @@ public class UIGameObject : MonoBehaviour
 	
 	#if UNITY_EDITOR
 	
-		[MenuItem ("UI/UIGameObject")]
+		[UnityEditor.MenuItem ("UI/UIGameObject")]
 		public static GameObject CreateUIGameObject ()
 		{
 				GameObject gameObject = new GameObject ("GameObject");
@@ -23,7 +25,7 @@ public class UIGameObject : MonoBehaviour
 				
 				gameObject.AddComponent<FitToContentUILayout> ();
 		
-				gameObject.transform.parent = Selection.activeTransform;
+				gameObject.transform.parent = UnityEditor.Selection.activeTransform;
 		
 				return gameObject;
 		}
@@ -32,21 +34,21 @@ public class UIGameObject : MonoBehaviour
 	
 	#if UNITY_EDITOR
 	
-		Tool LastTool = Tool.None;
+		UnityEditor.Tool LastTool = UnityEditor.Tool.None;
 	
 		void OnEnable ()
 		{
 		
-				LastTool = Tools.current;
+				LastTool = UnityEditor.Tools.current;
 		
-				Tools.current = Tool.None;
+				UnityEditor.Tools.current = UnityEditor.Tool.None;
 		
 		}
 	
 		void OnDisable ()
 		{
 		
-				Tools.current = LastTool;
+				UnityEditor.Tools.current = LastTool;
 		
 		}
 	
@@ -104,7 +106,9 @@ public class UIGameObject : MonoBehaviour
 	
 		protected virtual void Awake ()
 		{
+				#if UNITY_EDITOR
 				transform.hideFlags = HideFlags.NotEditable | HideFlags.HideInInspector;	
+				#endif
 				addToParent ();				
 		}
 	
@@ -124,7 +128,9 @@ public class UIGameObject : MonoBehaviour
 	
 		protected virtual void OnDestroy ()
 		{
+				#if UNITY_EDITOR
 				transform.hideFlags = HideFlags.None;	
+				#endif
 				removeFromParent ();
 				layoutDatas.Clear ();
 				layouts.Clear ();
@@ -606,6 +612,11 @@ public class UIGameObject : MonoBehaviour
 						layout.Layout ();
 				}
 				ignoreChildChanges = false;
+				
+				for (int i = 0; i <children.Count; i++) {
+						UIGameObject child = children [i];
+						child.updateLayout ();
+				}
 		}
 			
 		///////////////////////////////////////////////////////////////////////////////////////////////////

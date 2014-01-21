@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,7 +9,7 @@ public class UIButton : UIGameObject
 	
 	#if UNITY_EDITOR
 	
-		[MenuItem ("UI/UIButton")]
+		[UnityEditor.MenuItem ("UI/UIButton")]
 		public static GameObject CreateUIButton ()
 		{
 				GameObject button = new GameObject ("GameObject");
@@ -22,7 +21,7 @@ public class UIButton : UIGameObject
 							
 				button.AddComponent<UIStackLayout> ();
 				
-				button.transform.parent = Selection.activeTransform;
+				button.transform.parent = UnityEditor.Selection.activeTransform;
 				
 				GameObject normalSkin = UIImage.CreateUIImage ();
 				normalSkin.name = "0.normal-skin";

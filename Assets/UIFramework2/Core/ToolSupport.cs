@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
-using UnityEditor;
+
 using System.Collections;
 using System;
 using System.Reflection;
-
+#if UNITY_EDITOR
 public static class ToolSupport
 {
-
 		public static bool Hidden {
 			
 				get {
 				
-						Type type = typeof(Tools);
+						Type type = typeof(UnityEditor.Tools);
 				
 						FieldInfo field = type.GetField ("s_Hidden", BindingFlags.NonPublic | BindingFlags.Static);
 				
@@ -21,7 +20,7 @@ public static class ToolSupport
 			
 				set {
 				
-						Type type = typeof(Tools);
+						Type type = typeof(UnityEditor.Tools);
 				
 						FieldInfo field = type.GetField ("s_Hidden", BindingFlags.NonPublic | BindingFlags.Static);
 				
@@ -33,3 +32,4 @@ public static class ToolSupport
 		
 	
 }
+#endif

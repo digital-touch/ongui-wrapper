@@ -19,6 +19,14 @@ public class AnchorUILayout : UILayout
 						if (!child.includeInLayout) {
 								continue;
 						}
+
+						if (!child.enabled) {
+								continue;
+						}
+
+						if (!child.gameObject.activeSelf) {
+								continue;
+						}
 						
 						AnchorUILayoutData data = child.GetComponent<AnchorUILayoutData> ();
 						

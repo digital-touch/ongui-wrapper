@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEditor;
+
 using System.Collections;
 
 public class UIScreenNavigator : UIGameObject
@@ -8,7 +8,7 @@ public class UIScreenNavigator : UIGameObject
 	
 	#if UNITY_EDITOR
 	
-		[MenuItem("UI/UIScreenNavigator")]
+		[UnityEditor.MenuItem("UI/UIScreenNavigator")]
 		public static GameObject createUIScreenNavigator ()
 		{
 				GameObject widget = new GameObject ("UIScreenNavigator");
@@ -16,7 +16,7 @@ public class UIScreenNavigator : UIGameObject
 			
 				widget.AddComponent<UIScreenNavigator> ();				
 				widget.AddComponent<FitToScreenUILayout> ();								
-				widget.transform.parent = Selection.activeTransform;
+				widget.transform.parent = UnityEditor.Selection.activeTransform;
 				return widget;
 		}
 	

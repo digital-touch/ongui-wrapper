@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System;
-using UnityEditor;
 
 [ExecuteInEditMode]
 public class UIFill : UIGameObject
@@ -11,7 +10,7 @@ public class UIFill : UIGameObject
 	
 	#if UNITY_EDITOR
 	
-		[MenuItem ("UI/UIFill")]
+		[UnityEditor.MenuItem ("UI/UIFill")]
 		public static GameObject CreateUIFill ()
 		{
 				GameObject gameObject = new GameObject ("GameObject");
@@ -20,7 +19,7 @@ public class UIFill : UIGameObject
 				UIFill uiFill = gameObject.AddComponent<UIFill> ();
 				uiFill.width = 100;
 				uiFill.height = 100;						
-				gameObject.transform.parent = Selection.activeTransform;
+				gameObject.transform.parent = UnityEditor.Selection.activeTransform;
 		
 				return gameObject;
 		}

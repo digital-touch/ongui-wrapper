@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System.Collections;
 using System;
 using TouchScript;
@@ -14,7 +13,7 @@ public class UIRoot : UIGameObject
 	
 		#if UNITY_EDITOR
 	
-		[MenuItem ("UI/UIRoot")]
+		[UnityEditor.MenuItem ("UI/UIRoot")]
 		public static GameObject CreateUIRoot ()
 		{
 				GameObject gameObject = new GameObject ("GameObject");

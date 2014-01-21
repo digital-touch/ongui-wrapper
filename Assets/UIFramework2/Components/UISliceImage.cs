@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEditor;
+
 using System.Collections;
 using System;
 
@@ -11,7 +11,7 @@ public class UISliceImage : UIImage
 	
 	#if UNITY_EDITOR
 	
-		[MenuItem ("UI/UISliceImage")]
+		[UnityEditor.MenuItem ("UI/UISliceImage")]
 		public static GameObject CreateUISliceImage ()
 		{
 				GameObject slice = new GameObject ("GameObject");
@@ -21,7 +21,7 @@ public class UISliceImage : UIImage
 				uiImage.width = 100;
 				uiImage.height = 100;
 						
-				slice.transform.parent = Selection.activeTransform;						
+				slice.transform.parent = UnityEditor.Selection.activeTransform;						
 				return slice;
 		}
 	#endif	
