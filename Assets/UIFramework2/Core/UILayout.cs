@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 [ExecuteInEditMode]
-public abstract class UILayout : MonoBehaviour
+public abstract class UILayout : BindableObject
 {
 
 		public Action ChangedEvent;

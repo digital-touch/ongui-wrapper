@@ -65,13 +65,22 @@ public class UIRoot : UIGameObject
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		override protected void Update ()
+		protected void FixedUpdate ()
 		{
-				UITweener.Advance ();
+				if (UITweener.numTweens > 0) {
+						UITweener.Advance ();
+						#if UNITY_EDITOR
+						//UnityEditor.EditorUtility.SetDirty (gameObject);
+						#endif
+				}
+		}
+				
+		override protected void Update ()
+		{		
 				if (Screen.width != width || Screen.height != height) {
 						updateLayout ();
 				}
-				base.Update ();
+				base.Update ();	
 		}		
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////

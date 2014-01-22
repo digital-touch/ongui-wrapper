@@ -31,6 +31,8 @@ public class ScaleUILayoutEditor : UILayoutEditor
 
 				if (scaleUILayoutFoldout) {
 		
+						EditorGUI.indentLevel++;
+			
 						//		if (GUILayout.Button ("Aspect from image")) {
 						//layout.aspectRatio = ui
 						//}
@@ -40,6 +42,8 @@ public class ScaleUILayoutEditor : UILayoutEditor
 								layout.width = EditorGUILayout.IntField ("Width", layout.width);						
 								layout.height = EditorGUILayout.IntField ("Height", layout.height);						
 						}
+						
+						EditorGUI.indentLevel--;
 				}
 		}			
 }

@@ -3,7 +3,6 @@ using UnityEditor;
 using System.Collections;
 
 [CustomEditor(typeof(UIImage))]
-
 public class UIImageEditor : UIGameObjectEditor
 {
 		///////////////////////////////////////////////////////////////////////////////////////////////////

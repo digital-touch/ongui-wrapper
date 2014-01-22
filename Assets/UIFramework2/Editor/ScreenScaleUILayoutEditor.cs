@@ -30,6 +30,8 @@ public class ScreenScaleUILayoutEditor : UILayoutEditor
 			
 				if (screenScaleUILayoutFoldout) {
 				
+						EditorGUI.indentLevel++;
+			
 						EditorGUILayout.LabelField ("Scale Factor", layout.scaleFactor.ToString ());
 						EditorGUILayout.Space ();
 						layout.unscaledWidth = EditorGUILayout.IntField ("Unscaled Width", layout.unscaledWidth);						
@@ -39,6 +41,8 @@ public class ScreenScaleUILayoutEditor : UILayoutEditor
 						layout.designWidth = (float)EditorGUILayout.IntField ("Design Width", (int)layout.designWidth);						
 						layout.designHeight = (float)EditorGUILayout.IntField ("Design Height", (int)layout.designHeight);						
 						layout.designPPI = (float)EditorGUILayout.IntField ("Design PPI", (int)layout.designPPI);												
+						
+						EditorGUI.indentLevel--;
 				}
 		}			
 }

@@ -26,9 +26,9 @@ public class UIScreenNavigator : UIGameObject
 	
 		public string defaultScreenID;
 		public UIScreen activeScreen;
-		public float transitionDuration = 2f;
-		public float showTransitionDelay = 1.0f;
-		public float hideTransitionDelay = 1.0f;
+		public float transitionDuration = 0.2f;
+		public float showTransitionDelay = 0f;
+		public float hideTransitionDelay = 0f;
 		public EaseDelegate showEasingFunction = Quad.EaseOut;
 		public EaseDelegate hideEasingFunction = Quad.EaseOut;
 		
@@ -58,17 +58,16 @@ public class UIScreenNavigator : UIGameObject
 		}
 	
 		public UIScreen showScreen (string screenID, UIScreenTransitionType transitionType)
-		{		
+		{						
 				UIScreen screen = activeScreen = getScreenByID (screenID);		
-				UIGameObject screenTransform = screen.GetComponent<UIGameObject> ();
 				
 				if (transitionType == UIScreenTransitionType.RIGHT_TO_LEFT) {
-						screenTransform.x = width;		 
+						screen.x = width;		 
 				} else {
-						screenTransform.x = -width; 
+						screen.x = -width; 
 				}
 		
-				screenTransform.isVisible = true;		
+				screen.isVisible = true;		
 		
 				if (showTween != null) {			
 						showTween.Stop ();						
@@ -79,8 +78,8 @@ public class UIScreenNavigator : UIGameObject
 		
 				
 				showTween = screen.gameObject.AddComponent<MoveTween> ();
-				showTween.valueFrom = new Vector2 (screenTransform.x, screenTransform.y);
-				showTween.valueTo = new Vector2 (0, screenTransform.y);
+				showTween.valueFrom = new Vector2 (screen.x, screen.y);
+				showTween.valueTo = new Vector2 (0, screen.y);
 				showTween.duration = transitionDuration;
 				showTween.delay = showTransitionDelay;
 				showTween.easingFunction = showEasingFunction;					

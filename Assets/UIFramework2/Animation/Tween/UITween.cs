@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public abstract class UITween : MonoBehaviour
+public abstract class UITween : BindableObject
 {	
 		public Action<UITween> UpdatedEvent;
 		public Action<UITween> StartedEvent;

@@ -28,8 +28,12 @@ public class UIRootEditor : Editor
 			
 				if (rootFoldout) {
 										
+						EditorGUI.indentLevel++;
+			
 						EditorGUILayout.LabelField ("Width", root.width.ToString ());
 						EditorGUILayout.LabelField ("Height", root.height.ToString ());
+						
+						EditorGUI.indentLevel--;
 				}
 		}			
 		

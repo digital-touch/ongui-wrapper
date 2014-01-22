@@ -29,9 +29,13 @@ public class UILayoutEditor : Editor
 		
 				if (layoutFoldout) {
 			
+						EditorGUI.indentLevel++;
+			
 						EditorGUILayout.LabelField ("Content Size:", EditorStyles.boldLabel);
 						EditorGUILayout.LabelField ("Width", layout.contentSize.x.ToString ());
 						EditorGUILayout.LabelField ("Height", layout.contentSize.y.ToString ());
+						
+						EditorGUI.indentLevel--;
 				}
 		}			
 		

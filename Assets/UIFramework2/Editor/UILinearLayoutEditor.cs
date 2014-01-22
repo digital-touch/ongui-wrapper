@@ -14,7 +14,8 @@ public class UILinearLayoutEditor : UILayoutEditor
 				drawUILinearLayoutInspector ();
 		
 				if (GUI.changed) {
-						EditorUtility.SetDirty (target);
+						UILinearLayout layout = (UILinearLayout)target;			
+						EditorUtility.SetDirty (layout.transform.root.gameObject);
 				}
 		}
 	
@@ -31,7 +32,11 @@ public class UILinearLayoutEditor : UILayoutEditor
 		
 				if (uilinearLayoutFoldout) {
 			
+						EditorGUI.indentLevel++;
+			
 						layout.gap = EditorGUILayout.IntField ("Gap:", layout.gap);
+						
+						EditorGUI.indentLevel--;
 						
 				}
 		}			

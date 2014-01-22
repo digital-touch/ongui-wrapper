@@ -37,8 +37,10 @@ public class UIFillEditor : UIGameObjectEditor
 		
 				if (fillFoldout) {
 			
+						EditorGUI.indentLevel++;
 						fill.textureSize = EditorGUILayout.IntField ("Size:", fill.textureSize);
 						fill.textureColor = EditorGUILayout.ColorField ("Color:", fill.textureColor);
+						EditorGUI.indentLevel--;
 			
 				}
 		}

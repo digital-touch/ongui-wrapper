@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System;
 
 [ExecuteInEditMode]
-public class UIGameObject : MonoBehaviour
+public class UIGameObject : BindableObject
 {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +67,7 @@ public class UIGameObject : MonoBehaviour
 	
 		Transform _parent;
 
+		[BindableAttribute]
 		public Transform parent {
 				get {
 						return _parent;
@@ -80,6 +81,7 @@ public class UIGameObject : MonoBehaviour
 	
 		UIGameObject _parentUIGameObject;
 
+		[BindableAttribute]
 		public UIGameObject parentUIGameObject {
 				get {
 						return _parentUIGameObject;
@@ -173,7 +175,8 @@ public class UIGameObject : MonoBehaviour
 		[SerializeField]
 		int
 				_depth = -1;
-
+				
+		[BindableAttribute]
 		public int depth {
 				get {
 						return _depth;
@@ -217,7 +220,7 @@ public class UIGameObject : MonoBehaviour
 				}
 				updateLayout ();
 		}
-		
+				
 		public int numChildren {
 				get {
 						return children.Count;
@@ -254,7 +257,8 @@ public class UIGameObject : MonoBehaviour
 		[SerializeField]
 		bool
 				_clipContent = false;
-
+				
+		[BindableAttribute]
 		public bool clipContent {
 				get {
 						return _clipContent;
@@ -435,6 +439,7 @@ public class UIGameObject : MonoBehaviour
 		protected Rect
 				screenRect = new Rect ();
 		
+		[BindableAttribute]
 		public int x {
 				set {
 						if (screenRect.x == value) {
@@ -453,6 +458,7 @@ public class UIGameObject : MonoBehaviour
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
+		[BindableAttribute]
 		public int y {
 				set {
 						if (screenRect.y == value) {
@@ -471,6 +477,7 @@ public class UIGameObject : MonoBehaviour
 		
 		Vector2 _position = Vector2.zero;
 	
+		[BindableAttribute]	
 		public Vector2 position {
 				get {
 						return _position;
@@ -479,6 +486,7 @@ public class UIGameObject : MonoBehaviour
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
+		[BindableAttribute]
 		public int width {
 				set {
 						if (screenRect.width == value) {
@@ -497,6 +505,7 @@ public class UIGameObject : MonoBehaviour
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
+		[BindableAttribute]
 		public int height {
 				set {
 						if (screenRect.height == value) {
@@ -538,28 +547,53 @@ public class UIGameObject : MonoBehaviour
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public void setSize (int width, int height)
+		public void setSize (int width, int height, bool updateLayoutNow)
 		{
 				bool resized = false;
 				if (screenRect.width != width) {
 						screenRect.width = width;
 						resized = true;
 				}
+				
 				if (screenRect.height != height) {
 						screenRect.height = height;
 						resized = true;
 				}
+				
 				if (!resized) {
 						return;
 				}
+		
+				if (updateLayoutNow) {
+						updateLayout ();
+				}
+			
 				if (ResizeEvent != null) {
 						ResizeEvent (this);
 				}
+		
+		}
+		public void setSize (int width, int height)
+		{
+				this.setSize (width, height, true);
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public bool includeInLayout = true;
+		[SerializeField]	
+		bool
+				_includeInLayout = true;
+
+		[BindableAttribute]
+		public bool includeInLayout {
+				get {
+						return _includeInLayout;
+				}
+				set {
+						_includeInLayout = value;
+						updateLayout ();
+				}
+		}
                 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -603,6 +637,7 @@ public class UIGameObject : MonoBehaviour
 		
 		public void  updateLayout ()
 		{
+		
 				if (layouts.Count == 0) {
 						return;
 				}
@@ -690,6 +725,7 @@ public class UIGameObject : MonoBehaviour
 		float
 				_alpha = 1;
 
+		[BindableAttribute]
 		public float alpha {
 				get {
 						return _alpha;
@@ -705,6 +741,7 @@ public class UIGameObject : MonoBehaviour
 		Color
 				_color = Color.white;
 
+		[BindableAttribute]
 		public Color color {
 				get {
 						return _color;
@@ -720,6 +757,7 @@ public class UIGameObject : MonoBehaviour
 		bool
 				_isVisible = true;
 		
+		[BindableAttribute]
 		public bool isVisible {
 				get {
 						return _isVisible;
@@ -730,8 +768,9 @@ public class UIGameObject : MonoBehaviour
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		public List<string> styleNames = new List<string> ();
+				
+		public List<string>
+				styleNames = new List<string> ();
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -739,6 +778,7 @@ public class UIGameObject : MonoBehaviour
 		float
 				_rotation = 0;
 
+		[BindableAttribute]
 		public float rotation {
 				get {
 						return _rotation;
@@ -754,6 +794,7 @@ public class UIGameObject : MonoBehaviour
 		float
 				_scaleX = 1;
 
+		[BindableAttribute]
 		public float scaleX {
 				get {
 						return _scaleX;
@@ -769,6 +810,7 @@ public class UIGameObject : MonoBehaviour
 		float
 				_scaleY = 1;
 
+		[BindableAttribute]
 		public float scaleY {
 				get {
 						return _scaleY;
@@ -784,6 +826,7 @@ public class UIGameObject : MonoBehaviour
 		Vector2
 				_rotationPivot = Vector2.zero;
 		
+		[BindableAttribute]
 		public Vector2 rotationPivot {
 				get {
 						return _rotationPivot;
@@ -800,6 +843,7 @@ public class UIGameObject : MonoBehaviour
 		PivotType
 				_rotationPivotType = PivotType.NONE;
 
+		[BindableAttribute]
 		public PivotType rotationPivotType {
 				get {
 						return _rotationPivotType;
@@ -815,6 +859,7 @@ public class UIGameObject : MonoBehaviour
 		Vector2
 				_scalePivot = Vector2.zero;
 		
+		[BindableAttribute]
 		public Vector2 scalePivot {
 				get {
 						return _scalePivot;
@@ -831,6 +876,7 @@ public class UIGameObject : MonoBehaviour
 		PivotType
 				_scalePivotType = PivotType.NONE;
 	
+		[BindableAttribute]
 		public PivotType scalePivotType {
 				get {
 						return _scalePivotType;
@@ -846,6 +892,7 @@ public class UIGameObject : MonoBehaviour
 		bool
 				_isTouchable = true;
 
+		[BindableAttribute]
 		public bool isTouchable {
 				get {
 						return _isTouchable;
@@ -861,6 +908,7 @@ public class UIGameObject : MonoBehaviour
 		bool
 				_isQuickHitAreaEnabled = true;
 
+		[BindableAttribute]
 		public bool isQuickHitAreaEnabled {
 				get {
 						return _isQuickHitAreaEnabled;

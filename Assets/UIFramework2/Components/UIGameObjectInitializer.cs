@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class UIGameObjectInitializer : MonoBehaviour
+public class UIGameObjectInitializer : BindableObject
 {
 
 		public Type target;		

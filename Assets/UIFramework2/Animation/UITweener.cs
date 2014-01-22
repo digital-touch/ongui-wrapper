@@ -8,6 +8,11 @@ public static class UITweener
 	
 		private static float elapsedTime = 0;
                 
+		public static int numTweens {
+				get {
+						return tweens.Count;
+				}
+		}
 		public static void Add (UITween tween)
 		{
 				tweens.Add (tween);				
