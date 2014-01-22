@@ -8,13 +8,9 @@ public class UITextStyle: MonoBehaviour
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public Action<UITextStyle> ChangeEvent;
-	
 		public void Change ()
 		{
-				if (ChangeEvent != null) {
-						ChangeEvent (this);
-				}							
+				uiGameObject.invalidate ();							
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,46 +167,18 @@ public class UITextStyle: MonoBehaviour
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		
+		protected UIGameObject uiGameObject;
+	
 		protected virtual void Awake ()
 		{
-				addToUIGameObject ();
+				uiGameObject = GetComponent<UIGameObject> ();
 		}
-	
-		Transform parent;	
-	
-		protected virtual void Update ()
-		{		
-				if (parent == transform.parent) {
-						return;
-				}
-				removeFromUIGameObject ();						
-				addToUIGameObject ();				
-		}		
 	
 		protected virtual void OnDestroy ()
 		{
-				removeFromUIGameObject ();
+				uiGameObject = null;
 		}
 	
-		protected UILabel uiGameObject;
 	
-		void addToUIGameObject ()
-		{
-				parent = transform.parent;
-				UILabel newUIGameObject = transform.GetComponent<UILabel> ();
-				if (newUIGameObject == null) {
-						return;
-				}
-				uiGameObject = newUIGameObject;
-				uiGameObject.textStyle = this;				
-		}
-	
-		void removeFromUIGameObject ()
-		{
-				if (uiGameObject != null) {						
-						uiGameObject.textStyle = null;
-				}
-				uiGameObject = null;	
-				parent = null;			
-		}
+		
 }

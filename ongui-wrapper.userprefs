@@ -1,31 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UIFramework2\Components\UILabel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UIFramework2\Core\UIRoot.cs">
     <Files>
-      <File FileName="Assets\UIFramework2\Layout\CenterContentUILayout.cs" Line="19" Column="40" />
-      <File FileName="Assets\UIFramework2\Data\BindProperty.cs" Line="25" Column="1" />
-      <File FileName="Assets\UIFramework2\Core\UILayoutData.cs" Line="6" Column="43" />
-      <File FileName="Assets\UIFramework2\Core\TouchScriptUIUtility.cs" Line="25" Column="1" />
-      <File FileName="Assets\UIFramework2\Core\TouchDebugger.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework2\Core\ToolSupport.cs" Line="35" Column="7" />
-      <File FileName="Assets\UIFramework2\Animation\UITweener.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework2\Components\UILabel.cs" Line="70" Column="3" />
-      <File FileName="Assets\UIFramework2\Layout\FitToScreenUILayout.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIFramework2\Layout\ScaleUILayout.cs" Line="40" Column="2" />
-      <File FileName="Assets\ComponentExamples\ScreenNavigatorExample.cs" Line="37" Column="25" />
-      <File FileName="Assets\UIFramework2\Components\UIScreenNavigator.cs" Line="82" Column="5" />
-      <File FileName="Assets\UIFramework2\Editor\UIHorizontalLayoutEditor.cs" Line="7" Column="49" />
-      <File FileName="Assets\UIFramework2\Editor\UILinearLayoutEditor.cs" Line="37" Column="16" />
-      <File FileName="Assets\UIFramework2\Layout\UILinearLayout.cs" Line="18" Column="20" />
+      <File FileName="Assets\UIFramework2\Components\UILabel.cs" Line="88" Column="3" />
+      <File FileName="Assets\UIFramework2\Components\UIImage.cs" Line="1" Column="1" />
+      <File FileName="Assets\UIFramework2\Core\UIRoot.cs" Line="74" Column="11" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework2\Core\UILayoutData.cs" Line="10" Column="4" />
+      <File FileName="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework2\Layout\AnchorUILayoutData.cs" Line="1" Column="1" />
+      <File FileName="Assets\UIFramework2\Layout\AnchorUILayout.cs" Line="65" Column="19" />
+      <File FileName="Assets\UIFramework2\Core\UILayout.cs" Line="31" Column="3" />
+      <File FileName="Assets\UIFramework2\Components\UITextStyle.cs" Line="107" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint enabled="false" file="C:\Users\Peter\Documents\ongui_wrapper5\Assets\Layout\AnchorUILayout.cs" line="82" />
-      <Breakpoint enabled="false" file="C:\Users\Peter\Documents\ongui_wrapper5\Assets\UIGameObject.cs" line="478" />
-      <Breakpoint enabled="false" file="C:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework2\Animation\Tween\FloatTween.cs" line="33" />
-      <Breakpoint file="c:\Users\Peter\Downloads\ongui-wrapper\Assets\UIFramework2\Animation\Tween\AlphaTween.cs" line="9" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

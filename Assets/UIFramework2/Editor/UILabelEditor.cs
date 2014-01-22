@@ -35,8 +35,6 @@ public class UILabelEditor : UIGameObjectEditor
 						label.text = EditorGUILayout.TextArea (label.text);
 						GUI.color = oldColor;
 			
-						label.textStyle = (UITextStyle)EditorGUILayout.ObjectField ("TextStyle", label.textStyle, typeof(UITextStyle), true);
-						
 						label.explicitWidth = EditorGUILayout.Toggle ("Explicit Width", label.explicitWidth);
 						
 						EditorGUI.indentLevel--;			

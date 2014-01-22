@@ -14,13 +14,13 @@ public class UIImage : UIGameObject
 		public static GameObject CreateUIImage ()
 		{
 				GameObject image = new GameObject ("GameObject");
+				image.transform.parent = UnityEditor.Selection.activeTransform;						
 				image.name = "UIImage";				
 				
 				UIImage uiImage = image.AddComponent<UIImage> ();
 				uiImage.width = 100;
 				uiImage.height = 100;				
 			
-				image.transform.parent = UnityEditor.Selection.activeTransform;						
 				
 				return image;
 		}
@@ -44,6 +44,7 @@ public class UIImage : UIGameObject
 								return;
 						}
 						_image = value;
+						invalidate ();
 						if (ImageChangedEvent != null) {
 								ImageChangedEvent (this);
 						}
@@ -70,6 +71,7 @@ public class UIImage : UIGameObject
 								return;
 						}
 						_scaleMode = value;
+						invalidate ();
 						if (ScaleModeChangedEvent != null) {
 								ScaleModeChangedEvent (this);
 						}
@@ -97,6 +99,7 @@ public class UIImage : UIGameObject
 								return;
 						}
 						_alphaBlend = value;
+						invalidate ();
 						if (AlphaBlendChangedEvent != null) {
 								AlphaBlendChangedEvent (this);
 						}
@@ -122,6 +125,7 @@ public class UIImage : UIGameObject
 								return;
 						}
 						_imageAspect = value;
+						invalidate ();
 						if (ImageAspectChangedEvent != null) {
 								ImageAspectChangedEvent (this);
 						}

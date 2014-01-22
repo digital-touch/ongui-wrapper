@@ -6,55 +6,24 @@ using System;
 public class UILayoutData : BindableObject
 {
 
-		public Action ChangedEvent;
-	
-		protected void FireChangedEvent ()
-		{
-				if (ChangedEvent != null) {
-						ChangedEvent ();
-				}
+		protected void change ()
+		{		
+				uiGameObject.parentUIGameObject.invalidate ();				
 		}
 	
 		protected virtual void Awake ()
 		{
-				addToUIGameObject ();
+				uiGameObject = GetComponent<UIGameObject> ();
+				
 		}
-	
-		Transform parent;	
-	
-		protected virtual void Update ()
-		{
-				if (parent == transform.parent) {
-						return;
-				}
-				removeFromUIGameObject ();						
-				addToUIGameObject ();				
-		}		
+			
+		protected UIGameObject uiGameObject;
 	
 		protected virtual void OnDestroy ()
 		{
-				removeFromUIGameObject ();
+				uiGameObject = null;
 		}
 	
-		protected UIGameObject uiGameObject;
 	
-		void addToUIGameObject ()
-		{
-				parent = transform.parent;
-				UIGameObject newUIGameObject = GetComponent<UIGameObject> ();
-				if (newUIGameObject == null) {
-						return;
-				}
-				uiGameObject = newUIGameObject;
-				uiGameObject.addLayoutData (this);				
-		}
-	
-		void removeFromUIGameObject ()
-		{
-				if (uiGameObject != null) {						
-						uiGameObject.removeLayoutData (this);						
-				}
-				uiGameObject = null;	
-				parent = null;			
-		}
+		
 }

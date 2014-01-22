@@ -6,6 +6,10 @@ public class AnchorUILayout : UILayout
 
 		public override void Layout ()
 		{			
+				if (uiGameObject == null) {					
+						return;
+				}		
+				
 				contentSize.Set (0, 0);
 		
 				UIGameObject targetTransform;

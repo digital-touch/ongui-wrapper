@@ -111,7 +111,12 @@ public class UIGameObject : BindableObject
 				#if UNITY_EDITOR
 				transform.hideFlags = HideFlags.NotEditable | HideFlags.HideInInspector;	
 				#endif
-				addToParent ();				
+				addToParent ();								
+		}
+		
+		protected virtual void Start ()
+		{
+				invalidate ();	
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,8 +127,7 @@ public class UIGameObject : BindableObject
 						return;
 				}
 				removeFromParent ();
-				addToParent ();
-		
+				addToParent ();		
 		}	
 			
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,8 +138,7 @@ public class UIGameObject : BindableObject
 				transform.hideFlags = HideFlags.None;	
 				#endif
 				removeFromParent ();
-				layoutDatas.Clear ();
-				layouts.Clear ();
+				
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,12 +202,12 @@ public class UIGameObject : BindableObject
 				children.Add (child);			
 				child.MoveEvent += onChildMove;	
 				child.ResizeEvent += onChildResize;
-				child.LayoutDataChangedEvent += onChildLayoutDataChanged;
+				
 				if (root != null) {
 						child.root = root;
 						root.FireChildAddedEvent (child);
 				}							
-				updateLayout ();
+				invalidate ();
 		}
 		
 		public void removeChild (UIGameObject child)
@@ -213,12 +216,12 @@ public class UIGameObject : BindableObject
 				children.Remove (child);
 				child.MoveEvent -= onChildMove;	
 				child.ResizeEvent -= onChildResize;
-				child.LayoutDataChangedEvent -= onChildLayoutDataChanged;
+				
 				if (child.root != null) {
 						child.root.FireChildRemovedEvent (child);
 						child.root = null;
 				}
-				updateLayout ();
+				invalidate ();
 		}
 				
 		public int numChildren {
@@ -264,7 +267,11 @@ public class UIGameObject : BindableObject
 						return _clipContent;
 				}
 				set {
+						if (_clipContent == value) {
+								return;
+						}
 						_clipContent = value;
+						invalidate ();
 				}
 		}		
 	
@@ -334,8 +341,7 @@ public class UIGameObject : BindableObject
 			
 						
 				}
-				
-				
+								
 				GUI.EndGroup ();
 				
 		}
@@ -447,6 +453,7 @@ public class UIGameObject : BindableObject
 						}
 						screenRect.x = value;
 						_position.x = value;
+						
 						if (MoveEvent != null) {
 								MoveEvent (this);
 						}
@@ -466,6 +473,7 @@ public class UIGameObject : BindableObject
 						}
 						screenRect.y = value;
 						_position.y = value;
+						
 						if (MoveEvent != null) {
 								MoveEvent (this);
 						}
@@ -493,7 +501,7 @@ public class UIGameObject : BindableObject
 								return;
 						}
 						screenRect.width = value;
-						updateLayout ();
+						
 						if (ResizeEvent != null) {
 								ResizeEvent (this);
 						}
@@ -512,7 +520,7 @@ public class UIGameObject : BindableObject
 								return;
 						}
 						screenRect.height = value;
-						updateLayout ();
+						
 						if (ResizeEvent != null) {
 								ResizeEvent (this);
 						}
@@ -524,6 +532,7 @@ public class UIGameObject : BindableObject
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
+		
 		public void setPosition (int x, int y)
 		{
 				bool moved = false;
@@ -543,11 +552,12 @@ public class UIGameObject : BindableObject
 				if (MoveEvent != null) {
 						MoveEvent (this);
 				}
+				
 		}
-	
+    
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public void setSize (int width, int height, bool updateLayoutNow)
+		public void setSize (int width, int height)
 		{
 				bool resized = false;
 				if (screenRect.width != width) {
@@ -564,19 +574,15 @@ public class UIGameObject : BindableObject
 						return;
 				}
 		
-				if (updateLayoutNow) {
-						updateLayout ();
-				}
-			
 				if (ResizeEvent != null) {
 						ResizeEvent (this);
 				}
+			
+				
 		
 		}
-		public void setSize (int width, int height)
-		{
-				this.setSize (width, height, true);
-		}
+		
+		
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -590,115 +596,61 @@ public class UIGameObject : BindableObject
 						return _includeInLayout;
 				}
 				set {
+						if (_includeInLayout == value) {
+								return;
+						}
 						_includeInLayout = value;
-						updateLayout ();
+						invalidate ();
 				}
 		}
                 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		List<UILayout> layouts = new List<UILayout> ();
-
-		public void addLayout (UILayout layout)
-		{
-				layout.ChangedEvent += onLayoutChange;
-				layouts.Add (layout);
-				updateLayout ();
-		}
 		
-		public void removeLayout (UILayout layout)
+		public void  invalidate ()
 		{
-				layout.ChangedEvent -= onLayoutChange;
-				layouts.Remove (layout);
-				updateLayout ();
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		List<UILayoutData> layoutDatas = new List<UILayoutData> ();
-	
-	
-		public void addLayoutData (UILayoutData layoutData)
-		{
-		
-				layoutDatas.Add (layoutData);
-				layoutData.ChangedEvent += onLayoutDataChange;	
-				FireLayoutDataChangedEvent ();
-		}
-	
-		public void removeLayoutData (UILayoutData layoutData)
-		{
-				layoutData.ChangedEvent -= onLayoutDataChange;
-				layoutDatas.Remove (layoutData);
-				FireLayoutDataChangedEvent ();
-		}
-	
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		public void  updateLayout ()
-		{
-		
-				if (layouts.Count == 0) {
+				if (root == null) {
 						return;
 				}
+				
+				root.invalidate ();				
+		}
+	
+		public virtual void  validate ()
+		{
+				//Debug.Log (this + " validate");
+				validateChildren ();
+				validateLayout ();
+		}
+
+		void validateChildren ()
+		{
+				for (int i = 0; i < children.Count; i++) {
+						UIGameObject child = children [i];
+						child.validate ();
+				}
+		}
+    
+		bool ignoreChildChanges = false;
+				
+		protected void validateLayout ()
+		{
+				UILayout[] layouts = GetComponents<UILayout> ();
+				
+				if (layouts.Length == 0) {
+						return;
+				}
+				
 				ignoreChildChanges = true;
-				for (int i = 0; i < layouts.Count; i++) {
+				
+				for (int i = 0; i < layouts.Length; i++) {
 						UILayout layout = layouts [i];
 						layout.Layout ();
 				}
+				
 				ignoreChildChanges = false;
-				
-				for (int i = 0; i <children.Count; i++) {
-						UIGameObject child = children [i];
-						child.updateLayout ();
-				}
+								
 		}
 			
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-			
-		void onLayoutDataChange ()
-		{
-				FireLayoutDataChangedEvent ();
-		}
-	
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		public Action LayoutDataChangedEvent;
-				
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		protected void FireLayoutDataChangedEvent ()
-		{
-				if (LayoutDataChangedEvent != null) {
-						LayoutDataChangedEvent ();
-				}
-		}
-    
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	    
-		bool ignoreChildChanges = false;
-    
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		void onLayoutChange ()
-		{
-				if (ignoreChildChanges) {
-						return;
-				}
-				updateLayout ();
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		void onChildLayoutDataChanged ()
-		{
-				if (ignoreChildChanges) {
-						return;
-				}
-				updateLayout ();
-		}
-		
 		///////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 		void onChildMove (UIGameObject child)
@@ -706,7 +658,7 @@ public class UIGameObject : BindableObject
 				if (ignoreChildChanges) {
 						return;
 				}
-				updateLayout ();
+				invalidate ();
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////	
@@ -716,7 +668,7 @@ public class UIGameObject : BindableObject
 				if (ignoreChildChanges) {
 						return;
 				}
-				updateLayout ();
+				invalidate ();
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -731,7 +683,11 @@ public class UIGameObject : BindableObject
 						return _alpha;
 				}
 				set {
+						if (_alpha == value) {
+								return;
+						}
 						_alpha = value;
+						invalidate ();
 				}
 		}
 		
@@ -747,7 +703,11 @@ public class UIGameObject : BindableObject
 						return _color;
 				}
 				set {
+						if (_color == value) {
+								return;
+						}
 						_color = value;
+						invalidate ();
 				}
 		}
 		
@@ -763,7 +723,11 @@ public class UIGameObject : BindableObject
 						return _isVisible;
 				}
 				set {
+						if (_isVisible == value) {
+								return;
+						}
 						_isVisible = value;
+						invalidate ();
 				}
 		}
 		
@@ -784,7 +748,11 @@ public class UIGameObject : BindableObject
 						return _rotation;
 				}
 				set {
+						if (_rotation == value) {
+								return;
+						}
 						_rotation = value;
+						invalidate ();
 				}
 		}
 			
@@ -800,7 +768,11 @@ public class UIGameObject : BindableObject
 						return _scaleX;
 				}
 				set {
+						if (_scaleX == value) {
+								return;
+						}
 						_scaleX = value;
+						invalidate ();
 				}
 		}
 		
@@ -816,7 +788,11 @@ public class UIGameObject : BindableObject
 						return _scaleY;
 				}
 				set {
+						if (_scaleY == value) {
+								return;
+						}
 						_scaleY = value;
+						invalidate ();
 				}
 		}
 		
@@ -832,7 +808,11 @@ public class UIGameObject : BindableObject
 						return _rotationPivot;
 				}
 				set {
+						if (_rotationPivot == value) {
+								return;
+						}
 						_rotationPivot = value;
+						invalidate ();
 				}
 		}
 
@@ -849,7 +829,11 @@ public class UIGameObject : BindableObject
 						return _rotationPivotType;
 				}
 				set {
+						if (_rotationPivotType == value) {
+								return;
+						}
 						_rotationPivotType = value;
+						invalidate ();
 				}
 		}
 		
@@ -865,7 +849,11 @@ public class UIGameObject : BindableObject
 						return _scalePivot;
 				}
 				set {
+						if (_scalePivot == value) {
+								return;
+						}
 						_scalePivot = value;
+						invalidate ();
 				}
 		}
 
@@ -882,7 +870,11 @@ public class UIGameObject : BindableObject
 						return _scalePivotType;
 				}
 				set {
+						if (_scalePivotType == value) {
+								return;
+						}
 						_scalePivotType = value;
+						invalidate ();
 				}
 		}
 		
@@ -898,7 +890,11 @@ public class UIGameObject : BindableObject
 						return _isTouchable;
 				}
 				set {
+						if (_isTouchable == value) {
+								return;
+						}
 						_isTouchable = value;
+						invalidate ();
 				}
 		}	
 	
@@ -914,7 +910,11 @@ public class UIGameObject : BindableObject
 						return _isQuickHitAreaEnabled;
 				}
 				set {
+						if (_isQuickHitAreaEnabled == value) {
+								return;
+						}
 						_isQuickHitAreaEnabled = value;
+						invalidate ();
 				}
 		}	
 	

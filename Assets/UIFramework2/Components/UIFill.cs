@@ -14,12 +14,12 @@ public class UIFill : UIGameObject
 		public static GameObject CreateUIFill ()
 		{
 				GameObject gameObject = new GameObject ("GameObject");
+				gameObject.transform.parent = UnityEditor.Selection.activeTransform;
 				gameObject.name = "UIFill";
 				
 				UIFill uiFill = gameObject.AddComponent<UIFill> ();
 				uiFill.width = 100;
 				uiFill.height = 100;						
-				gameObject.transform.parent = UnityEditor.Selection.activeTransform;
 		
 				return gameObject;
 		}
@@ -46,7 +46,7 @@ public class UIFill : UIGameObject
 						if (TextureColorChangedEvent != null) {
 								TextureColorChangedEvent ();
 						}	
-						updateTexture ();
+						validateTexture ();
 				}
 		}
 		
@@ -72,7 +72,7 @@ public class UIFill : UIGameObject
 						if (TextureSizeChangedEvent != null) {
 								TextureSizeChangedEvent ();
 						}						
-						updateTexture ();
+						validateTexture ();
 				}
 		}
 	
@@ -97,7 +97,7 @@ public class UIFill : UIGameObject
 		override protected void Awake ()
 		{	
 				base.Awake ();
-				updateTexture ();
+				validateTexture ();
 		}	
 	
 		override protected void OnDestroy ()
@@ -122,8 +122,13 @@ public class UIFill : UIGameObject
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
+		public override void validate ()
+		{
+				validateTexture ();
+				base.validate ();
+		}
 	
-		void updateTexture ()
+		void validateTexture ()
 		{   						
 		
 				if (textureSize == 0) {
@@ -133,7 +138,7 @@ public class UIFill : UIGameObject
 						return;
 				}
 				createTexture ();
-				fillTexture ();
+				fillTexture ();			
 		}
 						
 		void createTexture ()

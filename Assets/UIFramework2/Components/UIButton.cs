@@ -13,6 +13,7 @@ public class UIButton : UIGameObject
 		public static GameObject CreateUIButton ()
 		{
 				GameObject button = new GameObject ("GameObject");
+				button.transform.parent = UnityEditor.Selection.activeTransform;
 				button.name = "UIButton";
 				
 				UIButton uiButton = button.AddComponent<UIButton> ();
@@ -21,7 +22,6 @@ public class UIButton : UIGameObject
 							
 				button.AddComponent<UIStackLayout> ();
 				
-				button.transform.parent = UnityEditor.Selection.activeTransform;
 				
 				GameObject normalSkin = UIImage.CreateUIImage ();
 				normalSkin.name = "0.normal-skin";

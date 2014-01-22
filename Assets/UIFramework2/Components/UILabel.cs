@@ -12,6 +12,7 @@ public class UILabel : UIGameObject
 		public static GameObject CreateUILabel ()
 		{
 				GameObject label = new GameObject ("GameObject");
+				label.transform.parent = UnityEditor.Selection.activeTransform;					
 				label.name = "UILabel";
 				
 				UILabel uiLabel = label.AddComponent<UILabel> ();
@@ -22,53 +23,18 @@ public class UILabel : UIGameObject
 				UITextStyle style = label.AddComponent<UITextStyle> ();
 				style.id = "default";				
 				
-				label.transform.parent = UnityEditor.Selection.activeTransform;					
 				return label;
 		}
 	#endif		
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		protected override void Awake ()
+		void validateGUIStyle ()
 		{
-				base.Awake ();
-				updateLabel ();						
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		[SerializeField]
-		UITextStyle
-				_textStyle;
-		
-		public UITextStyle textStyle {
-				get {
-						return _textStyle;
+				UITextStyle textStyle = GetComponent<UITextStyle> ();
+				if (textStyle == null) {
+						return;
 				}
-				set {
-						if (_textStyle == value) {
-								return;
-						}
-						if (_textStyle) {
-								_textStyle.ChangeEvent -= OnTextStyleChange;
-						}
-						_textStyle = value;
-						if (value) {
-								value.ChangeEvent += OnTextStyleChange;
-						}
-						updateLabel ();						
-				}
-		}
-		
-		void OnTextStyleChange (UITextStyle style)
-		{
-				updateLabel ();
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		void updateGUIStyle ()
-		{
 				style.normal.textColor = textStyle.textColor;
 				style.font = textStyle.font;
 				style.fontSize = textStyle.fontSize;
@@ -105,30 +71,22 @@ public class UILabel : UIGameObject
 						if (_text != value) {
 								_text = value;
 								content.text = value;
-								updateLabel ();
+								invalidate ();
 						}
 				}
 		}
 			
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		void updateLabel ()
-		{   				
-		
-				if (textStyle == null) {
-						return;
-				}
-				
-				updateGUIStyle ();
-				
-				measure ();				
-				updateLayout ();				
-				FireLayoutDataChangedEvent ();
+		public override void validate ()
+		{				
+						
+				validateGUIStyle ();				
+				validateSize ();																
+				base.validate ();
 		}	
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		Rect labelRectHelper = new Rect ();
 	
 		public override void draw (UIGameObject parentChild)
 		{		
@@ -137,13 +95,8 @@ public class UILabel : UIGameObject
 						return;
 				}
 				
-				if (textStyle == null) {
-						return;
-				}
-		
 				
-		
-				GUI.Label (labelRectHelper, content, style);
+				GUI.Label (screenRect, content, style);
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,26 +111,23 @@ public class UILabel : UIGameObject
 				}
 				set {
 						_explicitWidth = value;
-						measure ();
+						invalidate ();
 				}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		
-		void measure ()
+		void validateSize ()
 		{		
 				if (!explicitWidth) {
 						Vector2 s = style.CalcSize (content);					
-						setSize ((int)s.x, (int)s.y, false);			
+						setSize ((int)s.x, (int)s.y);			
 				} else {
-						setSize (width, (int)style.CalcHeight (content, width), false);                    
+						setSize (width, (int)style.CalcHeight (content, width));                    
 				}
 				
-				labelRectHelper.x = screenRect.x;
-				labelRectHelper.y = screenRect.y;
-				labelRectHelper.width = screenRect.width;
-				labelRectHelper.height = screenRect.height;
+				
 		
 		}
 	

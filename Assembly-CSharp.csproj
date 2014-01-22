@@ -49,6 +49,7 @@
      <Compile Include="Assets\AnimationExamples\FadeTweenExample.cs" />
      <Compile Include="Assets\AnimationExamples\MoveTweenExample.cs" />
      <Compile Include="Assets\ComponentExamples\ScreenNavigatorExample.cs" />
+     <Compile Include="Assets\Tester.cs" />
      <Compile Include="Assets\UIFramework2\Animation\Easing\Back.cs" />
      <Compile Include="Assets\UIFramework2\Animation\Easing\Bounce.cs" />
      <Compile Include="Assets\UIFramework2\Animation\Easing\Circ.cs" />
@@ -73,7 +74,6 @@
      <Compile Include="Assets\UIFramework2\Animation\UITweener.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIButton.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIFill.cs" />
-     <Compile Include="Assets\UIFramework2\Components\UIGameObjectInitializer.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIImage.cs" />
      <Compile Include="Assets\UIFramework2\Components\UILabel.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIScreen.cs" />

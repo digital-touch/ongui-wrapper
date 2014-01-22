@@ -51,7 +51,6 @@
      <Compile Include="Assets\UIFramework2\Editor\UIAnchorLayoutDataEditor.cs" />
      <Compile Include="Assets\UIFramework2\Editor\UIFillEditor.cs" />
      <Compile Include="Assets\UIFramework2\Editor\UIGameObjectEditor.cs" />
-     <Compile Include="Assets\UIFramework2\Editor\UIGameObjectInitializerEditor.cs" />
      <Compile Include="Assets\UIFramework2\Editor\UIHorizontalLayoutEditor.cs" />
      <Compile Include="Assets\UIFramework2\Editor\UIImageEditor.cs" />
      <Compile Include="Assets\UIFramework2\Editor\UILabelEditor.cs" />

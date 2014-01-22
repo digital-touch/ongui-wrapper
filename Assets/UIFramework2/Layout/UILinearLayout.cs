@@ -16,7 +16,7 @@ public abstract class UILinearLayout : UILayout
 								return;
 						}
 						_gap = value;						
-						uiGameObject.updateLayout ();
+						uiGameObject.validate ();
 				}
 		}
 }

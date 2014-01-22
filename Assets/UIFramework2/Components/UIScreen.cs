@@ -13,10 +13,10 @@ public class UIScreen : UIGameObject
 		public static GameObject createUIScreen ()
 		{
 				GameObject widget = new GameObject ("UIScreen");
+				widget.transform.parent = UnityEditor.Selection.activeTransform;
 		
 				widget.AddComponent<UIScreen> ();				
 				widget.AddComponent<FitToScreenUILayout> ();								
-				widget.transform.parent = UnityEditor.Selection.activeTransform;
 				return widget;
 		}
 	

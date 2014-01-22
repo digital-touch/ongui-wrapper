@@ -6,57 +6,23 @@ using System;
 public abstract class UILayout : BindableObject
 {
 
-		public Action ChangedEvent;
-		
-		protected void FireChangedEvent ()
-		{
-				if (ChangedEvent != null) {
-						ChangedEvent ();
-				}
-		}
+		protected UIGameObject uiGameObject;	
 		
 		protected virtual void Awake ()
-		{
-				addToUIGameObject ();
+		{				
+				uiGameObject = GetComponent<UIGameObject> ();
 		}
 		
-		Transform parent;	
-			
-		protected virtual void Update ()
-		{		
-				if (parent == transform.parent) {
-						return;
-				}
-				removeFromUIGameObject ();						
-				addToUIGameObject ();				
-		}		
 		
 		protected virtual void OnDestroy ()
 		{
-				removeFromUIGameObject ();
+				uiGameObject = null;
 		}
 				
-		protected UIGameObject uiGameObject;
-		
-		void addToUIGameObject ()
+		protected void change ()
 		{
-				parent = transform.parent;
-				UIGameObject newUIGameObject = transform.GetComponent<UIGameObject> ();
-				if (newUIGameObject == null) {
-						return;
-				}
-				uiGameObject = newUIGameObject;
-				uiGameObject.addLayout (this);				
-		}
-		
-		void removeFromUIGameObject ()
-		{
-				if (uiGameObject != null) {						
-						uiGameObject.removeLayout (this);
-				}
-				uiGameObject = null;	
-				parent = null;			
-		}
+				uiGameObject.invalidate ();				
+		}	
 		
 		public Vector2 contentSize = Vector2.zero;
 	

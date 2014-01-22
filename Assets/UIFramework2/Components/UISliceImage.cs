@@ -15,13 +15,13 @@ public class UISliceImage : UIImage
 		public static GameObject CreateUISliceImage ()
 		{
 				GameObject slice = new GameObject ("GameObject");
+				slice.transform.parent = UnityEditor.Selection.activeTransform;						
 				slice.name = "UISliceImage";
 				
 				UISliceImage uiImage = slice.AddComponent<UISliceImage> ();
 				uiImage.width = 100;
 				uiImage.height = 100;
 						
-				slice.transform.parent = UnityEditor.Selection.activeTransform;						
 				return slice;
 		}
 	#endif	
@@ -31,13 +31,22 @@ public class UISliceImage : UIImage
 		GUIStyle
 				style = new GUIStyle ();
 			
-		void updateStyle ()
+		protected void validateStyle ()
 		{
 				style.normal.background = image;
 				if (style.border != _border) {
 						style.border = _border;
 				}
 		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		public override void validate ()
+		{
+				validateStyle ();
+				base.validate ();
+		}
+		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		[SerializeField]
@@ -53,7 +62,7 @@ public class UISliceImage : UIImage
 								return;
 						}
 						_border = value;
-						updateStyle ();						
+						invalidate ();				
 						FireBorderChanged ();
 				}
 		}
@@ -67,7 +76,7 @@ public class UISliceImage : UIImage
 								return;
 						}
 						_border.left = value;
-						updateStyle ();	
+						invalidate ();
 						FireBorderChanged ();
 				}
 		}
@@ -81,7 +90,7 @@ public class UISliceImage : UIImage
 								return;
 						}
 						_border.right = value;
-						updateStyle ();	
+						invalidate ();
 						FireBorderChanged ();
 				}
 		}
@@ -95,7 +104,7 @@ public class UISliceImage : UIImage
 								return;
 						}
 						_border.top = value;
-						updateStyle ();	
+						invalidate ();
 						FireBorderChanged ();
 				}
 		}
@@ -109,7 +118,7 @@ public class UISliceImage : UIImage
 								return;
 						}
 						_border.bottom = value;
-						updateStyle ();	
+						invalidate ();
 						FireBorderChanged ();
 				}
 		}
@@ -133,7 +142,7 @@ public class UISliceImage : UIImage
 								return;
 						}
 						base.image = value;
-						updateStyle ();
+						invalidate ();
 				}
 		}
 	

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class AnchorUILayoutData : UILayoutData
@@ -20,7 +20,7 @@ public class AnchorUILayoutData : UILayoutData
 								horizontalAnchor = false;
 						}
 						_leftAnchor = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 	
@@ -38,7 +38,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_leftTarget = value;			
-						FireChangedEvent ();
+						change ();
 				}
 		}
 
@@ -56,7 +56,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_left = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 
@@ -77,7 +77,7 @@ public class AnchorUILayoutData : UILayoutData
 						if (value && horizontalAnchor) {
 								horizontalAnchor = false;
 						}
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -95,7 +95,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_rightTarget = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 
@@ -113,7 +113,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_right = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -134,7 +134,7 @@ public class AnchorUILayoutData : UILayoutData
 						if (value && verticalAnchor) {
 								verticalAnchor = false;
 						}
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -152,7 +152,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_topTarget = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 
@@ -170,7 +170,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_top = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -191,7 +191,7 @@ public class AnchorUILayoutData : UILayoutData
 						if (value && verticalAnchor) {
 								verticalAnchor = false;
 						}
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -209,7 +209,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_bottomTarget = value;						
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -227,7 +227,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_bottom = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -251,7 +251,7 @@ public class AnchorUILayoutData : UILayoutData
 						if (value && bottomAnchor) {
 								bottomAnchor = false;
 						}
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -269,7 +269,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_verticalTarget = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -287,7 +287,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_vertical = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -311,7 +311,7 @@ public class AnchorUILayoutData : UILayoutData
 						if (value && rightAnchor) {
 								rightAnchor = false;
 						}
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -329,7 +329,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_horizontalTarget = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		
@@ -348,7 +348,7 @@ public class AnchorUILayoutData : UILayoutData
 								return;
 						}
 						_horizontal = value;
-						FireChangedEvent ();
+						change ();
 				}
 		}
 		

@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using TouchScript;
 using TouchScript.InputSources;
@@ -19,10 +20,10 @@ public class UIRoot : UIGameObject
 				GameObject gameObject = new GameObject ("GameObject");
 				gameObject.name = "UIRoot";
 		
-				UIRoot uIRoot = gameObject.AddComponent<UIRoot> ();
+				UIRoot uiRoot = gameObject.AddComponent<UIRoot> ();
 								
-				uIRoot.width = Screen.width;
-				uIRoot.height = Screen.height;						
+				uiRoot.width = Screen.width;
+				uiRoot.height = Screen.height;						
    
 				gameObject.AddComponent<TouchManager> ();
 				gameObject.AddComponent<MouseInput> ();
@@ -65,24 +66,37 @@ public class UIRoot : UIGameObject
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		protected void FixedUpdate ()
+		protected override void Update ()
 		{
+				if (width != Screen.width || height != Screen.height) {
+						invalidate ();
+				}				
+				base.Update ();
 				if (UITweener.numTweens > 0) {
 						UITweener.Advance ();
 						#if UNITY_EDITOR
 						//UnityEditor.EditorUtility.SetDirty (gameObject);
 						#endif
 				}
+				validate ();
 		}
-				
-		override protected void Update ()
-		{		
-				if (Screen.width != width || Screen.height != height) {
-						updateLayout ();
-				}
-				base.Update ();	
-		}		
 		
+		List<UIGameObject> invalidatedObjects = new List<UIGameObject> (); 						
+		
+		public void invalidate (UIGameObject target)
+		{				
+				if (invalidatedObjects.IndexOf (target) == -1) {
+						invalidatedObjects.Add (target);
+				}
+				if (invalidatedObjects.Count > 0) {
+						#if UNITY_EDITOR	
+						UnityEditor.EditorUtility.SetDirty (this);	
+						#endif
+				}
+				//Debug.Log ("invalidate");
+		}	
+		
+	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		protected virtual void OnGUI ()

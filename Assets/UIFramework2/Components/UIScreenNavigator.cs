@@ -12,11 +12,11 @@ public class UIScreenNavigator : UIGameObject
 		public static GameObject createUIScreenNavigator ()
 		{
 				GameObject widget = new GameObject ("UIScreenNavigator");
-		
+				widget.transform.parent = UnityEditor.Selection.activeTransform;
+				widget.name = "UIScreenNavigator";
 			
 				widget.AddComponent<UIScreenNavigator> ();				
 				widget.AddComponent<FitToScreenUILayout> ();								
-				widget.transform.parent = UnityEditor.Selection.activeTransform;
 				return widget;
 		}
 	
