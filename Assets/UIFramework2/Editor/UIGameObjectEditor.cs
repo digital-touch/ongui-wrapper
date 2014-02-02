@@ -32,46 +32,55 @@ public class UIGameObjectEditor : Editor
 		bool
 				renderFoldout = true;
 				
+		[SerializeField]
+		bool
+				rotationFoldout = false;
+				
+		[SerializeField]
+		bool
+				scaleFoldout = false;
+		
 		protected void drawUIGameObjectInspector ()
 		{
 				UIGameObject uiGameObject = (UIGameObject)target;
 		
 				// transform
+
+
+//		GUIStyle foldout2 = EditorStyles.foldout;
+//		Rect position = GUILayoutUtility.GetRect (EditorGUIUtility.fieldWidth, EditorGUIUtility.fieldWidth, 16f, 16f, foldout2);
+//		EditorGUI.DrawRect (position, Color.red);
+//		GUILayout.		
+
+
+
 				transformFoldout = EditorGUILayout.Foldout (transformFoldout, "Transform");
-		
+
 				if (transformFoldout) {
 			
 			
 						EditorGUI.indentLevel++;
 						
 						// bounding
+						EditorGUILayout.BeginHorizontal ();
+			
 						uiGameObject.x = EditorGUILayout.IntField ("x", uiGameObject.x);
-						uiGameObject.y = EditorGUILayout.IntField ("y", uiGameObject.y);
 						uiGameObject.width = EditorGUILayout.IntField ("width", uiGameObject.width);
+						
+						EditorGUILayout.EndHorizontal ();	
+						EditorGUILayout.BeginHorizontal ();
+			
+						uiGameObject.y = EditorGUILayout.IntField ("y", uiGameObject.y);
 						uiGameObject.height = EditorGUILayout.IntField ("height", uiGameObject.height);
 						
-						EditorGUILayout.Space ();
-						
-						// rotation
-						uiGameObject.rotation = EditorGUILayout.FloatField ("Rotation", uiGameObject.rotation);
-						uiGameObject.rotationPivot = EditorGUILayout.Vector2Field ("Rotation Pivot", uiGameObject.rotationPivot);
-						uiGameObject.rotationPivotType = (PivotType)EditorGUILayout.EnumPopup ("Rotation Pivot Type", uiGameObject.rotationPivotType);
-			
-						EditorGUILayout.Space ();
-						
-						// scale
-						uiGameObject.scaleX = EditorGUILayout.FloatField ("scaleX", uiGameObject.scaleX);
-						uiGameObject.scaleY = EditorGUILayout.FloatField ("scaleY", uiGameObject.scaleY);
-						uiGameObject.scalePivot = EditorGUILayout.Vector2Field ("Scale Pivot", uiGameObject.scalePivot);
-						uiGameObject.scalePivotType = (PivotType)EditorGUILayout.EnumPopup ("Rotation Pivot Type", uiGameObject.scalePivotType);
-			
-						EditorGUILayout.Space ();			
-						
+						EditorGUILayout.EndHorizontal ();	
+							
 						//depth
 			
-						EditorGUILayout.LabelField ("Depth", uiGameObject.depth.ToString ());
-						
 						EditorGUILayout.BeginHorizontal ();
+			
+						EditorGUILayout.LabelField ("Depth", uiGameObject.depth.ToString ());
+			
 						if (GUILayout.Button ("-")) {
 								uiGameObject.depth--;
 						}						
@@ -79,7 +88,55 @@ public class UIGameObjectEditor : Editor
 								uiGameObject.depth++;
 						}
 						EditorGUILayout.EndHorizontal ();
+			
+			
+			
+						// rotation
+						rotationFoldout = EditorGUILayout.Foldout (rotationFoldout, "Rotation");
 						
+						if (rotationFoldout) {
+								EditorGUI.indentLevel++;
+			
+								uiGameObject.rotation = EditorGUILayout.FloatField ("Angle", uiGameObject.rotation);
+								
+								
+				
+								uiGameObject.rotationPivot = EditorGUILayout.Vector2Field ("Pivot", uiGameObject.rotationPivot);
+								uiGameObject.rotationPivotType = (PivotType)EditorGUILayout.EnumPopup ("Pivot Type", uiGameObject.rotationPivotType);
+								
+								
+								
+								EditorGUI.indentLevel--;								
+						}
+			
+						
+						// scale
+						
+						scaleFoldout = EditorGUILayout.Foldout (scaleFoldout, "Scale");
+			
+						if (scaleFoldout) {
+								
+								EditorGUI.indentLevel++;
+								
+								EditorGUILayout.BeginHorizontal ();
+								
+								uiGameObject.scaleX = EditorGUILayout.FloatField ("X", uiGameObject.scaleX);
+								uiGameObject.scaleY = EditorGUILayout.FloatField ("Y", uiGameObject.scaleY);
+								
+								EditorGUILayout.EndHorizontal ();				
+								
+								
+								uiGameObject.scalePivot = EditorGUILayout.Vector2Field ("Pivot", uiGameObject.scalePivot);
+								uiGameObject.scalePivotType = (PivotType)EditorGUILayout.EnumPopup ("Pivot Type", uiGameObject.scalePivotType);
+								
+								
+								
+								EditorGUI.indentLevel--;
+						}
+						
+						
+						
+												
 						EditorGUI.indentLevel--;
 				}
 				
@@ -90,11 +147,25 @@ public class UIGameObjectEditor : Editor
 				if (renderFoldout) {
 			
 						EditorGUI.indentLevel++;
+
+//			Rect space = EditorGUILayout.BeginHorizontal();
+//			EditorGUILayout.TextArea(string.Empty, GUIStyle.none, GUILayout.Height(111));
+//			EditorGUILayout.EndHorizontal();
+			
+			//GUI.Button(space, "space");
+
+						uiGameObject.isTouchable = EditorGUILayout.Toggle ("Touchable", uiGameObject.isTouchable);
+
+						uiGameObject.manageChildrenVisibility = EditorGUILayout.Toggle ("Manage Children Visibility", uiGameObject.manageChildrenVisibility);
+
+						uiGameObject.includeInLayout = EditorGUILayout.Toggle ("Include In Layout", uiGameObject.includeInLayout);
 			
 						uiGameObject.isVisible = EditorGUILayout.Toggle ("Visible", uiGameObject.isVisible);
+						
+						EditorGUILayout.BeginHorizontal ();	
 						uiGameObject.alpha = EditorGUILayout.Slider ("Alpha", uiGameObject.alpha, 0, 1);
 						uiGameObject.color = EditorGUILayout.ColorField ("Color", uiGameObject.color);
-						
+						EditorGUILayout.EndHorizontal ();	
 						
 						EditorGUI.BeginChangeCheck ();
 															

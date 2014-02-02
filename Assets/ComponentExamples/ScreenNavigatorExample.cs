@@ -8,8 +8,7 @@ public class ScreenNavigatorExample : MonoBehaviour
 		public UIScreenNavigator screenNavigator;
 		
 		void Start ()
-		{
-		
+		{		
 				Invoke ("showStartScreen", 0.4f);
 		}
 		
@@ -19,8 +18,7 @@ public class ScreenNavigatorExample : MonoBehaviour
 		
 		void showStartScreen ()
 		{
-				
-				
+				screenNavigator.transitionDuration = 1f;
 				TouchManager touchManager = (TouchManager)GameObject.FindObjectOfType (typeof(TouchManager));
 				
 				touchManager.TouchesBegan += (object sender, TouchScript.Events.TouchEventArgs e) => {
@@ -34,7 +32,7 @@ public class ScreenNavigatorExample : MonoBehaviour
 				if (screenIndex > screenIds.Length - 1) {
 						screenIndex = 0;
 				}
-				screenNavigator.showScreen (screenIds [screenIndex], UIScreenTransitionType.RIGHT_TO_LEFT);
+				screenNavigator.showNextScreen (screenIds [screenIndex], UIScreenTransitionType.RIGHT_TO_LEFT);
 		}
 	
 		// Update is called once per frame

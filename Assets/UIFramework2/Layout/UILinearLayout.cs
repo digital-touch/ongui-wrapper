@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class UILinearLayout : UILayout
+public abstract class UILinearLayout : UIScrollableLayout
 {
+		
+		
+
 		[SerializeField]
 		int
 				_gap = 10;		

@@ -8,9 +8,31 @@ public class UITextStyle: MonoBehaviour
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
+		[SerializeField]
+		FontMetrics
+				_fontMetrics = new FontMetrics ();
+	
+		public FontMetrics fontMetrics {
+				get {
+						return _fontMetrics;
+				}
+		}
+	
+	
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public Action<UITextStyle> ChangeEvent;
+
 		public void Change ()
 		{
-				uiGameObject.invalidate ();							
+				if (font != null) {
+						FontUtils.GetFontMetrics (ref _fontMetrics, font, fontSize);
+				}
+		if (ChangeEvent != null) {
+			ChangeEvent(this);
+				}
+				
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +134,7 @@ public class UITextStyle: MonoBehaviour
 		
 		[SerializeField]
 		TextAnchor
-				_textAlignment = TextAnchor.MiddleCenter;
+				_textAlignment = TextAnchor.UpperLeft;
 		
 		public TextAnchor textAlignment {
 				get {
@@ -164,21 +186,6 @@ public class UITextStyle: MonoBehaviour
 						Change ();
 				}
 		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		protected UIGameObject uiGameObject;
-	
-		protected virtual void Awake ()
-		{
-				uiGameObject = GetComponent<UIGameObject> ();
-		}
-	
-		protected virtual void OnDestroy ()
-		{
-				uiGameObject = null;
-		}
-	
-	
+				
 		
 }

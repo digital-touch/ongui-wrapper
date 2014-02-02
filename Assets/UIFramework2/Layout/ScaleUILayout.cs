@@ -13,18 +13,17 @@ public class ScaleUILayout : UILayout
 
 		public override void Layout ()
 		{
-				contentSize.Set (uiGameObject.width, uiGameObject.height);
+				setContentSize (uiGameObject.width, uiGameObject.height);
 
 				switch (type) {
 				case ScaleUILayoutType.SCALE:
-						contentSize.x = width * aspectRatio;
-						contentSize.y = height * aspectRatio;
+						setContentSize (width * aspectRatio, height * aspectRatio);						
 						break;
 				case ScaleUILayoutType.SCALE_WIDTH:
-						contentSize.x = contentSize.y * aspectRatio;
+						setContentSize (contentSize.y * aspectRatio, contentSize.y);												
 						break;
 				case ScaleUILayoutType.SCALE_HEIGHT:
-						contentSize.y = contentSize.x * aspectRatio;
+						setContentSize (contentSize.x, contentSize.x * aspectRatio);																		
 						break;
 				}
 					

@@ -6,102 +6,128 @@ public class UIButton : UIGameObject
 {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public override void Awake ()
+	{
+		base.Awake ();
+
+		TouchBeganEvent += OnTouchBegan;
+		TouchEndedEvent += OnTouchEnded;
+	}
 	
-	#if UNITY_EDITOR
+	protected virtual void OnTouchBegan (UIGameObject target, UITouch touch)
+	{
+		isDown = true;
+	}
 	
-		[UnityEditor.MenuItem ("UI/UIButton")]
-		public static GameObject CreateUIButton ()
-		{
-				GameObject button = new GameObject ("GameObject");
-				button.transform.parent = UnityEditor.Selection.activeTransform;
-				button.name = "UIButton";
-				
-				UIButton uiButton = button.AddComponent<UIButton> ();
-				uiButton.width = 100;
-				uiButton.height = 100;
-							
-				button.AddComponent<UIStackLayout> ();
-				
-				
-				GameObject normalSkin = UIImage.CreateUIImage ();
-				normalSkin.name = "0.normal-skin";
-				normalSkin.transform.parent = button.transform;
-				
-				GameObject downSkin = UIImage.CreateUIImage ();
-				downSkin.name = "1.down-skin";
-				downSkin.transform.parent = button.transform;
-        		
-				return button;
-				
+	protected virtual void OnTouchEnded (UIGameObject target, UITouch touch)
+	{
+		isDown = false;
+	}
+	
+	protected override void OnDestroy ()
+	{
+		base.OnDestroy ();
+		TouchBeganEvent -= OnTouchBegan;
+		TouchEndedEvent -= OnTouchEnded;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public override void validate ()
+	{																		
+		base.validate ();
+		validateSkinIndex ();
+	}
+
+	void validateSkinIndex ()
+	{
+		_labelStyle = isDown ? skin.labelDownStyle != null ? skin.labelDownStyle:skin.labelNormalStyle:skin.labelNormalStyle;
+		_background = isDown ? skin.downBackgroundSkin != null ? skin.downBackgroundSkin:skin.normalBackgroundSkin:skin.normalBackgroundSkin;
+
+		if (_label!=null) {
+			_label.textStyle = labelStyle;
 		}
-    #endif		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+	}
 	
-		protected override void Awake ()
-		{
-								
-				
-				
-				base.Awake ();
-		
-		
-				//AddedToRootEvent += OnAddedToRoot;
-				//RemovedFromRootEvent += OnRemovedFromRoot;
-		
-		}
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		protected override void OnDestroy ()
-		{
-				base.OnDestroy ();
-			
-				
-				//AddedToRootEvent -= OnAddedToRoot;
-				//RemovedFromRootEvent -= OnRemovedFromRoot;
-		}	
-	
-		public UIImage icon;
-		
-		public UILabel label;
-		
-		public PivotType labelPosition;
-		
-		public UIGameObject normalSkin;
-		
-		public UIGameObject downSkin;
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////	
-	
-		public void Validate ()
-		{
-				if (!gameObject.activeSelf) {					
-						return;
-				}
-		
-				//base.Validate ();
-		
-				//bool isSkinDirty = UIInvalidator.isInvalid (gameObject, UIButton.SKIN_FLAG);
-		
-				//if (isSkinDirty) {
-				//		validateSkinIndex ();
-			
-				//}
-		}
-	
-		void validateSkinIndex ()
-		{
-//				if (layout == null) {
-//						return;
+//	override protected void drawChildren(UIGameObject parentChild) 
+//	{			
+//		
+//		if (background != null) {
+//			drawChild(background, parentChild);
+//		}
+//
+//		if (label != null) {
+//			drawChild(label, parentChild);						
 //				}
-//				
-//				if (isDown) {
-//						//Debug.Log ("Skin 0");
-//						layout.selectedIndex = 1;	
-//				} else {
-//						//Debug.Log ("Skin 1");
-//						layout.selectedIndex = 0;
-//				}			
+//	}
+
+	[SerializeField]
+	 UIButtonSkin _skin;
+
+	public UIButtonSkin skin {
+		get {
+			return _skin;
 		}
-	
+		set {
+			if (_skin == value) {
+				return;
+			}
+			_skin = value;
+			invalidate();	
+		}
+	}
+
+	[SerializeField]
+		 UIGameObject _background;
+
+	public UIGameObject background {
+		get {
+			return _background;
+		}
+		set {
+			if (_background == value) {
+				return;
+			}
+			_background = value;
+			invalidate();	
+		}
+	}
+
+	[SerializeField]
+		 UITextStyle _labelStyle;
+
+	public UITextStyle labelStyle {
+		get {
+			return _labelStyle;
+		}
+		set {
+			if (_labelStyle == value) {
+				return;
+			}
+			_labelStyle = value;
+			invalidate();	
+		}
+	}
+
+	[SerializeField]
+		 UILabel _label;
+
+	public UILabel label {
+		get {
+			return _label;
+		}
+		set {
+			if (_label == value) {
+				return;
+			}
+			_label = value;
+			invalidate();	
+		}
+	}
+		
 		///////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 		bool _isDown = false;
@@ -115,42 +141,10 @@ public class UIButton : UIGameObject
 								return;
 						}
 						_isDown = value;
-			
-						
+			invalidate();						
 				}
 		}
 	
-	
-//		void OnAddedToRoot (UIWidget widget)
-//		{
-//				TouchBeganEvent += OnTouchBegan;	
-//				root.TouchEndedEvent += OnTouchEnded;		
-//		}		
-//	
-//		void OnRemovedFromRoot (UIWidget widget)
-//		{
-//				TouchBeganEvent -= OnTouchBegan;	
-//				root.TouchEndedEvent -= OnTouchEnded;		
-//		}		
-	
-	
-	
-//		void OnTouchBegan (UIWidget widget, UITouch touch)
-//		{						
-//				if (isDown) {
-//						return;
-//				}
-//				isDown = true;
-//		
-//		
-//		} 
-	
-//		void OnTouchEnded (UIWidget widget, UITouch touch)
-//		{		
-//				if (!isDown) {
-//						return;
-//				}
-//				isDown = false;				
-//		
-//		}					        
+	///////////////////////////////////////////////////////////////////////////////////////////////////	
+	 
 }

@@ -22,7 +22,7 @@ public abstract class UITween : BindableObject
 		
 		public UIGameObject target;
 
-	
+		
 	
 		protected virtual void Awake ()
 		{

@@ -4,14 +4,15 @@ using UnityEditor;
 using System.Collections;
 
 [CustomEditor(typeof(UILinearLayout))]
-public class UILinearLayoutEditor : UILayoutEditor
+public class UILinearLayoutEditor : UIScrollableLayoutEditor
 {
 	
 		public override void OnInspectorGUI ()
 		{		
 		
-				base.OnInspectorGUI ();		
 				drawUILinearLayoutInspector ();
+				drawUIScrollableLayoutInspector ();
+				drawUILayoutInspector ();
 		
 				if (GUI.changed) {
 						UILinearLayout layout = (UILinearLayout)target;			

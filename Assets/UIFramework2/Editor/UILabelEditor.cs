@@ -27,17 +27,25 @@ public class UILabelEditor : UIGameObjectEditor
 		
 				if (labelFoldout) {
 			
-						EditorGUI.indentLevel++;
-									
+						EditorGUI.indentLevel++;									
 						
+						
+						EditorGUILayout.LabelField("Text:");
 						Color oldColor = GUI.color;
 						GUI.color = Color.white;
 						label.text = EditorGUILayout.TextArea (label.text);
 						GUI.color = oldColor;
-			
+
+			EditorGUILayout.Space();
+			label.textStyle = (UITextStyle) EditorGUILayout.ObjectField("Text Style", label.textStyle, typeof(UITextStyle), true);
+			EditorGUILayout.Space();
+
 						label.explicitWidth = EditorGUILayout.Toggle ("Explicit Width", label.explicitWidth);
+						label.explicitHeight = EditorGUILayout.Toggle ("Explicit Height", label.explicitHeight);
 						
 						EditorGUI.indentLevel--;			
 				}
 		}
+		
+		
 }

@@ -41,6 +41,11 @@ public class UIImageEditor : UIGameObjectEditor
 						image.alphaBlend = EditorGUILayout.Toggle ("Alpha Blend", image.alphaBlend);
 						image.imageAspect = EditorGUILayout.FloatField ("Image Aspect", image.imageAspect);
 						image.scaleMode = (ScaleMode)EditorGUILayout.EnumPopup ("Scale Mode", image.scaleMode);
+						
+						if (GUILayout.Button ("Resize to image")) {
+								image.resizeToImage ();
+						}
+						
 						EditorGUI.indentLevel--;						
 			
 				}

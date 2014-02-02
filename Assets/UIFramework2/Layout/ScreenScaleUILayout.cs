@@ -15,7 +15,7 @@ public class ScreenScaleUILayout : UILayout
 
 		public override void Layout ()
 		{			
-				contentSize.Set (0, 0);
+				setContentSize (0, 0);
 		
 				float screenWidth = Screen.width;
 				float screenHeight = Screen.height;
@@ -23,8 +23,7 @@ public class ScreenScaleUILayout : UILayout
 		
 				#if UNITY_STANDALONE
 				screenPPI = 72;
-				#endif
-			
+				#endif			
 			
 				float designSize = getSize (designWidth, designHeight, designPPI);
 				float screenSize = getSize (screenWidth, screenHeight, screenPPI);
@@ -32,8 +31,7 @@ public class ScreenScaleUILayout : UILayout
 		
 				scaleFactor = (screenPPI / designPPI) * factor;
 
-				contentSize.x = unscaledWidth * scaleFactor;
-				contentSize.y = unscaledHeight * scaleFactor;
+				setContentSize (unscaledWidth * scaleFactor, unscaledHeight * scaleFactor);
 
 				uiGameObject.width = (int)contentSize.x;
 				uiGameObject.height = (int)contentSize.y;

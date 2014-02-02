@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class AnchorUILayout : UILayout
+public class AnchorUILayout : UIScrollableLayout
 {
 
 		public override void Layout ()
@@ -10,7 +10,7 @@ public class AnchorUILayout : UILayout
 						return;
 				}		
 				
-				contentSize.Set (0, 0);
+				setContentSize (0, 0);
 		
 				UIGameObject targetTransform;
 
@@ -83,7 +83,7 @@ public class AnchorUILayout : UILayout
 
 						if (data.horizontalAnchor) {
 								if (data.horizontalTarget) {
-										targetTransform = data.verticalTarget.GetComponent<UIGameObject> ();
+										targetTransform = data.horizontalTarget.GetComponent<UIGameObject> ();
 										child.x = (int)(data.horizontal + targetTransform.x + (targetTransform.width / 2) - (child.width / 2));
 								} else {
 										child.x = (int)(data.horizontal + (uiGameObject.width / 2) - (child.width / 2));
@@ -99,12 +99,14 @@ public class AnchorUILayout : UILayout
 								}				                          
 						}				                          
 
-						child.x += (int)scrollPosition.x;
-						child.y += (int)scrollPosition.y;
+						child.x -= (int)scrollPosition.x;
+						child.y -= (int)scrollPosition.y;
 			
-						contentSize.x = Mathf.Max (contentSize.x, child.x + child.width);
-						contentSize.y = Mathf.Max (contentSize.y, child.y + child.height);
 			
+						float contentWidth = Mathf.Max (contentSize.x, child.x + child.width + scrollPosition.x);
+						float contentHeight = Mathf.Max (contentSize.y, child.y + child.height + scrollPosition.y);
+			
+						setContentSize (contentWidth, contentHeight);						
 				}
 			
 		}

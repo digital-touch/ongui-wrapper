@@ -5,7 +5,7 @@ public class UIHorizontalLayout : UILinearLayout
 {		
 		public override void Layout ()
 		{	
-				contentSize.Set (0, 0);
+				setContentSize (0, 0);
 		
 				for (int i = 0; i < transform.childCount; i++) {
 						
@@ -30,9 +30,9 @@ public class UIHorizontalLayout : UILinearLayout
 								childUIGameObject.y = 0;
 						}
 			
-			
-						contentSize.x = Mathf.Max (contentSize.x, childUIGameObject.x + childUIGameObject.width);
-						contentSize.y = Mathf.Max (contentSize.y, childUIGameObject.y + childUIGameObject.height);						
+						float contentWidth = Mathf.Max (contentSize.x, childUIGameObject.x + childUIGameObject.width);
+						float contentHeight = Mathf.Max (contentSize.y, childUIGameObject.y + childUIGameObject.height);						
+						setContentSize (contentWidth, contentHeight);
 				}
 		
 				for (int i = 0; i < transform.childCount; i++) {

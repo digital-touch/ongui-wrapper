@@ -7,25 +7,7 @@ using System;
 public class UISliceImage : UIImage
 {
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	#if UNITY_EDITOR
-	
-		[UnityEditor.MenuItem ("UI/UISliceImage")]
-		public static GameObject CreateUISliceImage ()
-		{
-				GameObject slice = new GameObject ("GameObject");
-				slice.transform.parent = UnityEditor.Selection.activeTransform;						
-				slice.name = "UISliceImage";
-				
-				UISliceImage uiImage = slice.AddComponent<UISliceImage> ();
-				uiImage.width = 100;
-				uiImage.height = 100;
-						
-				return slice;
-		}
-	#endif	
-	
+		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 						
 		GUIStyle

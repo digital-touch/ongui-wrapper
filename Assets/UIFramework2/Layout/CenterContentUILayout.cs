@@ -11,10 +11,16 @@ public class CenterContentUILayout : UILayout
 				
 				UIGameObject uiGameObject = GetComponent<UIGameObject> ();
 		
-				contentSize.Set (uiGameObject.width, uiGameObject.height);
 		
-				for (int i = 0; i < 				
-		     uiGameObject.numChildren; i++) {
+		
+				float contentWidth = uiGameObject.width;
+				float contentHeight = uiGameObject.height;
+				
+				setContentSize (contentWidth, contentHeight);
+		
+		
+		
+				for (int i = 0; i < uiGameObject.numChildren; i++) {
 			
 						UIGameObject child = uiGameObject.getChild (i);
 			
@@ -26,8 +32,8 @@ public class CenterContentUILayout : UILayout
 								continue;
 						}
 						
-						child.x = (uiGameObject.width - child.width) / 2;
-						child.y = (uiGameObject.height - child.height) / 2;
+						child.x = (int) (uiGameObject.width - child.width) / 2;
+			child.y = (int)(uiGameObject.height - child.height) / 2;
 			
 				}
 		

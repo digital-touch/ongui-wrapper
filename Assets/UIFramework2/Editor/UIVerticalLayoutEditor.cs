@@ -11,28 +11,31 @@ public class UIVerticalLayoutEditor : UILinearLayoutEditor
 		public override void OnInspectorGUI ()
 		{		
 		
-				base.OnInspectorGUI ();		
 				drawUIVerticalLayoutInspector ();
+		drawUILinearLayoutInspector ();
+		drawUIScrollableLayoutInspector ();
+		drawUILayoutInspector ();
 		
-				if (GUI.changed) {
-						EditorUtility.SetDirty (target);
-				}
+		if (GUI.changed) {
+			UILinearLayout layout = (UILinearLayout)target;			
+			EditorUtility.SetDirty (layout.transform.root.gameObject);
+		}
 		}
 	
-//		[SerializeField]
-//		bool
-//				uiVerticalLayoutFoldout = true;
+
+		bool
+				uiVerticalLayoutFoldout = true;
 	
 		protected void drawUIVerticalLayoutInspector ()
 		{
-//				UIVerticalLayout layout = (UIVerticalLayout)target;
-//		
-//				// button
-//				uiVerticalLayoutFoldout = EditorGUILayout.Foldout (uiVerticalLayoutFoldout, "Vertical Layout");
-//		
-//				if (uiVerticalLayoutFoldout) {
-//			layout.
-//				}
+				UIVerticalLayout layout = (UIVerticalLayout)target;
+		
+				// button
+				uiVerticalLayoutFoldout = EditorGUILayout.Foldout (uiVerticalLayoutFoldout, "Vertical Layout");
+		
+				if (uiVerticalLayoutFoldout) {
+						EditorGUILayout.LabelField ("Max Scroll Position", "x: " + (int)layout.maxScrollPosition.x + ", y: " + (int)layout.maxScrollPosition.y);
+				}
 		}			
 	
 	

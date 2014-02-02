@@ -2,14 +2,21 @@
 using System.Collections;
 
 public class UIVerticalLayout : UILinearLayout
-{
+{		
 		public override void Layout ()
 		{				
-				contentSize.Set (0, 0);
+				if (transform.childCount == 0) {
+						setContentSize (0, 0);
+						return;
+				}
+				
+				UIGameObject lastChild = null;
 				
 				for (int i = 0; i < transform.childCount; i++) {
+				
 						Transform child = transform.GetChild (i);					
 						UIGameObject childUIGameObject = child.GetComponent<UIGameObject> ();
+						
 						if (childUIGameObject == null) {
 								continue;
 						}
@@ -22,23 +29,22 @@ public class UIVerticalLayout : UILinearLayout
 						if (i > 0) {
 								Transform prevChild = transform.GetChild (i - 1);
 								UIGameObject prevChildTransform = prevChild.GetComponent<UIGameObject> ();						
-								childUIGameObject.x = 0;
+								childUIGameObject.x = prevChildTransform.x;
 								childUIGameObject.y = prevChildTransform.y + prevChildTransform.height + gap;
 						} else {
-								childUIGameObject.x = 0;
-								childUIGameObject.y = 0;
+								childUIGameObject.x = (int)-scrollPosition.x;
+								childUIGameObject.y = (int)-scrollPosition.y;
 						}
-						
-						
-						contentSize.x = Mathf.Max (contentSize.x, childUIGameObject.x + childUIGameObject.width);
-						contentSize.y = Mathf.Max (contentSize.y, childUIGameObject.y + childUIGameObject.height);						
+						lastChild = childUIGameObject;			
+				}
+				
+				if (lastChild == null) {
+						return;
 				}
 		
-				for (int i = 0; i < transform.childCount; i++) {
-						Transform child = transform.GetChild (i);
-						UIGameObject childTransform = child.GetComponent<UIGameObject> ();							
-						childTransform.y += (int)scrollPosition.y;
-				}
-								
+				float contentWidth = (lastChild.x + lastChild.width) + scrollPosition.x;
+				float contentHeight = (lastChild.y + lastChild.height) + scrollPosition.y;										
+		
+				setContentSize (contentWidth, contentHeight);
 		}
 }

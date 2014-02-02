@@ -3,98 +3,12 @@ using System.Collections;
 using System;
 
 [ExecuteInEditMode]
-public class UIFill : UIGameObject
+public class UIFill : UIImage
 {
 	
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	#if UNITY_EDITOR
-	
-		[UnityEditor.MenuItem ("UI/UIFill")]
-		public static GameObject CreateUIFill ()
-		{
-				GameObject gameObject = new GameObject ("GameObject");
-				gameObject.transform.parent = UnityEditor.Selection.activeTransform;
-				gameObject.name = "UIFill";
-				
-				UIFill uiFill = gameObject.AddComponent<UIFill> ();
-				uiFill.width = 100;
-				uiFill.height = 100;						
-		
-				return gameObject;
-		}
-	#endif		
-	
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		public Action TextureColorChangedEvent;
-	
-		[SerializeField]
-		Color
-				_textureColor = Color.white;
-		
-		public Color textureColor {
-				get {
-						return _textureColor;
-				}
-				set {
-			
-						if (_textureColor == value) {
-								return;
-						}
-						_textureColor = value;
-						if (TextureColorChangedEvent != null) {
-								TextureColorChangedEvent ();
-						}	
-						validateTexture ();
-				}
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		public Action TextureSizeChangedEvent;
-	
-		[SerializeField]
-		int
-				_textureSize = 64;
-		
-		public int textureSize {
-				get {
-						return _textureSize;
-				}
-				set {
-				
-						if (_textureSize == value) {
-								return;
-						}
-						
-						_textureSize = value;
-						if (TextureSizeChangedEvent != null) {
-								TextureSizeChangedEvent ();
-						}						
-						validateTexture ();
-				}
-		}
-	
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		[SerializeField]
-		Texture2D
-				_texture;
-		
-		public Texture2D texture {
-				get {
-						return _texture;
-				}
-				set {						
-						_texture = value;
-				}
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-		override protected void Awake ()
+		public override void Awake ()
 		{	
 				base.Awake ();
 				validateTexture ();
@@ -108,13 +22,13 @@ public class UIFill : UIGameObject
 				
 		void destroyTexture ()
 		{
-				if (texture != null) {
+				if (image != null) {
 						#if UNITY_EDITOR
-						Texture2D.DestroyImmediate (texture);
+						Texture2D.DestroyImmediate (image);
 						#else  
 			Texture2D.Destroy (texture);
 #endif
-						texture = null;
+						image = null;
 				}
 		}
 		
@@ -131,51 +45,30 @@ public class UIFill : UIGameObject
 		void validateTexture ()
 		{   						
 		
-				if (textureSize == 0) {
-						if (texture != null) {
-								destroyTexture ();
-						}
-						return;
-				}
 				createTexture ();
 				fillTexture ();			
 		}
 						
 		void createTexture ()
 		{
-				if (texture != null) {			
-						if (texture.width != textureSize || texture.height != textureSize) {
-								texture.Resize (textureSize, textureSize);										
+				if (image != null) {			
+						if (image.width != 1 || image.height != 1) {
+								image.Resize (1, 1);										
 						}										
 				} else {
-						texture = new Texture2D (textureSize, textureSize);					
+						image = new Texture2D (1, 1);					
 				}				
 		}
 		
 		void fillTexture ()
 		{
 				
-				Color[] pixels = texture.GetPixels ();
+				Color[] pixels = image.GetPixels ();
+				pixels [0] = Color.white;		
 			
-				for (var i = 0; i < pixels.Length; ++i) {
-						pixels [i] = textureColor;
-				}
+				image.SetPixels (pixels);	
+				image.Apply ();
+		}
 			
-				texture.SetPixels (pixels);			
-				texture.Apply ();
-		}
-		
-	
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-		public override void draw (UIGameObject parentChild)
-		{						
-				if (texture == null) {
-						return;
-				}
-		
-				GUI.DrawTexture (screenRect, texture);
-		}
-	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 }

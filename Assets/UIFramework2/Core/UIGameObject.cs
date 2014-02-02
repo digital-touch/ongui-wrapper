@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-
-//using UnityEditor;
-
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -9,27 +6,28 @@ using System;
 [ExecuteInEditMode]
 public class UIGameObject : BindableObject
 {
-
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	#if UNITY_EDITOR
+		public Action<UIGameObject> ChildAddedToRootEvent;
 	
-		[UnityEditor.MenuItem ("UI/UIGameObject")]
-		public static GameObject CreateUIGameObject ()
+		public void FireChildAddedToRootEvent (UIGameObject child)
 		{
-				GameObject gameObject = new GameObject ("GameObject");
-				gameObject.name = "UIGameObject";
-		
-		
-				gameObject.AddComponent<UIGameObject> ();
-				
-				gameObject.AddComponent<FitToContentUILayout> ();
-		
-				gameObject.transform.parent = UnityEditor.Selection.activeTransform;
-		
-				return gameObject;
+				if (ChildAddedToRootEvent != null) {
+						ChildAddedToRootEvent (child);
+				}				
 		}
-	#endif		
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		public Action<UIGameObject> ChildRemovedFromRootEvent;
+	
+		public void FireChildRemovedFromRootEvent (UIGameObject child)
+		{
+				if (ChildRemovedFromRootEvent != null) {
+						ChildRemovedFromRootEvent (child);
+				}
+		}
+	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	#if UNITY_EDITOR
@@ -68,7 +66,7 @@ public class UIGameObject : BindableObject
 		Transform _parent;
 
 		[BindableAttribute]
-		public Transform parent {
+		public virtual Transform parent {
 				get {
 						return _parent;
 				}
@@ -82,7 +80,7 @@ public class UIGameObject : BindableObject
 		UIGameObject _parentUIGameObject;
 
 		[BindableAttribute]
-		public UIGameObject parentUIGameObject {
+		public virtual UIGameObject parentUIGameObject {
 				get {
 						return _parentUIGameObject;
 				}
@@ -106,7 +104,7 @@ public class UIGameObject : BindableObject
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		protected virtual void Awake ()
+		public virtual void Awake ()
 		{
 				#if UNITY_EDITOR
 				transform.hideFlags = HideFlags.NotEditable | HideFlags.HideInInspector;	
@@ -121,14 +119,14 @@ public class UIGameObject : BindableObject
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		protected virtual void Update ()
+		/*protected virtual void Update ()
 		{
 				if (parent == transform.parent) {
 						return;
 				}
 				removeFromParent ();
 				addToParent ();		
-		}	
+		}*/	
 			
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -180,7 +178,7 @@ public class UIGameObject : BindableObject
 				_depth = -1;
 				
 		[BindableAttribute]
-		public int depth {
+		public virtual int depth {
 				get {
 						return _depth;
 				}
@@ -194,7 +192,7 @@ public class UIGameObject : BindableObject
 		
 		protected List<UIGameObject> children = new List<UIGameObject> ();
 		
-		public void addChild (UIGameObject child)
+		public virtual void addChild (UIGameObject child)
 		{
 				if (child.depth == -1) {
 						child.depth = children.Count;
@@ -205,12 +203,13 @@ public class UIGameObject : BindableObject
 				
 				if (root != null) {
 						child.root = root;
-						root.FireChildAddedEvent (child);
+						root.FireChildAddedToRootEvent (child);
+						child.FireChildAddedToRootEvent (child);
 				}							
 				invalidate ();
 		}
 		
-		public void removeChild (UIGameObject child)
+		public virtual void removeChild (UIGameObject child)
 		{
 				child.depth = -1;			
 				children.Remove (child);
@@ -218,33 +217,34 @@ public class UIGameObject : BindableObject
 				child.ResizeEvent -= onChildResize;
 				
 				if (child.root != null) {
-						child.root.FireChildRemovedEvent (child);
+						child.root.FireChildRemovedFromRootEvent (child);
+						child.FireChildRemovedFromRootEvent (child);
 						child.root = null;
 				}
 				invalidate ();
 		}
 				
-		public int numChildren {
+		public virtual int numChildren {
 				get {
 						return children.Count;
 				}
 		}
 		
-		public int getChildIndex (UIGameObject child)
+		public virtual int getChildIndex (UIGameObject child)
 		{
 		
 				return children.IndexOf (child);
 				
 		}
 		
-		public UIGameObject getChild (int index)
+		public virtual UIGameObject getChild (int index)
 		{
 			
 				return children [index];
 			
 		}
 		
-		public UIGameObject getChildById (string name)
+		public virtual UIGameObject getChildById (string name)
 		{
 				for (int i = 0; i < children.Count; i++) {
 						UIGameObject child = children [i];			
@@ -262,7 +262,7 @@ public class UIGameObject : BindableObject
 				_clipContent = false;
 				
 		[BindableAttribute]
-		public bool clipContent {
+		public virtual bool clipContent {
 				get {
 						return _clipContent;
 				}
@@ -279,71 +279,101 @@ public class UIGameObject : BindableObject
 			
 		Vector2 scaleHelper = Vector2.zero;
 			
-		public virtual void draw (UIGameObject parentChild)
+		public virtual void draw (UIGameObject parent)
 		{
 		
 				
 				GUI.BeginGroup (screenRect);
 								
-				children.Sort (
-					delegate(UIGameObject p1, UIGameObject p2) {
-						return p1.depth.CompareTo (p2.depth);
-				}
-				);
+				
 		
-				for (int i = 0; i < children.Count; i++) {
-				
-						UIGameObject child = children [i];
-						
-						if (child == null || !child.isVisible || child.alpha == 0 || !child.gameObject.activeSelf || !child.enabled) {
-								continue;
-						}
-						
-						Color old = GUI.color;
-			
-						Color newColor = Color.black;
-			
-						if (parentChild != null) {
-								
-								newColor.r = GUI.color.r * child.color.r * parentChild.color.r;
-								newColor.g = GUI.color.g * child.color.g * parentChild.color.g;
-								newColor.b = GUI.color.b * child.color.b * parentChild.color.b;
-				
-								newColor.a = GUI.color.a * child.alpha * parentChild.alpha;
-						} else {
-								newColor = child.color;
-								newColor.a = GUI.color.a * child.alpha;
-						}
-			
-						GUI.color = newColor;
-			
-						if (child.rotation != 0f || (child.scaleX != 1 && child.scaleY != 1)) {
-						
-								Vector2 rotationPivotTypePosition = pivotTypeToPosition (child.rotationPivotType, child);
-								Vector2 scalePivotTypePosition = pivotTypeToPosition (child.rotationPivotType, child);
-						
-								Matrix4x4 matrix = GUI.matrix;						
-								scaleHelper.Set (child.scaleX, child.scaleY);
-								
-								//Vector2 globalPosition = child.localToGlobal (child.position);
-								
-								GUIUtility.RotateAroundPivot (child.rotation, child.position + child.rotationPivot + rotationPivotTypePosition);
-								GUIUtility.ScaleAroundPivot (scaleHelper, child.position + child.scalePivot + scalePivotTypePosition);
-				
-								child.draw (this);
-				
-								GUI.matrix = matrix;
-						} else {
-								child.draw (this);
-						}
-			
-						GUI.color = old;
-			
-						
-				}
+		drawChildren (parent);
 								
 				GUI.EndGroup ();
 				
+		}
+
+	protected virtual void drawChildren(UIGameObject parent) {
+
+		children.Sort (
+			delegate(UIGameObject p1, UIGameObject p2) {
+			return p1.depth.CompareTo (p2.depth);
+		}
+		);
+
+		for (int i = 0; i < children.Count; i++) {
+			
+			UIGameObject child = children [i];
+			
+			drawChild (child, parent);
+		}
+	}
+
+	[SerializeField]
+	bool _manageChildrenVisibility = false;
+
+	public bool manageChildrenVisibility {
+		get {
+			return _manageChildrenVisibility;
+		}
+		set {
+			if (_manageChildrenVisibility == value) {
+				return;
+			}
+			_manageChildrenVisibility = value;
+			invalidate();
+		}
+	}
+
+		protected void drawChild (UIGameObject child, UIGameObject parent)
+		{
+				if (child == null || !child.isVisible || child.alpha == 0 || !child.gameObject.activeSelf || !child.enabled) {
+						return;
+				}
+		
+				if (manageChildrenVisibility && !RectUtils.Intersect (screenRect, child.screenRect)) {												
+						return;
+				}
+		
+				Color old = GUI.color;
+		
+				Color newColor = Color.black;
+		
+				if (parent != null) {
+			
+						newColor.r = GUI.color.r * child.color.r * parent.color.r;
+						newColor.g = GUI.color.g * child.color.g * parent.color.g;
+						newColor.b = GUI.color.b * child.color.b * parent.color.b;
+			
+						newColor.a = GUI.color.a * child.alpha * parent.alpha;
+				} else {
+						newColor = child.color;
+						newColor.a = GUI.color.a * child.alpha;
+				}
+		
+				GUI.color = newColor;
+		
+				if (child.rotation != 0f || (child.scaleX != 1 && child.scaleY != 1)) {
+			
+						Vector2 rotationPivotTypePosition = pivotTypeToPosition (child.rotationPivotType, child);
+						Vector2 scalePivotTypePosition = pivotTypeToPosition (child.rotationPivotType, child);
+			
+						Matrix4x4 matrix = GUI.matrix;						
+						scaleHelper.Set (child.scaleX, child.scaleY);
+			
+						//Vector2 globalPosition = child.localToGlobal (child.position);
+			
+						GUIUtility.RotateAroundPivot (child.rotation, child.position + child.rotationPivot + rotationPivotTypePosition);
+						GUIUtility.ScaleAroundPivot (scaleHelper, child.position + child.scalePivot + scalePivotTypePosition);
+			
+						child.draw (parent);
+			
+						GUI.matrix = matrix;
+				} else {
+						child.draw (parent);
+				}
+		
+				GUI.color = old;
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -446,7 +476,7 @@ public class UIGameObject : BindableObject
 				screenRect = new Rect ();
 		
 		[BindableAttribute]
-		public int x {
+		public virtual int x {
 				set {
 						if (screenRect.x == value) {
 								return;
@@ -466,7 +496,7 @@ public class UIGameObject : BindableObject
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		[BindableAttribute]
-		public int y {
+		public virtual int y {
 				set {
 						if (screenRect.y == value) {
 								return;
@@ -486,16 +516,19 @@ public class UIGameObject : BindableObject
 		Vector2 _position = Vector2.zero;
 	
 		[BindableAttribute]	
-		public Vector2 position {
+		public virtual Vector2 position {
 				get {
 						return _position;
+				}
+				set {
+						setPosition ((int)value.x, (int)value.y);
 				}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		[BindableAttribute]
-		public int width {
+		public virtual int width {
 				set {
 						if (screenRect.width == value) {
 								return;
@@ -514,7 +547,7 @@ public class UIGameObject : BindableObject
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		[BindableAttribute]
-		public int height {
+		public virtual int height {
 				set {
 						if (screenRect.height == value) {
 								return;
@@ -533,7 +566,7 @@ public class UIGameObject : BindableObject
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		
-		public void setPosition (int x, int y)
+		public virtual void setPosition (int x, int y)
 		{
 				bool moved = false;
 				if (screenRect.x != x) {
@@ -557,7 +590,7 @@ public class UIGameObject : BindableObject
     
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public void setSize (int width, int height)
+		public virtual void setSize (int width, int height)
 		{
 				bool resized = false;
 				if (screenRect.width != width) {
@@ -612,16 +645,17 @@ public class UIGameObject : BindableObject
 						return;
 				}
 				
-				root.invalidate ();				
+				root.invalidateTarget (this);				
 		}
 	
 		public virtual void  validate ()
 		{
+		
 				//Debug.Log (this + " validate");
+				validateLayout ();			
 				validateChildren ();
-				validateLayout ();
 		}
-
+		
 		void validateChildren ()
 		{
 				for (int i = 0; i < children.Count; i++) {
@@ -632,7 +666,7 @@ public class UIGameObject : BindableObject
     
 		bool ignoreChildChanges = false;
 				
-		protected void validateLayout ()
+		void validateLayout ()
 		{
 				UILayout[] layouts = GetComponents<UILayout> ();
 				
@@ -647,6 +681,8 @@ public class UIGameObject : BindableObject
 						layout.Layout ();
 				}
 				
+				//childUIGameObject.isVisible = boundingContains(
+				
 				ignoreChildChanges = false;
 								
 		}
@@ -658,7 +694,7 @@ public class UIGameObject : BindableObject
 				if (ignoreChildChanges) {
 						return;
 				}
-				invalidate ();
+				//invalidate ();
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////	
@@ -924,9 +960,9 @@ public class UIGameObject : BindableObject
 	
 		public virtual bool HitTest (UITouch touch)
 		{				
-				if (isQuickHitAreaEnabled) {
+				tempRect.Set (screenRect.x, screenRect.y, screenRect.width, screenRect.height);
 				
-						tempRect.Set (x, y, width, height);
+				if (isQuickHitAreaEnabled) {				
 						return tempRect.Contains (touch.position);
 				} else {
 						for (int i = 0; i < children.Count; i++) {
@@ -951,17 +987,21 @@ public class UIGameObject : BindableObject
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		public virtual void TouchBegan (UITouch touch)
-		{						
+		{					
+				if (!isTouchable) {
+						return;
+				}
+			
 				for (int i = 0; i < children.Count; i++) {
 						UIGameObject child = children [i];
 							
 						if (!child.isTouchable) {
 								continue;
 						}
-						if (!child.HitTest (touch)) {
-								continue;
-						}			
-						child.TouchBegan (touch);
+						if (child.HitTest (touch)) {
+								child.TouchBegan (touch);
+						}
+						
 				}
 		
 				if (TouchBeganEvent != null) {
@@ -974,15 +1014,19 @@ public class UIGameObject : BindableObject
 	
 		public virtual void TouchMoved (UITouch touch)
 		{
+		
+				if (!isTouchable) {
+						return;
+				}
+		
 				for (int i = 0; i < children.Count; i++) {
 						UIGameObject child = children [i];
 						if (!child.isTouchable) {
 								continue;
 						}
-						if (!child.HitTest (touch)) {
-								continue;
-						}
+						
 						child.TouchMoved (touch);
+						
 				}
 				if (TouchMovedEvent != null) {
 						TouchMovedEvent (this, touch);
@@ -993,15 +1037,18 @@ public class UIGameObject : BindableObject
 	
 		public virtual void TouchEnded (UITouch touch)
 		{
+				if (!isTouchable) {
+						return;
+				}
+		
 				for (int i = 0; i < children.Count; i++) {
 						UIGameObject child = children [i];
 						if (!child.isTouchable) {
 								continue;
 						}
-						if (!child.HitTest (touch)) {
-								continue;
-						}
+						
 						child.TouchEnded (touch);
+						
 				}
 				if (TouchEndedEvent != null) {
 						TouchEndedEvent (this, touch);
@@ -1012,15 +1059,18 @@ public class UIGameObject : BindableObject
 	
 		public virtual void TouchCancelled (UITouch touch)
 		{
+				if (!isTouchable) {
+						return;
+				}
+		
 				for (int i = 0; i < children.Count; i++) {
 						UIGameObject child = children [i];
 						if (!child.isTouchable) {
 								continue;
 						}
-						if (!child.HitTest (touch)) {
-								continue;
-						}
+						
 						child.TouchCancelled (touch);
+						
 				}
 				if (TouchCancelledEvent != null) {
 						TouchCancelledEvent (this, touch);

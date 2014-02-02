@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_3;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_4;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -48,7 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\AnimationExamples\FadeTweenExample.cs" />
      <Compile Include="Assets\AnimationExamples\MoveTweenExample.cs" />
+     <Compile Include="Assets\AnimationExamples\SlideExample.cs" />
      <Compile Include="Assets\ComponentExamples\ScreenNavigatorExample.cs" />
+     <Compile Include="Assets\ComponentExamples\ScrollerExample.cs" />
      <Compile Include="Assets\Tester.cs" />
      <Compile Include="Assets\UIFramework2\Animation\Easing\Back.cs" />
      <Compile Include="Assets\UIFramework2\Animation\Easing\Bounce.cs" />
@@ -74,27 +76,33 @@
      <Compile Include="Assets\UIFramework2\Animation\UITweener.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIButton.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIFill.cs" />
+     <Compile Include="Assets\UIFramework2\Components\UIGradientFill.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIImage.cs" />
      <Compile Include="Assets\UIFramework2\Components\UILabel.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIScreen.cs" />
      <Compile Include="Assets\UIFramework2\Components\UIScreenNavigator.cs" />
+     <Compile Include="Assets\UIFramework2\Components\UIScroller.cs" />
+     <Compile Include="Assets\UIFramework2\Components\UISkinnableObject.cs" />
      <Compile Include="Assets\UIFramework2\Components\UISliceImage.cs" />
-     <Compile Include="Assets\UIFramework2\Components\UITextStyle.cs" />
      <Compile Include="Assets\UIFramework2\Core\ToolSupport.cs" />
-     <Compile Include="Assets\UIFramework2\Core\TouchDebugger.cs" />
      <Compile Include="Assets\UIFramework2\Core\TouchScriptUIUtility.cs" />
      <Compile Include="Assets\UIFramework2\Core\UIGameObject.cs" />
      <Compile Include="Assets\UIFramework2\Core\UILayout.cs" />
+     <Compile Include="Assets\UIFramework2\Core\UILayoutAdapter.cs" />
      <Compile Include="Assets\UIFramework2\Core\UILayoutData.cs" />
      <Compile Include="Assets\UIFramework2\Core\UIRoot.cs" />
+     <Compile Include="Assets\UIFramework2\Core\UIScrollableLayout.cs" />
      <Compile Include="Assets\UIFramework2\Core\UITouch.cs" />
      <Compile Include="Assets\UIFramework2\Data\BindProperty.cs" />
      <Compile Include="Assets\UIFramework2\Data\BindableAttribute.cs" />
      <Compile Include="Assets\UIFramework2\Data\BindableObject.cs" />
      <Compile Include="Assets\UIFramework2\Data\PropertyChangeEventArgs.cs" />
+     <Compile Include="Assets\UIFramework2\Debug\PressAlphaChanger.cs" />
+     <Compile Include="Assets\UIFramework2\Debug\TouchDebugger.cs" />
      <Compile Include="Assets\UIFramework2\Layout\AnchorUILayout.cs" />
      <Compile Include="Assets\UIFramework2\Layout\AnchorUILayoutData.cs" />
      <Compile Include="Assets\UIFramework2\Layout\CenterContentUILayout.cs" />
+     <Compile Include="Assets\UIFramework2\Layout\CenterInParentUILayout.cs" />
      <Compile Include="Assets\UIFramework2\Layout\FitToContentUILayout.cs" />
      <Compile Include="Assets\UIFramework2\Layout\FitToParentUILayout.cs" />
      <Compile Include="Assets\UIFramework2\Layout\FitToScreenUILayout.cs" />
@@ -105,9 +113,16 @@
      <Compile Include="Assets\UIFramework2\Layout\UILinearLayoutData.cs" />
      <Compile Include="Assets\UIFramework2\Layout\UIStackLayout.cs" />
      <Compile Include="Assets\UIFramework2\Layout\UIVerticalLayout.cs" />
+     <Compile Include="Assets\UIFramework2\Skinning\UIButtonSkin.cs" />
      <Compile Include="Assets\UIFramework2\Skinning\UISkin.cs" />
+     <Compile Include="Assets\UIFramework2\Skinning\UISkinSelector.cs" />
+     <Compile Include="Assets\UIFramework2\Skinning\UITextStyle.cs" />
+     <Compile Include="Assets\UIFramework2\Skinning\UITextStyleSelector.cs" />
      <Compile Include="Assets\UIFramework2\Skinning\UITheme.cs" />
-     <Compile Include="Assets\UIFramework2\test.cs" />
+     <Compile Include="Assets\UIFramework2\UIFrameworkMenu.cs" />
+     <Compile Include="Assets\UIFramework2\Utils\FontMetrics.cs" />
+     <Compile Include="Assets\UIFramework2\Utils\FontUtils.cs" />
+     <Compile Include="Assets\UIFramework2\Utils\RectUtils.cs" />
      <Compile Include="Assets\test_transform.cs" />
      <None Include="Assets\MetalWorksMobileTheme\assets\images\metalworks.txt" />
  <Reference Include="OSCsharp">

@@ -4,24 +4,7 @@ using System.Collections;
 
 public class UIScreenNavigator : UIGameObject
 {
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	#if UNITY_EDITOR
-	
-		[UnityEditor.MenuItem("UI/UIScreenNavigator")]
-		public static GameObject createUIScreenNavigator ()
-		{
-				GameObject widget = new GameObject ("UIScreenNavigator");
-				widget.transform.parent = UnityEditor.Selection.activeTransform;
-				widget.name = "UIScreenNavigator";
-			
-				widget.AddComponent<UIScreenNavigator> ();				
-				widget.AddComponent<FitToScreenUILayout> ();								
-				return widget;
-		}
-	
-	#endif
-	
+		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		public string defaultScreenID;
@@ -32,7 +15,7 @@ public class UIScreenNavigator : UIGameObject
 		public EaseDelegate showEasingFunction = Quad.EaseOut;
 		public EaseDelegate hideEasingFunction = Quad.EaseOut;
 		
-		protected override void Awake ()
+		public override void Awake ()
 		{
 				base.Awake ();
 		
@@ -122,9 +105,8 @@ public class UIScreenNavigator : UIGameObject
 				}
 		
 				if (hideTween != null) {	
-						destroyHideTween ();		
 						hideTween.Stop ();
-						destroyHideTween ();
+						destroyHideTween ();								
 				}
 				
 				screen.FireHideTransitionStart (screen);

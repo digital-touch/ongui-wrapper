@@ -6,25 +6,7 @@ using System;
 public class UIImage : UIGameObject
 {
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	#if UNITY_EDITOR
-	
-		[UnityEditor.MenuItem ("UI/UIImage")]
-		public static GameObject CreateUIImage ()
-		{
-				GameObject image = new GameObject ("GameObject");
-				image.transform.parent = UnityEditor.Selection.activeTransform;						
-				image.name = "UIImage";				
-				
-				UIImage uiImage = image.AddComponent<UIImage> ();
-				uiImage.width = 100;
-				uiImage.height = 100;				
-			
-				
-				return image;
-		}
-	#endif	
+		
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -143,4 +125,12 @@ public class UIImage : UIGameObject
 		}
 	
 		///////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		public void resizeToImage ()
+		{
+				if (image == null) {
+						return;
+				}
+				setSize (image.width, image.height);
+		}
 }

@@ -2,7 +2,7 @@
 using System.Collections;
 
 [ExecuteInEditMode]
-public class test : MonoBehaviour
+public class UILayoutAdapter : MonoBehaviour
 {
 
 		// Use this for initialization
@@ -14,6 +14,6 @@ public class test : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				Debug.Log (Screen.width + ", " + Screen.height);
+	
 		}
 }

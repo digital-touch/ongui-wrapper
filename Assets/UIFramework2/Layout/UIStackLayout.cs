@@ -43,14 +43,14 @@ public class UIStackLayout : UILayout
 
 		public override void Layout ()
 		{				
-				UIGameObject uIGameObject = GetComponent<UIGameObject> ();
-				
-				contentSize.Set (uIGameObject.width, uIGameObject.height);
+				UIGameObject uIGameObject = GetComponent<UIGameObject> ();				
+		
+				setContentSize (uIGameObject.width, uIGameObject.height);						
 				
 				for (int i = 0; i < uIGameObject.numChildren; i++) {
 				
-						UIGameObject child = uIGameObject.getChild (i);
-						
+						UIGameObject child = uIGameObject.getChild (i);			
+			
 						if (child == null) {
 								continue;
 						}

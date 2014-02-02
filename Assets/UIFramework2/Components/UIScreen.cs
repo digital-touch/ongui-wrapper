@@ -5,23 +5,7 @@ using System;
 public class UIScreen : UIGameObject
 {
 		
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	#if UNITY_EDITOR
-	
-		[UnityEditor.MenuItem("UI/UIScreen")]
-		public static GameObject createUIScreen ()
-		{
-				GameObject widget = new GameObject ("UIScreen");
-				widget.transform.parent = UnityEditor.Selection.activeTransform;
 		
-				widget.AddComponent<UIScreen> ();				
-				widget.AddComponent<FitToScreenUILayout> ();								
-				return widget;
-		}
-	
-	#endif
-	
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		UIScreenNavigator _navigator;

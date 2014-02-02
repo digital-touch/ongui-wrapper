@@ -15,9 +15,10 @@ public static class TouchScriptUIUtility
 				
 				position.x = (int)touchPoint.Position.x;
 				position.y = (int)(Screen.height - touchPoint.Position.y);
-				
+		
 				touch.position = position;
-				
+				touch.previousPosition = touchPoint.PreviousPosition;
+		
 				return touch;
 		}
 	
